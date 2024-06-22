@@ -31,10 +31,6 @@ sync_assets:
 		--build.include_dir "public" \
 		--build.include_ext "js,css"
 
-start_temp_proxy:
-	templ-proxy --port 7331 &
-
-
 # start app in developement
 dev:
-	@make -j5 start_temp_proxy templ server watch-assets watch-esbuild sync_assets
+	@make -j5  templ server watch-assets watch-esbuild sync_assets
