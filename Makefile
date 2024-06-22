@@ -1,0 +1,40 @@
+MAIN_PATH="tmp/bin/main"
+
+# run templ generation in watch mode to detect all .templ files and 
+# re-create _templ.txt files on change, then send reload event to browser. 
+# Default url: http://localhost:7331
+templ:
+	@templ generate --watch --proxy="http://localhost:3000" --open-browser=false
+
+server:
+	@go run github.com/cosmtrek/air@v1.51.0 \
+		--build.cmd "go build --tags dev -o ${MAIN_PATH} ./cmd/" --build.bin "${MAIN_PATH}" --build.delay "100" \
+		--build.exclude_dir "node_modules" \
+		--build.include_ext "go" \
+		--build.stop_on_error "false" \
+		--misc.clean_on_exit true
+
+watch-assets:
+	npx tailwindcss -i internal/assets/app.css -o ./public/assets/styles.css --watch
+
+# run esbuild to generate the index.js bundle in watch mode.
+watch-esbuild:
+	npx esbuild internal/assets/index.js --bundle --outdir=public/assets --watch
+
+# watch for any js or css change in the assets/ folder, then reload the browser via templ proxy.
+sync_assets:
+	go run github.com/cosmtrek/air@v1.51.0 \
+		--build.cmd "templ generate --notify-proxy" \
+		--build.bin "true" \
+		--build.delay "100" \
+		--build.exclude_dir "" \
+		--build.include_dir "public" \
+		--build.include_ext "js,css"
+
+start_temp_proxy:
+	templ-proxy --port 7331 &
+
+
+# start app in developement
+dev:
+	@make -j5 start_temp_proxy templ server watch-assets watch-esbuild sync_assets
