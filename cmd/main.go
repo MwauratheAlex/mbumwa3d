@@ -20,6 +20,8 @@ func main() {
 	r.Handle("/*", public())
 
 	r.Get("/", handlers.Make(handlers.HandleHome))
+	r.Get("/finished", handlers.Make(handlers.HandleFinished))
+	r.Get("/processing", handlers.Make(handlers.HandleProcessing))
 	http.ListenAndServe(port, r)
 }
 
