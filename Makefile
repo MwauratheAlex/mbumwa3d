@@ -33,4 +33,4 @@ sync_assets:
 
 # start app in developement
 dev:
-	@make -j5  templ server watch-assets watch-esbuild sync_assets
+	@make -j5  templ server watch-assets sync_assets
