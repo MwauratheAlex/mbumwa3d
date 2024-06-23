@@ -9,13 +9,13 @@ templ Index() {
 	/* hero section */
 	<div class="hero grid grid-cols-2">
 		/* 3D fireworks */
-		<div class=""></div>
+		<canvas id="viewer" class=""></canvas>
 		/* cta */
 		<div class="flex items-center justify-center">
 			<div class="relative text-[#A0E5FF] flex flex-col gap-6">
 				@components.Logo("405", "58")
-				<p class="text-lg font-semibold opacity-50">
-					3D printing perfection at your fingertips
+				<p class="text-lg font-semibold opacity-55">
+					3D printing <span class="text-orange-600">excellence</span> at your fingertips
 				</p>
 				@fileUpload()
 				<div class="bg-orange-500 bg-opacity-30 blur-3xl  drop-shadow-xl h-6 mt-4    "></div>

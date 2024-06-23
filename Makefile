@@ -19,7 +19,7 @@ watch-assets:
 
 # run esbuild to generate the index.js bundle in watch mode.
 watch-esbuild:
-	npx esbuild internal/assets/index.js --bundle --outdir=public/assets --watch
+	npx esbuild internal/assets/index.js --bundle --outdir=public/assets --watch=forever
 
 # watch for any js or css change in the assets/ folder, then reload the browser via templ proxy.
 sync_assets:
@@ -33,4 +33,4 @@ sync_assets:
 
 # start app in developement
 dev:
-	@make -j5  templ server watch-assets sync_assets
+	@make -j5  templ server watch-assets sync_assets watch-esbuild
