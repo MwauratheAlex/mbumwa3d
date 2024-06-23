@@ -15,7 +15,7 @@ server:
 		--misc.clean_on_exit true
 
 watch-assets:
-	npx tailwindcss -i internal/assets/app.css -o ./public/assets/styles.css --watch
+	npx tailwindcss -i internal/assets/app.css -o public/assets/styles.css --watch
 
 # run esbuild to generate the index.js bundle in watch mode.
 watch-esbuild:
