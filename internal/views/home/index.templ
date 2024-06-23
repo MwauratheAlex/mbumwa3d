@@ -1,8 +1,8 @@
 package home
 
 import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
-import "github.com/mwaurathealex/mbumwa3d/internal/views/components"
 
+// import "github.com/mwaurathealex/mbumwa3d/internal/views/components"
 templ Index() {
 @layouts.Base() {
 <main class="container h-[90vh]">
@@ -11,23 +11,52 @@ templ Index() {
 		/* 3D fireworks */
 		<canvas id="viewer" class=""></canvas>
 		/* cta */
-		<div class="flex items-center justify-center">
+		<div class="flex items-start justify-end pt-4 pr-4">
 			<div class="relative text-[#A0E5FF] flex flex-col gap-6">
-				@components.Logo("405", "58")
 				<p class="text-lg font-semibold opacity-55">
 					3D printing <span class="text-orange-600">excellence</span> at your fingertips
 				</p>
 				@fileUpload()
+				@form()
 				<div class="bg-orange-500 bg-opacity-30 blur-3xl  drop-shadow-xl h-6 mt-4    "></div>
 				<button class="absolute bottom-0 w-full font-semibold  text-cyan-100 rounded-lg p-2 
 				bg-orange-800 bg-opacity-80" type="submit">
-					Click to preview and print
+					Let's print it
 				</button>
 			</div>
 		</div>
 	</div>
 </main>
 }
+}
+
+templ form() {
+<form class="max-w-sm mx-auto w-full flex gap-4 flex-col">
+	<p class="text-lg font-semibold opacity-55">
+		Customize your print
+	</p>
+	<div>
+		<label for="underline_select" class="text-sm opacity-40">Choose a material</label>
+		<select id="underline_select"
+			class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+			<option selected>ABS</option>
+			<option value="US">PLA</option>
+			<option value="CA">Nylon</option>
+			<option value="FR">Carbon Fibre</option>
+		</select>
+	</div>
+	<div>
+		<label for="underline_select" class="text-sm opacity-40">Pick a color</label>
+		<select id="underline_select"
+			class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+			<option selected>Any</option>
+			<option value="US">Red</option>
+			<option value="CA">White</option>
+			<option value="FR">Yellow</option>
+		</select>
+		// layer height
+	</div>
+</form>
 }
 
 templ fileUpload() {

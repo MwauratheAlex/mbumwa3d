@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const height = 800
-const width = 600
+const width = 890
 
 // scene
 const scene = new THREE.Scene();
@@ -27,7 +27,7 @@ scene.add(camera);
 // renderer
 const canvas = document.querySelector("#viewer");
 const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-renderer.setClearColor(0x000000, 0.4); // the default
+renderer.setClearColor(0x1d4ed8, 0.04); // the default
 renderer.setSize(width, height);
 renderer.setPixelRatio(2);
 renderer.render(scene, camera);

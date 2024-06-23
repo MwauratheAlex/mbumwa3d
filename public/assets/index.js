@@ -20115,7 +20115,7 @@ void main() {
 
   // internal/assets/index.js
   var height = 800;
-  var width = 600;
+  var width = 890;
   var scene = new Scene();
   var geometry = new SphereGeometry(3, 64, 64);
   var material = new MeshStandardMaterial({ color: 65411 });
@@ -20129,7 +20129,7 @@ void main() {
   scene.add(camera);
   var canvas = document.querySelector("#viewer");
   var renderer = new WebGLRenderer({ canvas, alpha: true });
-  renderer.setClearColor(0, 0.4);
+  renderer.setClearColor(1920728, 0.04);
   renderer.setSize(width, height);
   renderer.setPixelRatio(2);
   renderer.render(scene, camera);

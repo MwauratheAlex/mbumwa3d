@@ -4,8 +4,13 @@
 
 .hero {
   background-image: url('/public/images/thinking_man.png');
-  background-position: -60px -60px;
+  background-position: -120px -00px;
   height: 100%;
   overflow: hidden;
   background-repeat: no-repeat;
+}
+
+canvas {
+  border: 1px solid black;
+  border-radius: 16px;
 }
