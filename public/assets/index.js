@@ -18570,6 +18570,24 @@ void main() {
   var VectorKeyframeTrack = class extends KeyframeTrack {
   };
   VectorKeyframeTrack.prototype.ValueTypeName = "vector";
+  var Cache = {
+    enabled: false,
+    files: {},
+    add: function(key, file) {
+      if (this.enabled === false) return;
+      this.files[key] = file;
+    },
+    get: function(key) {
+      if (this.enabled === false) return;
+      return this.files[key];
+    },
+    remove: function(key) {
+      delete this.files[key];
+    },
+    clear: function() {
+      this.files = {};
+    }
+  };
   var LoadingManager = class {
     constructor(onLoad, onProgress, onError) {
       const scope = this;
@@ -18618,8 +18636,8 @@ void main() {
         urlModifier = transform;
         return this;
       };
-      this.addHandler = function(regex, loader) {
-        handlers.push(regex, loader);
+      this.addHandler = function(regex, loader2) {
+        handlers.push(regex, loader2);
         return this;
       };
       this.removeHandler = function(regex) {
@@ -18632,10 +18650,10 @@ void main() {
       this.getHandler = function(file) {
         for (let i = 0, l = handlers.length; i < l; i += 2) {
           const regex = handlers[i];
-          const loader = handlers[i + 1];
+          const loader2 = handlers[i + 1];
           if (regex.global) regex.lastIndex = 0;
           if (regex.test(file)) {
-            return loader;
+            return loader2;
           }
         }
         return null;
@@ -18684,6 +18702,150 @@ void main() {
     }
   };
   Loader.DEFAULT_MATERIAL_NAME = "__DEFAULT";
+  var loading = {};
+  var HttpError = class extends Error {
+    constructor(message, response) {
+      super(message);
+      this.response = response;
+    }
+  };
+  var FileLoader = class extends Loader {
+    constructor(manager) {
+      super(manager);
+    }
+    load(url, onLoad, onProgress, onError) {
+      if (url === void 0) url = "";
+      if (this.path !== void 0) url = this.path + url;
+      url = this.manager.resolveURL(url);
+      const cached = Cache.get(url);
+      if (cached !== void 0) {
+        this.manager.itemStart(url);
+        setTimeout(() => {
+          if (onLoad) onLoad(cached);
+          this.manager.itemEnd(url);
+        }, 0);
+        return cached;
+      }
+      if (loading[url] !== void 0) {
+        loading[url].push({
+          onLoad,
+          onProgress,
+          onError
+        });
+        return;
+      }
+      loading[url] = [];
+      loading[url].push({
+        onLoad,
+        onProgress,
+        onError
+      });
+      const req = new Request(url, {
+        headers: new Headers(this.requestHeader),
+        credentials: this.withCredentials ? "include" : "same-origin"
+        // An abort controller could be added within a future PR
+      });
+      const mimeType = this.mimeType;
+      const responseType = this.responseType;
+      fetch(req).then((response) => {
+        if (response.status === 200 || response.status === 0) {
+          if (response.status === 0) {
+            console.warn("THREE.FileLoader: HTTP Status 0 received.");
+          }
+          if (typeof ReadableStream === "undefined" || response.body === void 0 || response.body.getReader === void 0) {
+            return response;
+          }
+          const callbacks = loading[url];
+          const reader = response.body.getReader();
+          const contentLength = response.headers.get("X-File-Size") || response.headers.get("Content-Length");
+          const total = contentLength ? parseInt(contentLength) : 0;
+          const lengthComputable = total !== 0;
+          let loaded = 0;
+          const stream = new ReadableStream({
+            start(controller) {
+              readData();
+              function readData() {
+                reader.read().then(({ done, value }) => {
+                  if (done) {
+                    controller.close();
+                  } else {
+                    loaded += value.byteLength;
+                    const event = new ProgressEvent("progress", { lengthComputable, loaded, total });
+                    for (let i = 0, il = callbacks.length; i < il; i++) {
+                      const callback = callbacks[i];
+                      if (callback.onProgress) callback.onProgress(event);
+                    }
+                    controller.enqueue(value);
+                    readData();
+                  }
+                }, (e) => {
+                  controller.error(e);
+                });
+              }
+            }
+          });
+          return new Response(stream);
+        } else {
+          throw new HttpError(`fetch for "${response.url}" responded with ${response.status}: ${response.statusText}`, response);
+        }
+      }).then((response) => {
+        switch (responseType) {
+          case "arraybuffer":
+            return response.arrayBuffer();
+          case "blob":
+            return response.blob();
+          case "document":
+            return response.text().then((text) => {
+              const parser = new DOMParser();
+              return parser.parseFromString(text, mimeType);
+            });
+          case "json":
+            return response.json();
+          default:
+            if (mimeType === void 0) {
+              return response.text();
+            } else {
+              const re = /charset="?([^;"\s]*)"?/i;
+              const exec = re.exec(mimeType);
+              const label = exec && exec[1] ? exec[1].toLowerCase() : void 0;
+              const decoder = new TextDecoder(label);
+              return response.arrayBuffer().then((ab) => decoder.decode(ab));
+            }
+        }
+      }).then((data) => {
+        Cache.add(url, data);
+        const callbacks = loading[url];
+        delete loading[url];
+        for (let i = 0, il = callbacks.length; i < il; i++) {
+          const callback = callbacks[i];
+          if (callback.onLoad) callback.onLoad(data);
+        }
+      }).catch((err) => {
+        const callbacks = loading[url];
+        if (callbacks === void 0) {
+          this.manager.itemError(url);
+          throw err;
+        }
+        delete loading[url];
+        for (let i = 0, il = callbacks.length; i < il; i++) {
+          const callback = callbacks[i];
+          if (callback.onError) callback.onError(err);
+        }
+        this.manager.itemError(url);
+      }).finally(() => {
+        this.manager.itemEnd(url);
+      });
+      this.manager.itemStart(url);
+    }
+    setResponseType(value) {
+      this.responseType = value;
+      return this;
+    }
+    setMimeType(value) {
+      this.mimeType = value;
+      return this;
+    }
+  };
   var Light = class extends Object3D {
     constructor(color, intensity = 1) {
       super();
@@ -18903,6 +19065,13 @@ void main() {
       this.decay = source.decay;
       this.shadow = source.shadow.clone();
       return this;
+    }
+  };
+  var AmbientLight = class extends Light {
+    constructor(color, intensity) {
+      super(color, intensity);
+      this.isAmbientLight = true;
+      this.type = "AmbientLight";
     }
   };
   var _RESERVED_CHARS_RE = "\\[\\]\\.:\\/";
@@ -20113,23 +20282,212 @@ void main() {
     }
   };
 
+  // node_modules/three/examples/jsm/loaders/STLLoader.js
+  var STLLoader = class extends Loader {
+    constructor(manager) {
+      super(manager);
+    }
+    load(url, onLoad, onProgress, onError) {
+      const scope = this;
+      const loader2 = new FileLoader(this.manager);
+      loader2.setPath(this.path);
+      loader2.setResponseType("arraybuffer");
+      loader2.setRequestHeader(this.requestHeader);
+      loader2.setWithCredentials(this.withCredentials);
+      loader2.load(url, function(text) {
+        try {
+          onLoad(scope.parse(text));
+        } catch (e) {
+          if (onError) {
+            onError(e);
+          } else {
+            console.error(e);
+          }
+          scope.manager.itemError(url);
+        }
+      }, onProgress, onError);
+    }
+    parse(data) {
+      function isBinary(data2) {
+        const reader = new DataView(data2);
+        const face_size = 32 / 8 * 3 + 32 / 8 * 3 * 3 + 16 / 8;
+        const n_faces = reader.getUint32(80, true);
+        const expect = 80 + 32 / 8 + n_faces * face_size;
+        if (expect === reader.byteLength) {
+          return true;
+        }
+        const solid = [115, 111, 108, 105, 100];
+        for (let off = 0; off < 5; off++) {
+          if (matchDataViewAt(solid, reader, off)) return false;
+        }
+        return true;
+      }
+      function matchDataViewAt(query, reader, offset) {
+        for (let i = 0, il = query.length; i < il; i++) {
+          if (query[i] !== reader.getUint8(offset + i)) return false;
+        }
+        return true;
+      }
+      function parseBinary(data2) {
+        const reader = new DataView(data2);
+        const faces = reader.getUint32(80, true);
+        let r, g, b, hasColors = false, colors;
+        let defaultR, defaultG, defaultB, alpha;
+        for (let index = 0; index < 80 - 10; index++) {
+          if (reader.getUint32(index, false) == 1129270351 && reader.getUint8(index + 4) == 82 && reader.getUint8(index + 5) == 61) {
+            hasColors = true;
+            colors = new Float32Array(faces * 3 * 3);
+            defaultR = reader.getUint8(index + 6) / 255;
+            defaultG = reader.getUint8(index + 7) / 255;
+            defaultB = reader.getUint8(index + 8) / 255;
+            alpha = reader.getUint8(index + 9) / 255;
+          }
+        }
+        const dataOffset = 84;
+        const faceLength = 12 * 4 + 2;
+        const geometry2 = new BufferGeometry();
+        const vertices = new Float32Array(faces * 3 * 3);
+        const normals = new Float32Array(faces * 3 * 3);
+        const color = new Color();
+        for (let face = 0; face < faces; face++) {
+          const start = dataOffset + face * faceLength;
+          const normalX = reader.getFloat32(start, true);
+          const normalY = reader.getFloat32(start + 4, true);
+          const normalZ = reader.getFloat32(start + 8, true);
+          if (hasColors) {
+            const packedColor = reader.getUint16(start + 48, true);
+            if ((packedColor & 32768) === 0) {
+              r = (packedColor & 31) / 31;
+              g = (packedColor >> 5 & 31) / 31;
+              b = (packedColor >> 10 & 31) / 31;
+            } else {
+              r = defaultR;
+              g = defaultG;
+              b = defaultB;
+            }
+          }
+          for (let i = 1; i <= 3; i++) {
+            const vertexstart = start + i * 12;
+            const componentIdx = face * 3 * 3 + (i - 1) * 3;
+            vertices[componentIdx] = reader.getFloat32(vertexstart, true);
+            vertices[componentIdx + 1] = reader.getFloat32(vertexstart + 4, true);
+            vertices[componentIdx + 2] = reader.getFloat32(vertexstart + 8, true);
+            normals[componentIdx] = normalX;
+            normals[componentIdx + 1] = normalY;
+            normals[componentIdx + 2] = normalZ;
+            if (hasColors) {
+              color.set(r, g, b).convertSRGBToLinear();
+              colors[componentIdx] = color.r;
+              colors[componentIdx + 1] = color.g;
+              colors[componentIdx + 2] = color.b;
+            }
+          }
+        }
+        geometry2.setAttribute("position", new BufferAttribute(vertices, 3));
+        geometry2.setAttribute("normal", new BufferAttribute(normals, 3));
+        if (hasColors) {
+          geometry2.setAttribute("color", new BufferAttribute(colors, 3));
+          geometry2.hasColors = true;
+          geometry2.alpha = alpha;
+        }
+        return geometry2;
+      }
+      function parseASCII(data2) {
+        const geometry2 = new BufferGeometry();
+        const patternSolid = /solid([\s\S]*?)endsolid/g;
+        const patternFace = /facet([\s\S]*?)endfacet/g;
+        const patternName = /solid\s(.+)/;
+        let faceCounter = 0;
+        const patternFloat = /[\s]+([+-]?(?:\d*)(?:\.\d*)?(?:[eE][+-]?\d+)?)/.source;
+        const patternVertex = new RegExp("vertex" + patternFloat + patternFloat + patternFloat, "g");
+        const patternNormal = new RegExp("normal" + patternFloat + patternFloat + patternFloat, "g");
+        const vertices = [];
+        const normals = [];
+        const groupNames = [];
+        const normal = new Vector3();
+        let result;
+        let groupCount = 0;
+        let startVertex = 0;
+        let endVertex = 0;
+        while ((result = patternSolid.exec(data2)) !== null) {
+          startVertex = endVertex;
+          const solid = result[0];
+          const name = (result = patternName.exec(solid)) !== null ? result[1] : "";
+          groupNames.push(name);
+          while ((result = patternFace.exec(solid)) !== null) {
+            let vertexCountPerFace = 0;
+            let normalCountPerFace = 0;
+            const text = result[0];
+            while ((result = patternNormal.exec(text)) !== null) {
+              normal.x = parseFloat(result[1]);
+              normal.y = parseFloat(result[2]);
+              normal.z = parseFloat(result[3]);
+              normalCountPerFace++;
+            }
+            while ((result = patternVertex.exec(text)) !== null) {
+              vertices.push(parseFloat(result[1]), parseFloat(result[2]), parseFloat(result[3]));
+              normals.push(normal.x, normal.y, normal.z);
+              vertexCountPerFace++;
+              endVertex++;
+            }
+            if (normalCountPerFace !== 1) {
+              console.error("THREE.STLLoader: Something isn't right with the normal of face number " + faceCounter);
+            }
+            if (vertexCountPerFace !== 3) {
+              console.error("THREE.STLLoader: Something isn't right with the vertices of face number " + faceCounter);
+            }
+            faceCounter++;
+          }
+          const start = startVertex;
+          const count = endVertex - startVertex;
+          geometry2.userData.groupNames = groupNames;
+          geometry2.addGroup(start, count, groupCount);
+          groupCount++;
+        }
+        geometry2.setAttribute("position", new Float32BufferAttribute(vertices, 3));
+        geometry2.setAttribute("normal", new Float32BufferAttribute(normals, 3));
+        return geometry2;
+      }
+      function ensureString(buffer) {
+        if (typeof buffer !== "string") {
+          return new TextDecoder().decode(buffer);
+        }
+        return buffer;
+      }
+      function ensureBinary(buffer) {
+        if (typeof buffer === "string") {
+          const array_buffer = new Uint8Array(buffer.length);
+          for (let i = 0; i < buffer.length; i++) {
+            array_buffer[i] = buffer.charCodeAt(i) & 255;
+          }
+          return array_buffer.buffer || array_buffer;
+        } else {
+          return buffer;
+        }
+      }
+      const binData = ensureBinary(data);
+      return isBinary(binData) ? parseBinary(binData) : parseASCII(ensureString(data));
+    }
+  };
+
   // internal/assets/index.js
-  var height = 800;
+  var height = 610;
   var width = 890;
   var scene = new Scene();
   var geometry = new SphereGeometry(3, 64, 64);
-  var material = new MeshStandardMaterial({ color: 65411 });
+  var material = new MeshStandardMaterial({ color: 65411, roughness: 0.01 });
   var mesh = new Mesh(geometry, material);
-  scene.add(mesh);
-  var light = new PointLight(16777215, 40, 100);
+  var light = new PointLight(16698549, 100, 100);
   light.position.set(0, 10, 10);
   scene.add(light);
-  var camera = new PerspectiveCamera(45, width / height, 0.1, 1e3);
-  camera.position.z = 20;
+  var ambientLight = new AmbientLight(4210752, 0.8);
+  scene.add(ambientLight);
+  var camera = new PerspectiveCamera(75, width / height, 0.1, 1e3);
+  camera.position.z = 60;
   scene.add(camera);
   var canvas = document.querySelector("#viewer");
   var renderer = new WebGLRenderer({ canvas, alpha: true });
-  renderer.setClearColor(1920728, 0.04);
+  renderer.setClearColor(10670847, 0.03);
   renderer.setSize(width, height);
   renderer.setPixelRatio(2);
   renderer.render(scene, camera);
@@ -20139,6 +20497,26 @@ void main() {
   controls.enableZoom = false;
   controls.autoRotate = true;
   controls.autoRotateSpeed = 5;
+  var loader = new STLLoader();
+  loader.load(
+    "public/models/pen_holder.stl",
+    function(geometry2) {
+      geometry2.computeBoundingBox();
+      const bbox = geometry2.boundingBox;
+      const center = new Vector3();
+      bbox.getCenter(center);
+      geometry2.translate(-center.x, -center.y, -center.z);
+      const material2 = new MeshStandardMaterial({ color: 65411, roughness: 0.01 });
+      const mesh2 = new Mesh(geometry2, material2);
+      scene.add(mesh2);
+    },
+    (xhr) => {
+      console.log(xhr.loaded / xhr.total * 100 + "% loaded");
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
   function loop() {
     controls.update();
     renderer.render(scene, camera);

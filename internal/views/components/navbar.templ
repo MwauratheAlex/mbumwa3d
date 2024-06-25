@@ -1,20 +1,20 @@
 package components
 
 templ Navbar() {
-<nav class="text-white   bg-[#000E12] pt-4 pb-4">
-	<div class=" flex items-center justify-between container">
-		<a href="/">
-			@Logo("153", "22")
-		</a>
-		<div class="flex flex-row text-gray-500 font-normal">
-			<a href="./processing" class="text-orange-300 text-opacity-60 pl-4 pr-4 pt-2 pb-2 mr-20">Shop</a>
-			<a href="./processing" class="pl-4 pr-4 pt-2 pb-2 ">Processing...</a>
-			<a href="./complete" class="pl-4 pr-4 pt-2 pb-2 mr-32">Complete</a>
+	<nav class="absolute top-0 w-full text-white   bg-[#000E12] pt-4 pb-4">
+		<div class=" flex items-center justify-between container">
+			<a href="/">
+				@Logo("153", "22")
+			</a>
+			<div class="flex flex-row text-gray-500 font-normal">
+				<a href="./processing" class="text-orange-300 text-opacity-60 pl-4 pr-4 pt-2 pb-2 mr-20">Shop</a>
+				<a href="./processing" class="pl-4 pr-4 pt-2 pb-2 ">Processing...</a>
+				<a href="./complete" class="pl-4 pr-4 pt-2 pb-2 mr-32">Complete</a>
+			</div>
+			<div class="flex flex-row text-gray-500 font-normal">
+				<a href="./login" class="pl-4 pr-4 pt-2 pb-2 text-gray-500 ">Login</a>
+				<a href="./signup" class="pl-4 pr-4 pt-2 pb-2  text-gray-500 ">SignUp</a>
+			</div>
 		</div>
-		<div class="flex flex-row text-gray-500 font-normal">
-			<a href="./login" class="pl-4 pr-4 pt-2 pb-2 text-gray-500 ">Login</a>
-			<a href="./signup" class="pl-4 pr-4 pt-2 pb-2  text-gray-500 ">SignUp</a>
-		</div>
-	</div>
-</nav>
+	</nav>
 }
