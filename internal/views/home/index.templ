@@ -4,145 +4,110 @@ import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
 
 // import "github.com/mwaurathealex/mbumwa3d/internal/views/components"
 templ Index() {
-	@layouts.Base() {
-		<main class="container h-[90vh] mt-20">
-			/* hero section */
-			<div class="grid grid-cols-2">
-				/* 3D fireworks */
-				<canvas id="viewer" class=" mt-4"></canvas>
-				/* cta */
-				<div class="flex items-start justify-end pt-4 pr-4">
-					<div class="relative text-[#A0E5FF] flex flex-col gap-6">
-						<p class="text-lg font-semibold opacity-55">
-							3D printing <span class="text-orange-600">excellence</span> at your fingertips
-						</p>
-						@fileUpload()
-						@form()
-						<div class="bg-orange-500 bg-opacity-30 blur-3xl  drop-shadow-xl h-6 mt-8    "></div>
-						<button
-							class="absolute bottom-0 w-full font-semibold  text-cyan-100 rounded-lg p-2 
-							bg-orange-800 bg-opacity-80 "
-							type="submit"
-						>
-							Let's print
-						</button>
-					</div>
-				</div>
+@layouts.Base() {
+<main class="container h-[90vh] mt-20">
+	/* hero section */
+	<div class="grid grid-cols-2">
+		/* 3D fireworks */
+		<canvas id="viewer" class=" mt-4"></canvas>
+		/* cta */
+		<div class="flex items-start justify-end pt-4 pr-4">
+			<div class="relative text-[#A0E5FF] flex flex-col gap-6">
+				<p class="text-lg font-semibold opacity-55">
+					3D printing <span class="text-orange-600">excellence</span> at your fingertips
+				</p>
+				@form()
 			</div>
-		</main>
-	}
+		</div>
+	</div>
+</main>
+}
 }
 
 templ form() {
-	<form class="max-w-sm mx-auto w-full flex gap-4 flex-col">
-		<p class="text-lg font-semibold opacity-55">
-			Customize your print
-		</p>
-		<div class="grid grid-cols-2  gap-4">
-			// Technology
-			<div>
-				<label for="underline_select" class="text-sm opacity-40">Technology</label>
-				<select
-					disabled
-					id="underline_select"
-					class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
-				>
-					<option selected>FDM (Plastic)</option>
-				</select>
-			</div>
-			// material
-			<div>
-				<label for="underline_select" class="text-sm opacity-40">Choose a material</label>
-				<select
-					id="underline_select"
-					class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
-				>
-					<option selected>ABS</option>
-					<option value="US">PLA</option>
-					<option value="CA">ASA</option>
-					<option value="FR">PA12-CF</option>
-					<option value="FR">True Plastic</option>
-				</select>
-			</div>
-			// color
-			<div>
-				<label for="underline_select" class="text-sm opacity-40">Pick a color</label>
-				<select
-					id="underline_select"
-					class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
-				>
-					<option selected>Any</option>
-					<option value="US">Red</option>
-					<option value="CA">White</option>
-					<option value="FR">Black</option>
-				</select>
-			</div>
-			// Build time
-			<div>
-				<label for="underline_select" class="text-sm opacity-40">Build Time</label>
-				<input
-					value="78 hours"
-					disabled
-					id="underline_select"
-					class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
-				/>
-			</div>
-			// Quantity
-			<div>
-				<label for="underline_select" class="text-sm opacity-40">Quantity</label>
-				<input
-					type="number"
-					value="0"
-					id="underline_select"
-					class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
-				/>
-			</div>
-			// Price
-			<div>
-				<label for="underline_select" class="text-sm opacity-40">Quantity</label>
-				<input
-					type="text"
-					disabled
-					value="Ksh: 50"
-					id="underline_select"
-					class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
-				/>
-			</div>
+<form class="max-w-sm mx-auto w-full flex gap-4 flex-col">
+	@fileUpload()
+	<p class="text-lg font-semibold opacity-55">
+		Customize your print
+	</p>
+	<div class="grid grid-cols-2  gap-4">
+		// Technology
+		<div>
+			<label for="underline_select" class="text-sm opacity-40">Technology</label>
+			<select disabled id="underline_select"
+				class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+				<option selected>FDM (Plastic)</option>
+			</select>
 		</div>
-	</form>
+		// material
+		<div>
+			<label for="underline_select" class="text-sm opacity-40">Choose a material</label>
+			<select id="underline_select"
+				class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+				<option selected>ABS</option>
+				<option value="US">PLA</option>
+				<option value="CA">ASA</option>
+				<option value="FR">PA12-CF</option>
+				<option value="FR">True Plastic</option>
+			</select>
+		</div>
+		// color
+		<div>
+			<label for="underline_select" class="text-sm opacity-40">Pick a color</label>
+			<select id="underline_select"
+				class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+				<option selected>Any</option>
+				<option value="US">Red</option>
+				<option value="CA">White</option>
+				<option value="FR">Black</option>
+			</select>
+		</div>
+		// Build time
+		<div>
+			<label for="underline_select" class="text-sm opacity-40">Build Time</label>
+			<input value="78 hours" disabled id="underline_select"
+				class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" />
+		</div>
+		// Quantity
+		<div>
+			<label for="underline_select" class="text-sm opacity-40">Quantity</label>
+			<input type="number" value="0" id="underline_select"
+				class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" />
+		</div>
+		// Price
+		<div>
+			<label for="underline_select" class="text-sm opacity-40">Quantity</label>
+			<input type="text" disabled value="Ksh: 50" id="underline_select"
+				class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" />
+		</div>
+	</div>
+	<div class="bg-orange-500 bg-opacity-30 blur-3xl  drop-shadow-xl h-6 mt-8    "></div>
+	<button class="absolute bottom-0 w-full font-semibold  text-cyan-100 rounded-lg p-2 
+							bg-orange-800 bg-opacity-80 " type="submit">
+		Let's print
+	</button>
+</form>
 }
 
 templ fileUpload() {
-	<div class="flex items-center justify-center w-full">
-		<label
-			for="dropzone-file"
-			class="flex flex-col items-center justify-center w-full h-40 border-2 
+<div class="flex items-center justify-center w-full">
+	<label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-40 border-2 
 		border-dashed rounded-lg cursor-pointer bg-[#041014]
-		border-[#031A1D] hover:border-[#041014] hover:bg-[#0A1A22]"
-		>
-			<div class="flex flex-col items-center justify-center pt-5 pb-6">
-				<svg
-					class="w-8 h-8 mb-4 text-gray-500"
-					aria-hidden="true"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 20 16"
-				>
-					<path
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-					></path>
-				</svg>
-				<p class="mb-2 text-sm text-gray-400">
-					<span class="font-semibold">Click to upload</span>
-					or drag and drop
-				</p>
-				<p class="text-xs text-gray-500">STL Files</p>
-			</div>
-			<input id="dropzone-file" type="file" class="hidden"/>
-		</label>
-	</div>
+		border-[#031A1D] hover:border-[#041014] hover:bg-[#0A1A22]">
+		<div class="flex flex-col items-center justify-center pt-5 pb-6">
+			<svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+				viewBox="0 0 20 16">
+				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+					d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2">
+				</path>
+			</svg>
+			<p class="mb-2 text-sm text-gray-400">
+				<span class="font-semibold">Click to upload</span>
+				or drag and drop
+			</p>
+			<p class="text-xs text-gray-500">STL Files</p>
+		</div>
+		<input id="dropzone-file" type="file" class="hidden" />
+	</label>
+</div>
 }
