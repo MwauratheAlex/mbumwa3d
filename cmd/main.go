@@ -13,18 +13,14 @@ import (
 
 func init() {
 	initializers.LoadEnvVariables()
+	initializers.ConnectToDB()
 }
 
 func main() {
 	port := os.Getenv("PORT")
 	r := chi.NewMux()
-	db := "dbstore"
-	passwordHash := "hash"
 
-	userStore := dbstore.NewUserStore(dbstore.NewUserStoreParams{
-		DB:           db,
-		PasswordHash: passwordHash,
-	})
+	userStore := dbstore.NewUserStore()
 
 	r.Handle("/*", public())
 

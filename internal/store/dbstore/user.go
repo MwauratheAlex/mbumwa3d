@@ -1,25 +1,30 @@
 package dbstore
 
-import "github.com/mwaurathealex/mbumwa3d/internal/store"
+import (
+	"fmt"
+
+	"github.com/mwaurathealex/mbumwa3d/internal/initializers"
+	"github.com/mwaurathealex/mbumwa3d/internal/store"
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
+)
 
 type UserStore struct {
-	db           string
-	passwordHash string
+	db *gorm.DB
 }
 
-type NewUserStoreParams struct {
-	DB           string
-	PasswordHash string
-}
-
-func NewUserStore(params NewUserStoreParams) *UserStore {
+func NewUserStore() *UserStore {
 	return &UserStore{
-		db:           params.DB,
-		passwordHash: params.PasswordHash,
+		db: initializers.DB,
 	}
 }
 
 func (s *UserStore) CreateUser(email string, password string) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(email), 10)
+	if err != nil {
+		return err
+	}
+	fmt.Println(hashedPassword)
 	return nil
 }
 
