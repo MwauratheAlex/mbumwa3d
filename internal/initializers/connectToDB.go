@@ -1,19 +1,22 @@
 package initializers
 
 import (
-	"gorm.io/driver/sqlite"
+	"fmt"
+	"os"
+
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
 
 func ConnectToDB() {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-
+	dsn := os.Getenv("DATABASE_URL")
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect to the database")
+		panic(fmt.Sprintf("Error connecting to database: %s", err))
 	} else {
+		fmt.Println("Connected to db successfully")
 		DB = db
 	}
-
 }
