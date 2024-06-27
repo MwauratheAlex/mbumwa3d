@@ -20329,6 +20329,9 @@ void main() {
   };
 
   // internal/assets/index.js
+  document.addEventListener("login_success", () => {
+    console.log("Login success, hello world");
+  });
   var height = 610;
   var width = 890;
   var scene = new Scene();

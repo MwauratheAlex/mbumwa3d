@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 
@@ -29,14 +28,12 @@ func main() {
 	r.Get("/signup", handlers.Make(handlers.HandleSignup))
 	r.Get("/complete", handlers.Make(handlers.HandleFinished))
 	r.Get("/processing", handlers.Make(handlers.HandleProcessing))
-	r.Post("/login", func(w http.ResponseWriter, r *http.Request) {
-		email := r.FormValue("email")
-		password := r.FormValue("password")
-		fmt.Println("Here in post login")
-		fmt.Print("Email:  ", email, " Password: ", password)
-	})
+	r.Post("/login", handlers.NewPostLoginHandler(
+		handlers.PostLoginHandlerParams{UserStore: userStore},
+	))
 	r.Post("/signup", handlers.NewPostSignupHandler(
-		handlers.PostSignupHandlerParams{UserStore: userStore}))
+		handlers.PostSignupHandlerParams{UserStore: userStore},
+	))
 	http.ListenAndServe(port, r)
 }
 

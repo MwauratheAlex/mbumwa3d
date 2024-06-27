@@ -2,6 +2,10 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 
+document.addEventListener("login_success", () => {
+  console.log("Login success, hello world")
+})
+
 const height = 610
 const width = 890
 

@@ -1,0 +1,6 @@
+ id |          email          |                        password_hash                         |     inserted_at     |     updated_at      
+----+-------------------------+--------------------------------------------------------------+---------------------+---------------------
+ 87 | mwaurad@mail.com        | $2a$10$nvqDtBUGj78e9HFmjKiJweETizrh2A3DtSo/95ouln6UY7IRipxkW | 2024-06-27 19:49:13 | 2024-06-27 19:49:13
+ 86 | mwaurathealex@gmail.com | $2a$10$l6rj05TiAAVPj91HFvdJKOwmUbOYqEEq21v5PZmnbCQcxzeBKdv/6 | 2024-06-27 19:46:31 | 2024-06-27 19:46:31
+(2 rows)
+

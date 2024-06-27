@@ -1,6 +1,8 @@
 package dbstore
 
 import (
+	"fmt"
+
 	"github.com/mwaurathealex/mbumwa3d/internal/initializers"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"golang.org/x/crypto/bcrypt"
@@ -18,10 +20,11 @@ func NewUserStore() *UserStore {
 }
 
 func (s *UserStore) CreateUser(email string, password string) error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(email), 10)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 10)
 	if err != nil {
 		return err
 	}
+	fmt.Println(email, password, string(hashedPassword))
 	return s.db.Create(&store.User{
 		Email:        email,
 		PasswordHash: string(hashedPassword),
