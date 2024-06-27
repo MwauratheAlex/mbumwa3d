@@ -18,7 +18,6 @@ directionalLight2.position.set(0, -2, -20);
 scene.add(directionalLight2);
 
 
-
 // Optional: Add an ambient light for softer overall illumination
 const ambientLight = new THREE.AmbientLight(0x404040, 0.7); // soft white light
 scene.add(ambientLight);

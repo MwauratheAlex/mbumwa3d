@@ -14,9 +14,10 @@ templ Base() {
 	<link rel="stylesheet" href="/public/assets/styles.css" />
 	<script type="module" src="/public/assets/index.js" defer></script>
 	<script src="/public/assets/htmx.min.js" defer></script>
+	<script src="public/assets/response-targets.js" defer></script>
 </head>
 
-<body class="antialiased bg-[#030607] relative h-[100vh] flex flex-col  justify-center">
+<body class="antialiased bg-[#030607] relative h-[100vh] flex flex-col  justify-center ">
 	<div class="hero-image absolute"></div>
 	@components.Navbar()
 	{ children... }

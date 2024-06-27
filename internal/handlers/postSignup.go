@@ -1,11 +1,10 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
-	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
+	"github.com/mwaurathealex/mbumwa3d/internal/views/auth"
 )
 
 type PostSignupHandler struct {
@@ -26,13 +25,12 @@ func (h *PostSignupHandler) PostSignup(w http.ResponseWriter, r *http.Request) e
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
-	fmt.Println("Email ", email, " Password: ", password)
-
 	err := h.userStore.CreateUser(email, password)
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		return nil
+		return Render(w, r, auth.SignupError())
 	}
-	return Render(w, r, components.SuccessMsg("Signup suceessful"))
+
+	return Render(w, r, auth.SignupSuccess())
 }
