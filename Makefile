@@ -1,3 +1,9 @@
+# load .env variables
+ifneq (, $(wildcard ./.env))
+	include .env
+	export
+endif
+
 MAIN_PATH="tmp/bin/main"
 
 # run templ generation in watch mode to detect all .templ files and 
@@ -34,3 +40,14 @@ sync_assets:
 # start app in developement
 dev:
 	@make -j5  templ server watch-assets sync_assets watch-esbuild
+
+# create new migrations
+db-create:
+	@GOOSE_DRIVER=$(GOOSE_DRIVER) GOOSE_DBSTRING=$(GOOSE_DBSTRING) goose -dir=$(GOOSE_MIGRATION_DIR) create $(filter-out $@,$(MAKECMDGOALS)) sql
+
+db-up:
+	@GOOSE_DRIVER=$(GOOSE_DRIVER) GOOSE_DBSTRING=$(GOOSE_DBSTRING) goose -dir=$(GOOSE_MIGRATION_DIR) up
+
+# Pattern rule to catch all undefined targets
+%:
+	@echo "winding up..."
