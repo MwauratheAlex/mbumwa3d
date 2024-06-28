@@ -37,12 +37,14 @@ func main() {
 		r.Get("/signup", handlers.Make(handlers.HandleSignup))
 		r.Get("/complete", handlers.Make(handlers.HandleFinished))
 		r.Get("/processing", handlers.Make(handlers.HandleProcessing))
+		r.Get("/usermenu", handlers.Make(handlers.GetUserMenu))
 		r.Post("/login", handlers.NewPostLoginHandler(
 			handlers.PostLoginHandlerParams{UserStore: userStore},
 		))
 		r.Post("/signup", handlers.NewPostSignupHandler(
 			handlers.PostSignupHandlerParams{UserStore: userStore},
 		))
+		r.Post("/logout", handlers.Make(handlers.PostLogout))
 
 	})
 	http.ListenAndServe(port, r)

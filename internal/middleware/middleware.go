@@ -108,6 +108,8 @@ func NewAuthMiddleware(cookieName string, userstore store.UserStore) *AuthMiddle
 	}
 }
 
+var UserKey string = "user"
+
 func (m *AuthMiddleware) AddUserToContext(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie(m.CookieName)
@@ -150,7 +152,7 @@ func (m *AuthMiddleware) AddUserToContext(next http.Handler) http.Handler {
 				return
 			}
 
-			ctx := context.WithValue(r.Context(), "user", user)
+			ctx := context.WithValue(r.Context(), UserKey, user)
 
 			next.ServeHTTP(w, r.WithContext(ctx))
 		} else {
@@ -159,4 +161,13 @@ func (m *AuthMiddleware) AddUserToContext(next http.Handler) http.Handler {
 		}
 
 	})
+}
+
+func GetUser(ctx context.Context) *store.User {
+	user := ctx.Value(UserKey)
+	if user == nil {
+		return nil
+	}
+
+	return user.(*store.User)
 }
