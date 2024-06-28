@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/mwaurathealex/mbumwa3d/internal/handlers"
 	"github.com/mwaurathealex/mbumwa3d/internal/initializers"
+	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 )
 
@@ -21,19 +22,29 @@ func main() {
 
 	userStore := dbstore.NewUserStore()
 
-	r.Handle("/*", public())
+	authMiddleware := middleware.NewAuthMiddleware("Authorization", userStore)
 
-	r.Get("/", handlers.Make(handlers.HandleHome))
-	r.Get("/login", handlers.Make(handlers.HandleLogin))
-	r.Get("/signup", handlers.Make(handlers.HandleSignup))
-	r.Get("/complete", handlers.Make(handlers.HandleFinished))
-	r.Get("/processing", handlers.Make(handlers.HandleProcessing))
-	r.Post("/login", handlers.NewPostLoginHandler(
-		handlers.PostLoginHandlerParams{UserStore: userStore},
-	))
-	r.Post("/signup", handlers.NewPostSignupHandler(
-		handlers.PostSignupHandlerParams{UserStore: userStore},
-	))
+	r.Group(func(r chi.Router) {
+		r.Use(
+			//middleware.TextHTMLMiddleware,
+			authMiddleware.AddUserToContext,
+		)
+
+		r.Handle("/*", public())
+
+		r.Get("/", handlers.Make(handlers.HandleHome))
+		r.Get("/login", handlers.Make(handlers.HandleLogin))
+		r.Get("/signup", handlers.Make(handlers.HandleSignup))
+		r.Get("/complete", handlers.Make(handlers.HandleFinished))
+		r.Get("/processing", handlers.Make(handlers.HandleProcessing))
+		r.Post("/login", handlers.NewPostLoginHandler(
+			handlers.PostLoginHandlerParams{UserStore: userStore},
+		))
+		r.Post("/signup", handlers.NewPostSignupHandler(
+			handlers.PostSignupHandlerParams{UserStore: userStore},
+		))
+
+	})
 	http.ListenAndServe(port, r)
 }
 

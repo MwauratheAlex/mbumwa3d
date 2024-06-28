@@ -1,8 +1,8 @@
 # load .env variables
-ifneq (, $(wildcard ./.env))
-	include .env
-	export
-endif
+# ifneq (, $(wildcard ./.env))
+# 	include .env
+# 	export
+# endif
 
 MAIN_PATH="tmp/bin/main"
 

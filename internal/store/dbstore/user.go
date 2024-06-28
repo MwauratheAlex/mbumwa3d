@@ -41,3 +41,12 @@ func (s *UserStore) GetUser(email string) (*store.User, error) {
 
 	return &user, err
 }
+
+func (s *UserStore) GetUserById(id uint) (*store.User, error) {
+	user := store.User{}
+	err := s.db.Where("id = ?", id).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+	return &user, err
+}
