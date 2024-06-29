@@ -3,26 +3,23 @@ package layouts
 import "github.com/mwaurathealex/mbumwa3d/internal/views/components"
 
 templ Base() {
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<title>mbumwa 3D | For all your 3D printing needs</title>
-	<link rel="icon" type="image/x-icon" href="/public/favicon.ico" />
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="/public/assets/styles.css" />
-	<script type="module" src="/public/assets/index.js" defer></script>
-	<script src="/public/assets/htmx.min.js" defer></script>
-	<script src="public/assets/response-targets.js" defer></script>
-</head>
-
-<body class="antialiased bg-[#030607] relative h-[100vh] flex flex-col  justify-center ">
-	<div class="hero-image absolute"></div>
-	@components.Navbar()
-	{ children... }
-	@components.Footer()
-</body>
-
-</html>
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<title>mbumwa 3D | For all your 3D printing needs</title>
+			<link rel="icon" type="image/x-icon" href="/public/favicon.ico"/>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link rel="stylesheet" href="/public/assets/styles.css"/>
+			<script type="module" src="/public/assets/index.js" defer></script>
+			<script src="/public/assets/htmx.min.js" defer></script>
+			<script src="public/assets/response-targets.js" defer></script>
+		</head>
+		<body hx-ext="response-targets" class="antialiased bg-[#030607] relative h-[100vh] flex flex-col  justify-center ">
+			<div class="hero-image absolute"></div>
+			@components.Navbar()
+			{ children... }
+			@components.Footer()
+		</body>
+	</html>
 }
