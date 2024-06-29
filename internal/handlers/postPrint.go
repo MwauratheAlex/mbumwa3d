@@ -3,8 +3,11 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
+	"github.com/mwaurathealex/mbumwa3d/internal/payment"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
 )
@@ -38,9 +41,16 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 	buildTime := r.FormValue("time")
 	quantity := r.FormValue("quantity")
 	price := r.FormValue("price")
+	phone := r.FormValue("phone")
+	phone = strings.TrimPrefix(phone, "0")
+	phone = "254" + phone
+	intPhone, err := strconv.ParseInt(phone, 10, 64)
+
+	paymentProcessor := payment.NewPaymentProcessor(int(intPhone))
+	paymentProcessor.InitiateStkPush()
 
 	fmt.Println("tech: ", technology, "Color: ", color, "time: ",
-		buildTime, "qty: ", quantity, "price: ", price)
+		buildTime, "qty: ", quantity, "price: ", price, "phone: ", phone)
 	fmt.Println(file)
 
 	w.WriteHeader(http.StatusOK)
