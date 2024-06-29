@@ -98,7 +98,7 @@ func (p *PaymentProcessor) InitiateStkPush() {
 		PartyA:            p.PhoneNumber,
 		PartyB:            businessShortCode,
 		PhoneNumber:       p.PhoneNumber,
-		CallBackURL:       "https://mydomain.com/path",
+		CallBackURL:       "https://2645-197-232-61-202.ngrok-free.app/darajacallback",
 		AccountReference:  "CompanyXLTD",
 		TransactionDesc:   "Payment of 3D Printing at mbumwa3D",
 	}
@@ -122,4 +122,51 @@ func (p *PaymentProcessor) InitiateStkPush() {
 	defer res.Body.Close()
 	body, err := io.ReadAll(res.Body)
 	fmt.Println(string(body))
+}
+
+type StkCallbackMetadata struct {
+	Item []struct {
+		Name  string      `json:"Name"`
+		Value interface{} `json:"Value,omitempty"`
+	} `json:"Item"`
+}
+
+type StkCallback struct {
+	MerchantRequestID string              `json:"MerchantRequestID"`
+	CheckoutRequestID string              `json:"CheckoutRequestID"`
+	ResultCode        int                 `json:"ResultCode"`
+	ResultDesc        string              `json:"ResultDesc"`
+	CallbackMetadata  StkCallbackMetadata `json:"CallbackMetadata"`
+}
+
+type StkCallbackBody struct {
+	StkCallback StkCallback `json:"stkCallback"`
+}
+
+type StkCallbackResponse struct {
+	Body StkCallbackBody `json:"Body"`
+}
+
+func DarajaCallbackHandler(w http.ResponseWriter, r *http.Request) error {
+	var callbackResponse StkCallbackResponse
+	err := json.NewDecoder(r.Body).Decode(&callbackResponse)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	stkCallback := callbackResponse.Body.StkCallback
+
+	fmt.Printf("Callback received:\n")
+	fmt.Printf("MerchantRequestID: %s\n", stkCallback.MerchantRequestID)
+	fmt.Printf("CheckoutRequestID: %s\n", stkCallback.CheckoutRequestID)
+	fmt.Printf("ResultCode: %d\n", stkCallback.ResultCode)
+	fmt.Printf("ResultDesc: %s\n", stkCallback.ResultDesc)
+
+	for _, item := range stkCallback.CallbackMetadata.Item {
+		fmt.Printf("%s: %v\n", item.Name, item.Value)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	return nil
 }
