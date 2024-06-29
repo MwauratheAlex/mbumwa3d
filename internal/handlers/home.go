@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
@@ -16,7 +15,6 @@ func HandleHome(w http.ResponseWriter, r *http.Request) error {
 
 func GetUserMenu(w http.ResponseWriter, r *http.Request) error {
 	_, ok := r.Context().Value(middleware.UserKey).(*store.User)
-	fmt.Println(ok)
 	if ok {
 		return Render(w, r, components.LoggedInUserMenu())
 	}
