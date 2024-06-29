@@ -1,0 +1,28 @@
+package components
+
+templ PaymentForm() {
+<form hx-post="/payment" hx-target-error="#payment-error" hx-swap="innerHTML" hx-encoding="multipart/form-data"
+	class="max-w-sm mx-auto w-full flex gap-4 flex-col">
+	<div class="mt-0 text-sm text-red-600" id="payment-error"></div>
+	<p class="text-lg font-semibold opacity-60 text-green-400">
+		Pay via Mpesa
+	</p>
+	<div class=" gap-4">
+		// Mobile number
+		<div>
+			<label for="underline_select" class="text-sm opacity-40">
+				Enter your mobile number
+			</label>
+			<input required name="technology" id="underline_select" type="text" value=""
+				placeholder="0722..." class="placeholder-zinc-600 block py-2.5 px-0 w-full text-sm text-gray-500 
+				bg-transparent border-0 border-b-2 border-gray-200 appearance-none 
+				dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" />
+		</div>
+	</div>
+	<div class="bg-orange-500 bg-opacity-30 blur-3xl  drop-shadow-xl h-6 mt-8    "></div>
+	<button class="absolute bottom-0 w-full font-semibold  text-cyan-100 rounded-lg p-2 
+							bg-green-800 bg-opacity-80 " type="submit">
+		Make payment
+	</button>
+</form>
+}

@@ -55,7 +55,7 @@ func (h *PostLoginHandler) PostLogin(w http.ResponseWriter, r *http.Request) err
 	}
 
 	// jwt stuff
-	expiration := time.Now().Add(5 * time.Minute)
+	expiration := time.Now().Add(60 * time.Minute)
 	claims := &Claims{
 		Sub: user.ID,
 		RegisteredClaims: jwt.RegisteredClaims{

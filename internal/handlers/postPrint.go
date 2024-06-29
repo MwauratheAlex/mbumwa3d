@@ -44,5 +44,5 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 	fmt.Println(file)
 
 	w.WriteHeader(http.StatusOK)
-	return Render(w, r, components.FileUploadSuccess())
+	return Render(w, r, components.PaymentForm())
 }
