@@ -46,6 +46,7 @@ func main() {
 		))
 		r.Post("/logout", handlers.Make(handlers.PostLogout))
 		r.Post("/print", handlers.Make(handlers.PostPrint))
+		r.Post("/payment", handlers.Make(handlers.PostPayment))
 	})
 	http.ListenAndServe(port, r)
 }
