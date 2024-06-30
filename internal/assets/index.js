@@ -111,25 +111,3 @@ function updateFileLabel(input) {
 }
 
 
-// upload form stuff
-document.addEventListener('DOMContentLoaded', () => {
-  const paymentForm = document.querySelector("#payment-form")
-  const uploadform = document.querySelector("#upload-form")
-  const showPaymentFormBtn = document.querySelector("#show-payment-btn")
-  const fileInput = document.querySelector("#dropzone-file")
-  const fileUploadErrors = document.querySelector("#file-upload-errors")
-
-  showPaymentFormBtn.addEventListener("click", () => {
-    if (!fileInput.files.length) {
-      fileUploadErrors.innerHTML = "Please select a file to continue"
-      return;
-    }
-    fileUploadErrors.innerHTML = ""
-
-    paymentForm.style.display = "flex"
-    uploadform.style.display = "none"
-
-
-  });
-
-});

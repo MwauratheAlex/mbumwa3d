@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -80,8 +81,12 @@ func (p *PaymentProcessor) GeneratePassword(shortcode int, passkey string) strin
 }
 
 func (p *PaymentProcessor) InitiateStkPush() {
-	businessShortCode := 174379
-	passKey := "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
+	businessShortCode64, err := strconv.ParseInt(os.Getenv("DARAJA_SHORTCODE"), 10, 64)
+	if err != nil {
+		println(err)
+	}
+	passKey := os.Getenv("DARAJA_PASSKEY")
+	businessShortCode := int(businessShortCode64)
 	password := p.GeneratePassword(businessShortCode, passKey)
 	timestamp := time.Now().Format("20060102150405")
 	token, err := p.GetAuthToken()
@@ -98,9 +103,9 @@ func (p *PaymentProcessor) InitiateStkPush() {
 		PartyA:            p.PhoneNumber,
 		PartyB:            businessShortCode,
 		PhoneNumber:       p.PhoneNumber,
-		CallBackURL:       "https://2645-197-232-61-202.ngrok-free.app/darajacallback",
-		AccountReference:  "CompanyXLTD",
-		TransactionDesc:   "Payment of 3D Printing at mbumwa3D",
+		CallBackURL:       "https://4cc7-197-232-61-202.ngrok-free.app/darajacallback",
+		AccountReference:  "Mbumwa3D",
+		TransactionDesc:   "Payment of 3D Printing",
 	}
 
 	payload, err := json.Marshal(request)
@@ -149,6 +154,7 @@ type StkCallbackResponse struct {
 
 func DarajaCallbackHandler(w http.ResponseWriter, r *http.Request) error {
 	var callbackResponse StkCallbackResponse
+	fmt.Println("IN CALLBACK")
 	err := json.NewDecoder(r.Body).Decode(&callbackResponse)
 	if err != nil {
 		fmt.Println(err)

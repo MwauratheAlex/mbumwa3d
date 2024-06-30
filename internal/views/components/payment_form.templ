@@ -1,28 +1,49 @@
 package components
 
 templ PaymentForm() {
-<div class="max-w-sm mxrauto w-full gap-4 flex-col hidden" id="payment-form">
-	<p class="text-lg font-semibold opacity-60 text-green-400">
-		Pay via Mpesa
-	</p>
-	<div class=" gap-4">
-		// Mobile number
-		<div>
-			<label for="underline_select" class="text-sm opacity-40">
-				Enter your phone number
-			</label>
-			<input required minlength="10" maxlength="10" name="phone" id="phone-input" type="text" value=""
-				placeholder="0722..." class="placeholder-zinc-600 block py-2.5 px-0 w-full text-sm text-gray-500 
+	<div class="max-w-sm mxrauto w-full gap-4 flex-col hidden" id="payment-form">
+		<p class="text-lg font-semibold opacity-60 text-green-400">
+			Pay via Mpesa
+		</p>
+		<div class=" gap-4">
+			// Mobile number
+			<div>
+				<label for="underline_select" class="text-sm opacity-40">
+					Enter your phone number
+				</label>
+				<input
+					required
+					minlength="10"
+					maxlength="10"
+					name="phone"
+					id="phone-input"
+					type="text"
+					value=""
+					placeholder="0722..."
+					class="placeholder-zinc-600 block py-2.5 px-0 w-full text-sm text-gray-500 
 				bg-transparent border-0 border-b-2 border-gray-200 appearance-none 
-				dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" />
+				dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+				/>
+			</div>
+		</div>
+		<div class="bg-orange-500 bg-opacity-30 blur-3xl  drop-shadow-xl h-6 mt-8    "></div>
+		<div class="flex absolute bottom-0 w-full gap-6" id="btn-holder">
+			<button
+				id="back-button"
+				class="w-full font-semibold  text-cyan-100 rounded-lg p-2 
+							bg-none border border-orange-500 border-opacity-20"
+				type="button"
+			>
+				Back
+			</button>
+			<button
+				id="submit-button"
+				class="w-full font-semibold  text-cyan-100 rounded-lg p-2 
+							bg-green-800 bg-opacity-80"
+				type="submit"
+			>
+				Make payment
+			</button>
 		</div>
 	</div>
-	<div class="bg-orange-500 bg-opacity-30 blur-3xl  drop-shadow-xl h-6 mt-8    "></div>
-	<div class="flex absolute bottom-0 w-full gap-6" id="btn-holder">
-		<button id="submit-button" class="w-full font-semibold  text-cyan-100 rounded-lg p-2 
-							bg-orange-800 bg-opacity-80" type="submit">
-			Make payment
-		</button>
-	</div>
-</div>
 }
