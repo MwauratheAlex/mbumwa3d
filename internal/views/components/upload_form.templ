@@ -99,8 +99,8 @@ templ UploadForm() {
 	</form>
 }
 
-templ UploadFormError() {
-	<p>Please upload a file before submitting.</p>
+templ UploadFormError(message string) {
+	<p>{ message }</p>
 }
 
 templ UnauthorizedFormEror() {

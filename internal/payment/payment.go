@@ -99,7 +99,7 @@ func (p *PaymentProcessor) InitiateStkPush() {
 		Password:          password,
 		Timestamp:         timestamp,
 		TransactionType:   "CustomerPayBillOnline",
-		Amount:            20,
+		Amount:            1,
 		PartyA:            p.PhoneNumber,
 		PartyB:            businessShortCode,
 		PhoneNumber:       p.PhoneNumber,

@@ -2,7 +2,10 @@ package handlers
 
 import (
 	"fmt"
+	"io"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -22,18 +25,44 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 
 	err := r.ParseMultipartForm(10 << 20) // 10MB max size
 	if err != nil {
-		fmt.Println("Unable to pass form data")
+		fmt.Println("Unable to parse form data:", err)
+		return Render(w, r, components.UploadFormError("Invalid form data."))
 	}
 
-	file, _, err := r.FormFile("file")
+	file, handler, err := r.FormFile("file")
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("error getting file", err)
 		w.WriteHeader(http.StatusBadRequest)
-		return Render(w, r, components.UploadFormError())
+		return Render(w, r, components.UploadFormError(
+			"Please upload a file before submitting."),
+		)
 	}
 
-	fmt.Println("file uploaded")
-	// do file stuff
+	defer file.Close()
+	// write file to disk
+	dir := "./model_storage"
+	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+		fmt.Println("Error creating directory:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return Render(w, r, components.UploadFormError("Internal server error."))
+	}
+	dstPath := filepath.Join(dir, handler.Filename)
+	dst, err := os.Create(dstPath)
+	if err != nil {
+		fmt.Println("Error creating file on disk:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return Render(w, r, components.UploadFormError("Internal server error."))
+	}
+	defer dst.Close()
+
+	_, err = io.Copy(dst, file)
+	if err != nil {
+		fmt.Println("Error copying file:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return Render(w, r, components.UploadFormError("Internal server error."))
+	}
+
+	fmt.Fprintf(w, "File uploaded successfully: %s", handler.Filename)
 
 	// store data in db
 	technology := r.FormValue("technology")
@@ -53,6 +82,5 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 		buildTime, "qty: ", quantity, "price: ", price, "phone: ", phone)
 	fmt.Println(file)
 
-	w.WriteHeader(http.StatusOK)
 	return Render(w, r, components.PaymentForm())
 }
