@@ -63,10 +63,14 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 	// transaction
 	transactionStore := dbstore.NewTransactionStore()
 	transaction := &store.Transaction{
-		BuildTime: 0,                       //buildTime := r.FormValue("time")
-		Quantity:  r.FormValue("quantity"), // 	quantity := r.FormValue("quantity")
-		Price:     0,                       // price := r.FormValue("price")
-		Phone:     r.FormValue("phone"),
+		UserID:          user.ID,
+		FileID:          dbfile.ID,
+		BuildTime:       0,                       //buildTime := r.FormValue("time")
+		Quantity:        r.FormValue("quantity"), // 	quantity := r.FormValue("quantity")
+		Price:           0,                       // price := r.FormValue("price")
+		Phone:           r.FormValue("phone"),
+		PaymentComplete: false,
+		Status:          "Completed",
 	}
 	err = transactionStore.CreateTransaction(transaction)
 	if err != nil {
