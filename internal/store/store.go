@@ -20,14 +20,40 @@ type UserStore interface {
 }
 
 type File struct {
-	ID         uint      `gorm:"primaryKey;autoIncrement"`
+	ID         uint `gorm:"primaryKey;autoIncrement"`
+	UserID     uint
+	User       User      `gorm:"foreignKey:UserID"`
 	InsertedAt time.Time `gorm:"autoCreateTime"`
 	UpdatedAt  time.Time `gorm:"autoUpdateTime"`
 
-	LocalPath string
-	FileName  string
+	LocalPath  string
+	FileName   string
+	Technology string
+
+	Color string
 }
 
 type FileStore interface {
 	SaveToDisk(file multipart.File, filename string) (string, error)
+}
+
+type Transaction struct {
+	ID         uint `gorm:"primaryKey;autoIncrement"`
+	UserID     uint
+	FileID     uint
+	User       User      `gorm:"foreignKey:UserID"`
+	File       File      `gorm:"foreignKey:FileID"`
+	InsertedAt time.Time `gorm:"autoCreateTime"`
+	UpdatedAt  time.Time `gorm:"autoUpdateTime"`
+
+	BuildTime       uint
+	Quantity        string
+	Price           float64
+	Phone           string
+	PaymentComplete bool
+	Status          string
+}
+
+type TransactionStore interface {
+	CreateTransaction(*Transaction) error
 }

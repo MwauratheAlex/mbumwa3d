@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/mwaurathealex/mbumwa3d/internal/initializers"
+	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"gorm.io/gorm"
 )
 
@@ -20,6 +21,10 @@ func NewFileStore() *FileStore {
 		db:      initializers.DB,
 		FileDir: "./model_storage",
 	}
+}
+
+func (s *FileStore) SaveFileToDB(file *store.File) error {
+	return s.db.Create(file).Error
 }
 
 func (s *FileStore) SaveToDisk(file multipart.File, filename string) (string, error) {

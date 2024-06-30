@@ -1,4 +1,8 @@
 # load .env variables
+#
+# NOTE: Comment this out while running in dev.
+# - only activate when doing migrations coz: issues
+#
 # ifneq (, $(wildcard ./.env))
 # 	include .env
 # 	export
