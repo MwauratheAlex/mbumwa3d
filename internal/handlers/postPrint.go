@@ -2,16 +2,14 @@ package handlers
 
 import (
 	"fmt"
-	"io"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 
 	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
 	"github.com/mwaurathealex/mbumwa3d/internal/payment"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
+	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
 )
 
@@ -38,26 +36,11 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 		)
 	}
 
-	defer file.Close()
-	// write file to disk
-	dir := "./model_storage"
-	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
-		fmt.Println("Error creating directory:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return Render(w, r, components.UploadFormError("Internal server error."))
-	}
-	dstPath := filepath.Join(dir, handler.Filename)
-	dst, err := os.Create(dstPath)
-	if err != nil {
-		fmt.Println("Error creating file on disk:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return Render(w, r, components.UploadFormError("Internal server error."))
-	}
-	defer dst.Close()
+	filestore := dbstore.NewFileStore()
+	msg, err := filestore.SaveToDisk(file, handler.Filename)
 
-	_, err = io.Copy(dst, file)
 	if err != nil {
-		fmt.Println("Error copying file:", err)
+		fmt.Println(msg, err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return Render(w, r, components.UploadFormError("Internal server error."))
 	}
