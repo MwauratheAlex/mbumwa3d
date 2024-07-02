@@ -76,6 +76,16 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	// add order to cart
+	cartStore := dbstore.NewCartStore(user.ID)
+	cart := cartStore.GetCartByUserId()
+	cart.Orders = append(cart.Orders, *order)
+
+	err = cartStore.SaveCart(cart)
+	if err != nil {
+		fmt.Println("Error adding to cart", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return Render(w, r, components.UploadFormError("Internal server error."))
+	}
 
 	// fmt.Fprintf(w, "File uploaded successfully: %s", handler.Filename)
 	return Render(w, r, components.PaymentForm(

@@ -57,3 +57,16 @@ type Order struct {
 type OrderStore interface {
 	Createorder(*Order) error
 }
+
+type Cart struct {
+	ID     uint    `gorm:"primaryKey;autoIncrement"`
+	UserID uint    `gorm:"index"`
+	Orders []Order `gorm:"many2many:cart_orders;"`
+}
+
+type CartStore interface {
+	Create(string)
+	GetCartByUserId(string) *Cart
+	AddItem()
+	RemoveItem()
+}
