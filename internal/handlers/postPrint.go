@@ -2,11 +2,13 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
+	"github.com/mwaurathealex/mbumwa3d/internal/stl"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
-	"net/http"
 )
 
 func PostPrint(w http.ResponseWriter, r *http.Request) error {
@@ -34,7 +36,30 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 
 	// file
 	filestore := dbstore.NewFileStore()
-	msg, err := filestore.SaveToDisk(file, handler.Filename)
+	dstPath, msg, err := filestore.SaveToDisk(file, handler.Filename)
+
+	// file stuff
+	stlCalc, err := stl.NewSTLCalc(dstPath)
+	if err != nil {
+		fmt.Println("Error creating stl calc: ", err)
+	}
+	defer stlCalc.Close()
+
+	stlCalc.SetDensity(1.04)
+
+	volumeCm3, err := stlCalc.GetVolume("cm")
+	if err != nil {
+		fmt.Println("Error geting volume: ", err)
+	}
+
+	weight, err := stlCalc.GetWeight()
+	if err != nil {
+		fmt.Println("Error geting weight: ", err)
+	}
+
+	fmt.Println("weight: ", weight, "volume ", volumeCm3)
+
+	// end of file stuff
 
 	if err != nil {
 		fmt.Println(msg, err)
@@ -61,9 +86,9 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 	order := &store.Order{
 		UserID:          user.ID,
 		FileID:          dbfile.ID,
-		BuildTime:       0, // to be calculated
+		BuildTime:       72, // to be calculated
 		Quantity:        r.FormValue("quantity"),
-		Price:           0, // to be calculated
+		Price:           10, // to be calculated
 		Phone:           r.FormValue("phone"),
 		PaymentComplete: false,
 		Status:          "Completed",

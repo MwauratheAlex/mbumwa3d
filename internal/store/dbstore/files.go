@@ -27,22 +27,22 @@ func (s *FileStore) SaveFileToDB(file *store.File) error {
 	return s.db.Create(file).Error
 }
 
-func (s *FileStore) SaveToDisk(file multipart.File, filename string) (string, error) {
+func (s *FileStore) SaveToDisk(file multipart.File, filename string) (string, string, error) {
 	defer file.Close()
 	if err := os.MkdirAll(s.FileDir, os.ModePerm); err != nil {
-		return "Error creating directory:", err
+		return "", "Error creating directory:", err
 	}
 
 	dstPath := filepath.Join(s.FileDir, filename)
 	dst, err := os.Create(dstPath)
 	if err != nil {
-		return "Error creating file on disk:", err
+		return "", "Error creating file on disk:", err
 	}
 	defer dst.Close()
 
 	_, err = io.Copy(dst, file)
 	if err != nil {
-		return "Error copying file:", err
+		return "", "Error copying file:", err
 	}
-	return "", nil
+	return dstPath, "", nil
 }
