@@ -1,12 +1,36 @@
 package components
 
-templ PaymentForm() {
-	<div class="max-w-sm mxrauto w-full gap-4 flex-col hidden" id="payment-form">
+templ PaymentForm(price, buildTime string) {
+	<form class="flex w-full gap-6 flex-col" id="payment-form">
 		<p class="text-lg font-semibold opacity-60 text-green-400">
 			Pay via Mpesa
 		</p>
-		<div class=" gap-4">
+		<div class="flex flex-col gap-8">
 			// Mobile number
+			<div class="flex justify-between ">
+				<div>
+					<label for="underline_select" class="text-sm opacity-40">Build time (est)</label>
+					<input
+						name="time"
+						disabled
+						type="text"
+						value={ buildTime }
+						id="underline_select"
+						class="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2  appearance-none text-gray-500 border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+					/>
+				</div>
+				<div>
+					<label for="underline_select" class="text-sm opacity-40">Price (Ksh)</label>
+					<input
+						name="price"
+						disabled
+						type="text"
+						value={ price }
+						id="underline_select"
+						class="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2  appearance-none text-gray-500 border-gray-900 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+					/>
+				</div>
+			</div>
 			<div>
 				<label for="underline_select" class="text-sm opacity-40">
 					Enter your phone number
@@ -45,5 +69,5 @@ templ PaymentForm() {
 				Make payment
 			</button>
 		</div>
-	</div>
+	</form>
 }

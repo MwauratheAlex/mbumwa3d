@@ -2,15 +2,11 @@ package handlers
 
 import (
 	"fmt"
-	"net/http"
-	"strconv"
-	"strings"
-
 	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
-	"github.com/mwaurathealex/mbumwa3d/internal/payment"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
+	"net/http"
 )
 
 func PostPrint(w http.ResponseWriter, r *http.Request) error {
@@ -60,34 +56,30 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, components.UploadFormError("Internal server error."))
 	}
 
-	// transaction
-	transactionStore := dbstore.NewTransactionStore()
-	transaction := &store.Transaction{
+	// order
+	orderStore := dbstore.NewOrderStore()
+	order := &store.Order{
 		UserID:          user.ID,
 		FileID:          dbfile.ID,
-		BuildTime:       0,                       //buildTime := r.FormValue("time")
-		Quantity:        r.FormValue("quantity"), // 	quantity := r.FormValue("quantity")
-		Price:           0,                       // price := r.FormValue("price")
+		BuildTime:       0, // to be calculated
+		Quantity:        r.FormValue("quantity"),
+		Price:           0, // to be calculated
 		Phone:           r.FormValue("phone"),
 		PaymentComplete: false,
 		Status:          "Completed",
 	}
-	err = transactionStore.CreateTransaction(transaction)
+	err = orderStore.CreateOrder(order)
 	if err != nil {
-		fmt.Println("Error saving saving transaction to db", err)
+		fmt.Println("Error saving saving order to db", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return Render(w, r, components.UploadFormError("Internal server error."))
 	}
 
-	// payment
-	phone := r.FormValue("phone")
-	phone = strings.TrimPrefix(phone, "0")
-	phone = "254" + phone
-	intPhone, err := strconv.ParseInt(phone, 10, 64)
+	// add order to cart
 
-	paymentProcessor := payment.NewPaymentProcessor(int(intPhone))
-	paymentProcessor.InitiateStkPush()
-
-	fmt.Fprintf(w, "File uploaded successfully: %s", handler.Filename)
-	return Render(w, r, components.PaymentForm())
+	// fmt.Fprintf(w, "File uploaded successfully: %s", handler.Filename)
+	return Render(w, r, components.PaymentForm(
+		fmt.Sprintf("%.2f", order.Price),
+		fmt.Sprintf("%d", order.BuildTime),
+	))
 }

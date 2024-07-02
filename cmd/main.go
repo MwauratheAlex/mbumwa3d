@@ -49,6 +49,7 @@ func main() {
 		r.Post("/print", handlers.Make(handlers.PostPrint))
 		r.Post("/payment", handlers.Make(handlers.PostPayment))
 		r.Post("/darajacallback", handlers.Make(payment.DarajaCallbackHandler))
+		r.Post("/fileupload", handlers.Make(handlers.PostUploadFile))
 
 	})
 

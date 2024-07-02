@@ -37,7 +37,7 @@ type FileStore interface {
 	SaveToDisk(file multipart.File, filename string) (string, error)
 }
 
-type Transaction struct {
+type Order struct {
 	ID         uint `gorm:"primaryKey;autoIncrement"`
 	UserID     uint
 	FileID     uint
@@ -54,6 +54,6 @@ type Transaction struct {
 	Status          string
 }
 
-type TransactionStore interface {
-	CreateTransaction(*Transaction) error
+type OrderStore interface {
+	Createorder(*Order) error
 }

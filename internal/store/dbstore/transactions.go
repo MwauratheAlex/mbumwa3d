@@ -6,16 +6,16 @@ import (
 	"gorm.io/gorm"
 )
 
-type TransactionStore struct {
+type OrderStore struct {
 	db *gorm.DB
 }
 
-func NewTransactionStore() *TransactionStore {
-	return &TransactionStore{
+func NewOrderStore() *OrderStore {
+	return &OrderStore{
 		db: initializers.DB,
 	}
 }
 
-func (s *TransactionStore) CreateTransaction(transaction *store.Transaction) error {
-	return s.db.Create(transaction).Error
+func (s *OrderStore) CreateOrder(order *store.Order) error {
+	return s.db.Create(order).Error
 }
