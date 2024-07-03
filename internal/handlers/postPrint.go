@@ -38,35 +38,24 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 	filestore := dbstore.NewFileStore()
 	dstPath, msg, err := filestore.SaveToDisk(file, handler.Filename)
 
-	// file stuff
-	stlCalc, err := stl.NewSTLCalc(dstPath)
-	if err != nil {
-		fmt.Println("Error creating stl calc: ", err)
-	}
-	defer stlCalc.Close()
-
-	stlCalc.SetDensity(1.04)
-
-	volumeCm3, err := stlCalc.GetVolume("cm")
-	if err != nil {
-		fmt.Println("Error geting volume: ", err)
-	}
-
-	weight, err := stlCalc.GetWeight()
-	if err != nil {
-		fmt.Println("Error geting weight: ", err)
-	}
-
-	fmt.Println("weight: ", weight, "volume ", volumeCm3)
-
-	// end of file stuff
-
 	if err != nil {
 		fmt.Println(msg, err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return Render(w, r, components.UploadFormError("Internal server error."))
 	}
 
+	// price
+	stlCalc, err := stl.NewSTLCalc(dstPath)
+	if err != nil {
+		fmt.Println("Error creating stl calc: ", err)
+	}
+	defer stlCalc.Close()
+	price, err := stlCalc.CalculatePrice("FDM", "ABS", 1)
+	if err != nil {
+		fmt.Println("Error calculating price: ", err)
+	}
+
+	// file to db
 	dbfile := &store.File{
 		UserID:     user.ID,
 		LocalPath:  handler.Filename,
@@ -88,7 +77,7 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 		FileID:          dbfile.ID,
 		BuildTime:       72, // to be calculated
 		Quantity:        r.FormValue("quantity"),
-		Price:           10, // to be calculated
+		Price:           price,
 		Phone:           r.FormValue("phone"),
 		PaymentComplete: false,
 		Status:          "Completed",
@@ -104,6 +93,7 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 	cartStore := dbstore.NewCartStore(user.ID)
 	cart := cartStore.GetCartByUserId()
 	cart.Orders = append(cart.Orders, *order)
+	cartStore.SaveCart(cart)
 
 	err = cartStore.SaveCart(cart)
 	if err != nil {
@@ -112,7 +102,6 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, components.UploadFormError("Internal server error."))
 	}
 
-	// fmt.Fprintf(w, "File uploaded successfully: %s", handler.Filename)
 	return Render(w, r, components.PaymentForm(
 		fmt.Sprintf("%.2f", order.Price),
 		fmt.Sprintf("%d", order.BuildTime),

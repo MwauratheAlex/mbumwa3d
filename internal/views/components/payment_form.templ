@@ -1,7 +1,14 @@
 package components
 
 templ PaymentForm(price, buildTime string) {
-	<form class="flex w-full gap-6 flex-col" id="payment-form">
+	<form
+		hx-post="/payment"
+		hx-trigger="submit"
+		hx-target-error=""
+		hx-target="this"
+		class="flex w-full gap-6 flex-col"
+		id="payment-form"
+	>
 		<p class="text-lg font-semibold opacity-60 text-green-400">
 			Pay via Mpesa
 		</p>

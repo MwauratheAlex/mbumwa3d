@@ -11,6 +11,7 @@ import (
 type STLCalc struct {
 	volume         float64
 	weight         float64
+	price          float64
 	density        float64
 	trianglesCount uint32
 	bBinary        bool
@@ -201,4 +202,38 @@ func isAscii(filename string) (bool, error) {
 	}
 
 	return matched, nil
+}
+
+func (c *STLCalc) CalculatePrice(technology, material string, quantity int) (float64, error) {
+	if c.price != 0 {
+		return c.price, nil
+	}
+
+	basePricePerCubicMM := 0.05
+	technologyMultiplier := 1.0
+	switch technology {
+	case "FDM":
+		technologyMultiplier = 1.0
+	case "SLA":
+		technologyMultiplier = 1.5
+	}
+
+	materialMultiplier := 1.0
+	switch material {
+	case "PLA":
+		materialMultiplier = 1.0
+	case "ABS":
+		materialMultiplier = 1.2
+	}
+
+	if c.volume == 0 {
+		c.GetVolume("mm")
+	}
+
+	colorMultiplier := 1.0
+
+	c.price = c.volume * basePricePerCubicMM * technologyMultiplier *
+		materialMultiplier * colorMultiplier * float64(quantity)
+
+	return c.price, nil
 }
