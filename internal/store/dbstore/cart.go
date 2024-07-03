@@ -32,5 +32,9 @@ func (s *CartStore) SaveCart(cart *store.Cart) error {
 	return s.db.Save(&cart).Error
 }
 
+func (s *CartStore) ClearCart(cart *store.Cart) error {
+	return s.db.Model(cart).Association("Orders").Clear()
+}
+
 func (s *CartStore) AddItemToCart()      {}
 func (s *CartStore) RemoveItemFromCart() {}

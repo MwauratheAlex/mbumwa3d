@@ -20,6 +20,7 @@ func PostPayment(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, components.UnauthorizedFormEror())
 	}
 
+	// get the cart
 	phone := r.FormValue("phone")
 	cartStore := dbstore.NewCartStore(user.ID)
 	cart := cartStore.GetCartByUserId()
@@ -41,10 +42,10 @@ func PostPayment(w http.ResponseWriter, r *http.Request) error {
 		order := cart.Orders[i]
 		fmt.Println(order.Price)
 	}
-	// paymentProcessor.InitiateStkPush()
+	paymentProcessor.InitiateStkPush(1)
 
-	// get the cart
-	// calculate price
+	// clear the cart
+	cartStore.ClearCart(cart)
 
-	return nil
+	return Render(w, r, components.UploadForm())
 }

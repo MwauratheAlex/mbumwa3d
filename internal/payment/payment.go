@@ -80,7 +80,7 @@ func (p *PaymentProcessor) GeneratePassword(shortcode int, passkey string) strin
 	return password
 }
 
-func (p *PaymentProcessor) InitiateStkPush() {
+func (p *PaymentProcessor) InitiateStkPush(amount int) {
 	businessShortCode64, err := strconv.ParseInt(os.Getenv("DARAJA_SHORTCODE"), 10, 64)
 	if err != nil {
 		println(err)
@@ -99,7 +99,7 @@ func (p *PaymentProcessor) InitiateStkPush() {
 		Password:          password,
 		Timestamp:         timestamp,
 		TransactionType:   "CustomerPayBillOnline",
-		Amount:            1,
+		Amount:            amount,
 		PartyA:            p.PhoneNumber,
 		PartyB:            businessShortCode,
 		PhoneNumber:       p.PhoneNumber,
