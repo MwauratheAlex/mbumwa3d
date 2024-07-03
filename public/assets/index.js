@@ -20329,9 +20329,6 @@ void main() {
   };
 
   // internal/assets/index.js
-  document.addEventListener("login_success", () => {
-    console.log("Login success, hello world");
-  });
   var height = 610;
   var width = 890;
   var scene = new Scene();
@@ -20359,27 +20356,52 @@ void main() {
   controls.autoRotate = true;
   controls.autoRotateSpeed = 4;
   var loader = new STLLoader();
-  loader.load(
-    "public/models/pen_holder.stl",
-    function(geometry) {
-      geometry.computeBoundingBox();
-      const bbox = geometry.boundingBox;
-      const center = new Vector3();
-      bbox.getCenter(center);
-      geometry.translate(-center.x, -center.y, -center.z);
-      const material = new MeshStandardMaterial({ color: 65411, roughness: 1e-4 });
-      const mesh = new Mesh(geometry, material);
-      const pivot = new Object3D();
-      pivot.add(mesh);
-      scene.add(pivot);
-    },
-    (xhr) => {
-      console.log(xhr.loaded / xhr.total * 100 + "% loaded");
-    },
-    (error) => {
-      console.log(error);
+  var currentMesh = null;
+  function addToScene(geometry) {
+    geometry.computeBoundingBox();
+    const bbox = geometry.boundingBox;
+    const center = new Vector3();
+    bbox.getCenter(center);
+    geometry.translate(-center.x, -center.y, -center.z);
+    const material = new MeshStandardMaterial({ color: 65411, roughness: 1e-4 });
+    const mesh = new Mesh(geometry, material);
+    const pivot = new Object3D();
+    pivot.add(mesh);
+    if (currentMesh) {
+      scene.remove(currentMesh);
     }
-  );
+    currentMesh = pivot;
+    scene.add(pivot);
+  }
+  function loadInitialModel() {
+    loader.load(
+      "public/models/pen_holder.stl",
+      (geometry) => addToScene(geometry),
+      (xhr) => {
+        console.log(xhr.loaded / xhr.total * 100 + "% loaded");
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+  function loadModel(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target.result;
+      const geometry = loader.parse(content);
+      addToScene(geometry);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+  var fileInput = document.querySelector("#dropzone-file");
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      loadModel(file);
+    }
+  });
+  loadInitialModel();
   function loop() {
     controls.update();
     renderer.render(scene, camera);
