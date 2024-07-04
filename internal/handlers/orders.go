@@ -3,19 +3,19 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/mwaurathealex/mbumwa3d/internal/views/dashboard"
 )
 
 func GetActiveOrders(w http.ResponseWriter, r *http.Request) error {
 	fmt.Println("Active")
-	return nil
+	return Render(w, r, dashboard.ActiveOrders())
 }
 func GetAvailableOrders(w http.ResponseWriter, r *http.Request) error {
 	fmt.Println("Available")
-
-	return nil
+	return Render(w, r, dashboard.AvailableOrders())
 }
 func GetCompletedOrders(w http.ResponseWriter, r *http.Request) error {
 	fmt.Println("Completed")
-
-	return nil
+	return Render(w, r, dashboard.CompletedOrders())
 }

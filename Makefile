@@ -3,10 +3,10 @@
 # NOTE: Comment this out while running in dev.
 # - only activate when doing migrations coz: issues
 #
-ifneq (, $(wildcard ./.env))
-	include .env
-	export
-endif
+# ifneq (, $(wildcard ./.env))
+# 	include .env
+# 	export
+# endif
 
 MAIN_PATH="tmp/bin/main"
 
