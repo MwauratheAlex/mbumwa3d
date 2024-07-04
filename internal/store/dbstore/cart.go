@@ -23,7 +23,7 @@ func (s *CartStore) Create() {}
 func (s *CartStore) GetCartByUserId() *store.Cart {
 	var cart store.Cart
 	cart.UserID = s.UserID
-	s.db.Debug().Preload("Orders").Where("user_id = ?", s.UserID).FirstOrCreate(&cart)
+	s.db.Preload("Orders").Where("user_id = ?", s.UserID).FirstOrCreate(&cart)
 
 	return &cart
 }

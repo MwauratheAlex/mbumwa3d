@@ -1,7 +1,7 @@
 package components
 
 templ Navbar() {
-	<nav class="absolute top-0 w-full text-white   bg-[#000E12] pt-4 pb-4 z-50">
+	<nav hx-headers='{"HX-Request": "true"}' class="absolute top-0 w-full text-white   bg-[#000E12] pt-4 pb-4 z-50">
 		<div class=" flex items-center justify-between container">
 			<a href="/">
 				@Logo("153", "22")
@@ -16,9 +16,9 @@ templ Navbar() {
 				>Shop</a>
 				<a
 					href="/processing"
-					hx-get="/processingcontent"
+					hx-get="/processing"
 					hx-target="#content-container"
-					hx-push-url="/processing"
+					hx-push-url="true"
 					class="pl-4 pr-4 pt-2 pb-2 "
 				>Processing...</a>
 				<a
@@ -40,16 +40,16 @@ templ LoggedOutUserMenu() {
 	<div class="flex flex-row text-gray-500 font-normal">
 		<a
 			href="/login"
-			hx-get="/logincontent"
+			hx-get="/login"
 			hx-target="#content-container"
-			hx-push-url="/login"
+			hx-push-url="true"
 			class="pl-4 pr-4 pt-2 pb-2 text-gray-500 "
 		>Login</a>
 		<a
 			href="/signup"
-			hx-get="/signupcontent"
+			hx-get="/signup"
 			hx-target="#content-container"
-			hx-push-url="/signup"
+			hx-push-url="true"
 			class="pl-4 pr-4 pt-2 pb-2  text-gray-500 "
 		>SignUp</a>
 	</div>
@@ -61,7 +61,7 @@ templ LoggedInUserMenu() {
 			href="/profile"
 			hx-get="/profile"
 			hx-target="#content-container"
-			hx-push-url="/profile"
+			hx-push-url="true"
 			class="pl-4 pr-4 pt-2 pb-2 text-gray-500 "
 		>Profile</a>
 		<a
@@ -77,9 +77,9 @@ templ HasPrinterUserMenu() {
 	<div class="flex flex-row text-gray-500 font-normal">
 		<a
 			href="/dashboard"
-			hx-get="/dashboardcontent"
+			hx-get="/dashboard"
 			hx-target="#content-container"
-			hx-push-url="dashboard"
+			hx-push-url="true"
 			class="pl-4 pr-4 pt-2 pb-2 text-gray-500 "
 		>Dashboard</a>
 		<a

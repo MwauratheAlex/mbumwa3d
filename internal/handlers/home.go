@@ -24,7 +24,3 @@ func GetUserMenu(w http.ResponseWriter, r *http.Request) error {
 
 	return Render(w, r, components.LoggedOutUserMenu())
 }
-
-func GetHomeContent(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, home.HomeContent())
-}

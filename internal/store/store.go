@@ -9,6 +9,7 @@ type User struct {
 	ID           uint   `gorm:"primaryKey;autoIncrement"`
 	Email        string `gorm:"type:citext;unique;not null"`
 	PasswordHash string `gorm:"type:varchar(255)"`
+	Orders       []Order
 	HasPrinter   bool
 	InsertedAt   time.Time `gorm:"autoCreateTime"`
 	UpdatedAt    time.Time `gorm:"autoUpdateTime"`

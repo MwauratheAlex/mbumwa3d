@@ -80,7 +80,7 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 		Price:           price,
 		Phone:           r.FormValue("phone"),
 		PaymentComplete: false,
-		Status:          fmt.Sprint(dbstore.Reviewing),
+		Status:          fmt.Sprint(store.Reviewing),
 	}
 	err = orderStore.CreateOrder(order)
 	if err != nil {

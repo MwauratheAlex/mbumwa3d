@@ -7,9 +7,8 @@ import (
 )
 
 func HandleSignup(w http.ResponseWriter, r *http.Request) error {
+	if IsHtmx(r) {
+		return Render(w, r, auth.SignupContent())
+	}
 	return Render(w, r, auth.Signup())
-}
-
-func GetSignupContent(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, auth.SignupContent())
 }

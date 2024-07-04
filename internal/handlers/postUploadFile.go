@@ -7,6 +7,5 @@ import (
 )
 
 func PostUploadFile(w http.ResponseWriter, r *http.Request) error {
-
 	return Render(w, r, components.UploadForm())
 }

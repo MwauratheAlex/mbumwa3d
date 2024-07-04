@@ -7,5 +7,8 @@ import (
 )
 
 func HandleFinished(w http.ResponseWriter, r *http.Request) error {
+	if IsHtmx(r) {
+		// return content
+	}
 	return Render(w, r, finished.Index())
 }
