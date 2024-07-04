@@ -45,3 +45,27 @@ func (s *OrderStore) GetCompleted(userID uint) []store.Order {
 
 	return orders
 }
+
+func (s *OrderStore) GetPrintAvailable(userID uint) []store.Order {
+	var orders []store.Order
+
+	s.db.Preload("File").Find(&orders)
+
+	return orders
+}
+
+func (s *OrderStore) GetPrintActive(userID uint) []store.Order {
+	var orders []store.Order
+
+	s.db.Preload("File").Find(&orders)
+
+	return orders
+}
+
+func (s *OrderStore) GetPrintCompleted(userID uint) []store.Order {
+	var orders []store.Order
+
+	s.db.Preload("File").Find(&orders)
+
+	return orders
+}

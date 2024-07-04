@@ -53,6 +53,12 @@ func main() {
 		r.Post("/darajacallback", handlers.Make(payment.DarajaCallbackHandler))
 		r.Post("/fileupload", handlers.Make(handlers.PostUploadFile))
 
+		r.Route("/orders", func(r chi.Router) {
+			r.Get("/available", handlers.Make(handlers.GetAvailableOrders))
+			r.Get("/active", handlers.Make(handlers.GetActiveOrders))
+			r.Get("/completed", handlers.Make(handlers.GetCompletedOrders))
+		})
+
 	})
 
 	http.ListenAndServe(port, r)

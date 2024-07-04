@@ -9,14 +9,36 @@ templ Index() {
 }
 
 templ Content() {
-	<div class="container  text-gray-800">
-		<div class="bg-white min-h-[80vh]">
+	<div class="container  text-gray-200">
+		<div class="min-h-[80vh] py-1">
 			<div>
-				<ul class="flex border border-red-400">
-					<li class="border border-red-300 px-4 py-2">Available Orders</li>
-					<li class="border border-red-300 px-4 py-2">Active Orders</li>
-					<li class="border border-red-300 px-4 py-2">Completed Orders</li>
+				<ul class="flex gap-2">
+					<li
+						hx-get="/orders/available"
+						hx-target="#dashboard-content"
+						hx-swap="innerHTML"
+						class="rounded-md bg-opacity-100 bg-orange-800 px-4 py-1 cursor-pointer"
+					>
+						Available Orders
+					</li>
+					<li
+						hx-get="/orders/active"
+						hx-target="#dashboard-content"
+						hx-swap="innerHTML"
+						class="rounded-md bg-opacity-50 bg-orange-800 px-4 py-1 cursor-pointer"
+					>
+						Active Orders
+					</li>
+					<li
+						hx-get="/orders/completed"
+						hx-target="#dashboard-content"
+						hx-swap="innerHTML"
+						class="rounded-md bg-opacity-50 bg-orange-800 px-4 py-1 cursor-pointer"
+					>
+						Completed Orders
+					</li>
 				</ul>
+				<div id="dashboard-content" hx-get="/availableorders" hx-swap="innerHTML"></div>
 			</div>
 		</div>
 	</div>

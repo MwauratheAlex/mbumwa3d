@@ -53,13 +53,16 @@ func (os OrderState) String() string {
 }
 
 type Order struct {
-	ID         uint `gorm:"primaryKey;autoIncrement"`
-	UserID     uint
-	FileID     uint
-	User       User      `gorm:"foreignKey:UserID"`
-	File       File      `gorm:"foreignKey:FileID"`
-	InsertedAt time.Time `gorm:"autoCreateTime"`
-	UpdatedAt  time.Time `gorm:"autoUpdateTime"`
+	ID          uint `gorm:"primaryKey;autoIncrement"`
+	UserID      uint
+	PrinterID   uint
+	PrintStatus string
+	Printer     User `gorm:"foreignKey:PrinterID"`
+	FileID      uint
+	User        User      `gorm:"foreignKey:UserID"`
+	File        File      `gorm:"foreignKey:FileID"`
+	InsertedAt  time.Time `gorm:"autoCreateTime"`
+	UpdatedAt   time.Time `gorm:"autoUpdateTime"`
 
 	BuildTime       uint
 	Quantity        string
