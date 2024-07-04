@@ -34,11 +34,18 @@ func main() {
 		r.Handle("/*", public())
 
 		r.Get("/", handlers.Make(handlers.HandleHome))
+		r.Get("/home", handlers.Make(handlers.GetHomeContent))
 		r.Get("/login", handlers.Make(handlers.HandleLogin))
+		r.Get("/logincontent", handlers.Make(handlers.GetLoginContent))
 		r.Get("/signup", handlers.Make(handlers.HandleSignup))
+		r.Get("/signupcontent", handlers.Make(handlers.GetSignupContent))
 		r.Get("/complete", handlers.Make(handlers.HandleFinished))
 		r.Get("/processing", handlers.Make(handlers.HandleProcessing))
+		r.Get("/processingcontent", handlers.Make(handlers.GetProcessingContent))
 		r.Get("/usermenu", handlers.Make(handlers.GetUserMenu))
+		r.Get("/dashboard", handlers.Make(handlers.HandleDashboard))
+		r.Get("/dashboardcontent", handlers.Make(handlers.GetDashBoardContent))
+
 		r.Post("/login", handlers.NewPostLoginHandler(
 			handlers.PostLoginHandlerParams{UserStore: userStore},
 		))

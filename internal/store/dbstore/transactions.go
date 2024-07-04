@@ -6,6 +6,19 @@ import (
 	"gorm.io/gorm"
 )
 
+type OrderState int
+
+const (
+	Reviewing OrderState = iota
+	Processing
+	Shipping
+	Completed
+)
+
+func (os OrderState) String() string {
+	return [...]string{"Reviewing", "Processing", "Shipping", "Completed"}[os]
+}
+
 type OrderStore struct {
 	db *gorm.DB
 }

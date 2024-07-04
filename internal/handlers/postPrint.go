@@ -80,7 +80,7 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 		Price:           price,
 		Phone:           r.FormValue("phone"),
 		PaymentComplete: false,
-		Status:          "Completed",
+		Status:          fmt.Sprint(dbstore.Reviewing),
 	}
 	err = orderStore.CreateOrder(order)
 	if err != nil {
@@ -88,6 +88,7 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 		w.WriteHeader(http.StatusInternalServerError)
 		return Render(w, r, components.UploadFormError("Internal server error."))
 	}
+	fmt.Println("Status", order.Status)
 
 	// add order to cart
 	cartStore := dbstore.NewCartStore(user.ID)

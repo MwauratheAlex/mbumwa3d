@@ -14,10 +14,17 @@ func HandleHome(w http.ResponseWriter, r *http.Request) error {
 }
 
 func GetUserMenu(w http.ResponseWriter, r *http.Request) error {
-	_, ok := r.Context().Value(middleware.UserKey).(*store.User)
+	user, ok := r.Context().Value(middleware.UserKey).(*store.User)
 	if ok {
+		if user.HasPrinter {
+			return Render(w, r, components.HasPrinterUserMenu())
+		}
 		return Render(w, r, components.LoggedInUserMenu())
 	}
 
 	return Render(w, r, components.LoggedOutUserMenu())
+}
+
+func GetHomeContent(w http.ResponseWriter, r *http.Request) error {
+	return Render(w, r, home.HomeContent())
 }

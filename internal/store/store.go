@@ -6,15 +6,16 @@ import (
 )
 
 type User struct {
-	ID           uint      `gorm:"primaryKey;autoIncrement"`
-	Email        string    `gorm:"type:citext;unique;not null"`
-	PasswordHash string    `gorm:"type:varchar(255)"`
+	ID           uint   `gorm:"primaryKey;autoIncrement"`
+	Email        string `gorm:"type:citext;unique;not null"`
+	PasswordHash string `gorm:"type:varchar(255)"`
+	HasPrinter   bool
 	InsertedAt   time.Time `gorm:"autoCreateTime"`
 	UpdatedAt    time.Time `gorm:"autoUpdateTime"`
 }
 
 type UserStore interface {
-	CreateUser(email string, password string) error
+	CreateUser(email string, password string, hasPrinter bool) error
 	GetUser(email string) (*User, error)
 	GetUserById(id uint) (*User, error)
 }
@@ -35,6 +36,19 @@ type File struct {
 
 type FileStore interface {
 	SaveToDisk(file multipart.File, filename string) (string, error)
+}
+
+type OrderState int
+
+const (
+	Reviewing OrderState = iota
+	Processing
+	Shipping
+	Completed
+)
+
+func (os OrderState) String() string {
+	return [...]string{"Reviewing", "Processing", "Shipping", "Completed"}[os]
 }
 
 type Order struct {

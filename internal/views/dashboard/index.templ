@@ -1,0 +1,23 @@
+package dashboard
+
+import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
+
+templ Index() {
+	@layouts.Base() {
+		@Content()
+	}
+}
+
+templ Content() {
+	<div class="container  text-gray-800">
+		<div class="bg-white min-h-[80vh]">
+			<div>
+				<ul class="flex border border-red-400">
+					<li class="border border-red-300 px-4 py-2">Available Orders</li>
+					<li class="border border-red-300 px-4 py-2">Active Orders</li>
+					<li class="border border-red-300 px-4 py-2">Completed Orders</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+}

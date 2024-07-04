@@ -11,14 +11,16 @@ templ Base() {
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<link rel="stylesheet" href="/public/assets/styles.css"/>
-			<script type="module" src="/public/assets/index.js" defer></script>
+			<script src="/public/assets/index.js" defer></script>
 			<script src="/public/assets/htmx.min.js" defer></script>
 			<script src="public/assets/response-targets.js" defer></script>
 		</head>
 		<body hx-ext="response-targets" class="antialiased bg-[#030607] relative h-[100vh] flex flex-col  justify-center ">
 			<div class="hero-image absolute"></div>
 			@components.Navbar()
-			{ children... }
+			<div id="content-container" class="overflow-hidden">
+				{ children... }
+			</div>
 			@components.Footer()
 		</body>
 	</html>
