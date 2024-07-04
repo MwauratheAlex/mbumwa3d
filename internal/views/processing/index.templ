@@ -1,8 +1,10 @@
 package processing
 
 import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
+import "fmt"
+import "github.com/mwaurathealex/mbumwa3d/internal/store"
 
-templ Index(items []string) {
+templ Index(items []store.Order) {
 	@layouts.Base() {
 		<div class="absolute top-20 w-full">
 			@Content(items)
@@ -10,28 +12,31 @@ templ Index(items []string) {
 	}
 }
 
-templ Content(items []string) {
+templ Content(orders []store.Order) {
 	<div class="text-red-500 text-lg container ">
 		<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
 			@TableHead()
 			<tbody>
-				for _,item := range items {
+				for _,order := range orders {
 					<tr class="odd:bg-black odd:bg-opacity-20  even:bg-blue-800 even:bg-opacity-50  dark:border-gray-700">
 						<th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap text-gray-50">
-							Apple MacBook Pro 17"
+							{ fmt.Sprint(order.File.FileName) }
 						</th>
 						<td class="px-6 py-4">
-							Silver
+							{ fmt.Sprint(order.Status) }
 						</td>
 						<td class="px-6 py-4">
-							Laptop
+							{ fmt.Sprint(order.Quantity) }
 						</td>
 						<td class="px-6 py-4">
-							$2999
+							{ fmt.Sprint(order.File.Color) }
+						</td>
+						<td class="px-6 py-4">
+							Ksh: { fmt.Sprintf("%.2f",order.Price) }
 						</td>
 						<td class="px-6 py-4">
 							<a href="#" class="font-medium text-blue-600 dark:text-orange-500 hover:underline">
-								Edit { item }
+								Cancel
 							</a>
 						</td>
 					</tr>
@@ -55,6 +60,9 @@ templ TableHead() {
 			</th>
 			<th scope="col" class="px-6 py-3">
 				PrintColor
+			</th>
+			<th scope="col" class="px-6 py-3">
+				Price
 			</th>
 			<th scope="col" class="px-6 py-3">
 				Action
