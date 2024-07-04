@@ -46,26 +46,26 @@ func (s *OrderStore) GetCompleted(userID uint) []store.Order {
 	return orders
 }
 
-func (s *OrderStore) GetPrintAvailable(userID uint) []store.Order {
+func (s *OrderStore) GetPrintAvailable() []store.Order {
 	var orders []store.Order
 
-	s.db.Preload("File").Find(&orders)
+	s.db.Preload("File").Where("print_status = ?", "available").Find(&orders)
 
 	return orders
 }
 
-func (s *OrderStore) GetPrintActive(userID uint) []store.Order {
+func (s *OrderStore) GetPrintActive(printerID uint) []store.Order {
 	var orders []store.Order
 
-	s.db.Preload("File").Find(&orders)
+	s.db.Preload("File").Where("printer_id = ?", printerID).Find(&orders)
 
 	return orders
 }
 
-func (s *OrderStore) GetPrintCompleted(userID uint) []store.Order {
+func (s *OrderStore) GetPrintCompleted(printerID uint) []store.Order {
 	var orders []store.Order
 
-	s.db.Preload("File").Find(&orders)
+	s.db.Preload("File").Where("print_status = ? AND printer_id = ?", "completed", printerID).Find(&orders)
 
 	return orders
 }

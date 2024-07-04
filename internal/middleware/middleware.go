@@ -163,6 +163,20 @@ func (m *AuthMiddleware) AddUserToContext(next http.Handler) http.Handler {
 	})
 }
 
+func (m *AuthMiddleware) AuthRedirect(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, ok := r.Context().Value(UserKey).(*store.User)
+
+		if ok == false {
+			w.Header().Add("HX-Redirect", "/login")
+			return
+		}
+		next.ServeHTTP(w, r)
+
+	})
+
+}
+
 func GetUser(ctx context.Context) *store.User {
 	user := ctx.Value(UserKey)
 	if user == nil {

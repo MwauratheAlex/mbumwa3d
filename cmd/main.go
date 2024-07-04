@@ -54,6 +54,7 @@ func main() {
 		r.Post("/fileupload", handlers.Make(handlers.PostUploadFile))
 
 		r.Route("/orders", func(r chi.Router) {
+			r.Use(authMiddleware.AuthRedirect)
 			r.Get("/available", handlers.Make(handlers.GetAvailableOrders))
 			r.Get("/active", handlers.Make(handlers.GetActiveOrders))
 			r.Get("/completed", handlers.Make(handlers.GetCompletedOrders))

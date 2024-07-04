@@ -1,5 +1,26 @@
 package dashboard
 
-templ CompletedOrders() {
-<div class="text-lg text-red-600">Completed Orders</div>
+import "github.com/mwaurathealex/mbumwa3d/internal/store"
+import "github.com/mwaurathealex/mbumwa3d/internal/views/dashboard/common"
+import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
+
+templ CompletedOrders(orders []store.Order) {
+	@layouts.Base() {
+		@CompletedOrders(orders)
+	}
+}
+
+templ CompletedOrdersContent(orders []store.Order) {
+	if len(orders) == 0 {
+		@common.NothingFound("You have not completed any orders yet")
+	} else {
+		<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+			@common.TableHead()
+			<tbody>
+				for _,order := range orders {
+					@common.TableRow(order)
+				}
+			</tbody>
+		</table>
+	}
 }

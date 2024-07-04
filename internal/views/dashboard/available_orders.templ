@@ -1,5 +1,26 @@
 package dashboard
 
-templ AvailableOrders() {
-<div class="text-lg text-red-600">Available Orders</div>
+import "github.com/mwaurathealex/mbumwa3d/internal/store"
+import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
+import "github.com/mwaurathealex/mbumwa3d/internal/views/dashboard/common"
+
+templ AvailableOrders(orders []store.Order) {
+	@layouts.Base() {
+		@AvailableOrdersContent(orders)
+	}
+}
+
+templ AvailableOrdersContent(orders []store.Order) {
+	if len(orders) == 0 {
+		@common.NothingFound("No orders are available yet")
+	} else {
+		<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+			@common.TableHead()
+			<tbody>
+				for _,order := range orders {
+					@common.TableRow(order)
+				}
+			</tbody>
+		</table>
+	}
 }
