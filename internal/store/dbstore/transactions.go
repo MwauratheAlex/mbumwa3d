@@ -24,8 +24,21 @@ func (s *OrderStore) CreateOrder(order *store.Order) error {
 
 func (s *OrderStore) GetNotCompleted(userID uint) []store.Order {
 	var orders []store.Order
+	query := "user_id = ? AND status != ?"
 
-	s.db.Preload("File").Where("user_id = ? AND status != ?",
+	s.db.Preload("File").Where(query,
+		userID,
+		fmt.Sprint(store.Completed),
+	).Find(&orders)
+
+	return orders
+}
+
+func (s *OrderStore) GetCompleted(userID uint) []store.Order {
+	var orders []store.Order
+	query := "user_id = ? AND status = ?"
+
+	s.db.Preload("File").Where(query,
 		userID,
 		fmt.Sprint(store.Completed),
 	).Find(&orders)
