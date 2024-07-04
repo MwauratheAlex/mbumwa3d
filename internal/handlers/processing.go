@@ -32,11 +32,13 @@ func HandleProcessing(w http.ResponseWriter, r *http.Request) error {
 		fmt.Println()
 	}
 
+	items := make([]string, 8)
+
 	// processing can be = reviewing, printing, shipping
 
 	// return appropriately, dynamic for htmx, full page otherwise
 	if IsHtmx(r) {
-		return Render(w, r, processing.Content())
+		return Render(w, r, processing.Content(items))
 	}
-	return Render(w, r, processing.Index())
+	return Render(w, r, processing.Index(items))
 }

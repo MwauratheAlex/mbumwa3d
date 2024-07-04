@@ -2,12 +2,63 @@ package processing
 
 import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
 
-templ Index() {
+templ Index(items []string) {
 	@layouts.Base() {
-		@Content()
+		<div class="absolute top-20 w-full">
+			@Content(items)
+		</div>
 	}
 }
 
-templ Content() {
-	<div class="text-red-500 text-lg">Processing</div>
+templ Content(items []string) {
+	<div class="text-red-500 text-lg container ">
+		<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+			@TableHead()
+			<tbody>
+				for _,item := range items {
+					<tr class="odd:bg-black odd:bg-opacity-20  even:bg-blue-800 even:bg-opacity-50  dark:border-gray-700">
+						<th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap text-gray-50">
+							Apple MacBook Pro 17"
+						</th>
+						<td class="px-6 py-4">
+							Silver
+						</td>
+						<td class="px-6 py-4">
+							Laptop
+						</td>
+						<td class="px-6 py-4">
+							$2999
+						</td>
+						<td class="px-6 py-4">
+							<a href="#" class="font-medium text-blue-600 dark:text-orange-500 hover:underline">
+								Edit { item }
+							</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+
+templ TableHead() {
+	<thead class="text-xs  uppercase bg-gray-900 bg-opacity-30 text-gray-400">
+		<tr>
+			<th scope="col" class="px-6 py-3">
+				Filename
+			</th>
+			<th scope="col" class="px-6 py-3">
+				OrderStatus
+			</th>
+			<th scope="col" class="px-6 py-3">
+				Quantity
+			</th>
+			<th scope="col" class="px-6 py-3">
+				PrintColor
+			</th>
+			<th scope="col" class="px-6 py-3">
+				Action
+			</th>
+		</tr>
+	</thead>
 }
