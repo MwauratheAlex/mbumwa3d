@@ -57,6 +57,8 @@ func main() {
 			r.Get("/available", handlers.Make(handlers.GetAvailableOrders))
 			r.Get("/active", handlers.Make(handlers.GetActiveOrders))
 			r.Get("/completed", handlers.Make(handlers.GetCompletedOrders))
+
+			r.Post("/{orderID}/take", handlers.Make(handlers.TakeOrder))
 		})
 
 	})

@@ -10,8 +10,8 @@ templ Index() {
 
 templ Content() {
 <div class="container  text-gray-200">
-	<div class="min-h-[80vh] py-1  flex flex-col gap-2">
-		<div class="flex justify-between">
+	<div class="min-h-[80vh] py-1 border flex flex-col gap-2">
+		<div class="flex border">
 			<ul class="flex gap-2">
 				<li hx-get="/orders/available" hx-target="#dashboard-content" hx-swap="innerHTML"
 					class="dash-nav-btn transition-opacity  rounded-md bg-opacity-100 bg-orange-800 px-4 py-1 cursor-pointer">
@@ -27,7 +27,8 @@ templ Content() {
 				</li>
 			</ul>
 			<div id="dash-popup"
-				class="hidden ml-8 text-green-600 px-4 bg-opacity-10 bg-gray-500 rounded-md  z-50 top-20  items-center justify-center">
+				class="ml-8 text-green-600 px-4 bg-opacity-10 bg-gray-500 rounded-md  z-50 top-20 flex items-center justify-center">
+				popup
 			</div>
 		</div>
 		<div id="dashboard-content" hx-get="/orders/available" hx-trigger="load"></div>

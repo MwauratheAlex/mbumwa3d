@@ -14,9 +14,24 @@ function toggleSelected(button, navBtns) {
 }
 
 (function() {
-  const dashNavBtns = document.getElementsByClassName("dash-nav-btn")
+  const dashPopup = document.querySelector("#dash-popup");
+  document.body.addEventListener("orderTakenSuccess", () => {
+    dashPopup.innerHTML = "Order selected successfully"
+    dashPopup.classList.remove("hidden")
+    dashPopup.classList.add("flex")
+
+    setTimeout(() => {
+      dashPopup.innerHTML = "Order selected successfully"
+      dashPopup.classList.remove("flex")
+      dashPopup.classList.add("hidden")
+    }, 3000)
+  });
+
+  const dashNavBtns = document.getElementsByClassName("dash-nav-btn");
   for (let i = 0; i < dashNavBtns.length; i++) {
     const btn = dashNavBtns[i];
-    btn.addEventListener("click", (e) => toggleSelected(e.currentTarget, dashNavBtns));
+    btn.addEventListener("click", (e) => toggleSelected(
+      e.currentTarget, dashNavBtns)
+    );
   }
 })();

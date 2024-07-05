@@ -24,6 +24,12 @@ func PostPayment(w http.ResponseWriter, r *http.Request) error {
 	phone := r.FormValue("phone")
 	cartStore := dbstore.NewCartStore(user.ID)
 	cart := cartStore.GetCartByUserId()
+	orderStore := dbstore.NewOrderStore()
+	for _, order := range cart.Orders {
+		order.Phone = phone
+		orderStore.Save(&order)
+	}
+	cartStore.SaveCart(cart)
 
 	// payment
 	phone = strings.TrimPrefix(phone, "0")

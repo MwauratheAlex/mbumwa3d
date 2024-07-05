@@ -18,8 +18,22 @@ func NewOrderStore() *OrderStore {
 	}
 }
 
+func (s *OrderStore) GetByID(orderID uint) (*store.Order, error) {
+
+	order := store.Order{}
+	err := s.db.Where("id = ?", orderID).First(&order).Error
+	if err != nil {
+		return nil, err
+	}
+	return &order, err
+}
+
 func (s *OrderStore) CreateOrder(order *store.Order) error {
 	return s.db.Create(order).Error
+}
+
+func (s *OrderStore) Save(order *store.Order) error {
+	return s.db.Save(&order).Error
 }
 
 func (s *OrderStore) GetNotCompleted(userID uint) []store.Order {
@@ -49,7 +63,7 @@ func (s *OrderStore) GetCompleted(userID uint) []store.Order {
 func (s *OrderStore) GetPrintAvailable() []store.Order {
 	var orders []store.Order
 
-	s.db.Preload("File").Where("print_status = ?", "available").Find(&orders)
+	s.db.Preload("File").Where("print_status = ?", fmt.Sprint(store.Available)).Find(&orders)
 
 	return orders
 }
@@ -65,7 +79,12 @@ func (s *OrderStore) GetPrintActive(printerID uint) []store.Order {
 func (s *OrderStore) GetPrintCompleted(printerID uint) []store.Order {
 	var orders []store.Order
 
-	s.db.Preload("File").Where("print_status = ? AND printer_id = ?", "completed", printerID).Find(&orders)
+	s.db.Preload("File").
+		Where(
+			"print_status = ? AND printer_id = ?",
+			fmt.Sprint(store.Completed),
+			printerID).
+		Find(&orders)
 
 	return orders
 }

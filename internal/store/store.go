@@ -5,6 +5,28 @@ import (
 	"time"
 )
 
+type State int
+
+const (
+	Reviewing State = iota
+	Processing
+	Shipping
+	Completed
+	Available
+	Selected
+)
+
+func (os State) String() string {
+	return [...]string{
+		"Reviewing",
+		"Processing",
+		"Shipping",
+		"Completed",
+		"Available",
+		"Selected",
+	}[os]
+}
+
 type User struct {
 	ID           uint   `gorm:"primaryKey;autoIncrement"`
 	Email        string `gorm:"type:citext;unique;not null"`
@@ -39,23 +61,10 @@ type FileStore interface {
 	SaveToDisk(file multipart.File, filename string) (string, error)
 }
 
-type OrderState int
-
-const (
-	Reviewing OrderState = iota
-	Processing
-	Shipping
-	Completed
-)
-
-func (os OrderState) String() string {
-	return [...]string{"Reviewing", "Processing", "Shipping", "Completed"}[os]
-}
-
 type Order struct {
 	ID          uint `gorm:"primaryKey;autoIncrement"`
 	UserID      uint
-	PrinterID   uint
+	PrinterID   *uint
 	PrintStatus string
 	Printer     User `gorm:"foreignKey:PrinterID"`
 	FileID      uint

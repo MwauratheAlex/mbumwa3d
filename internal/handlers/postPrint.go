@@ -81,6 +81,7 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 		Phone:           r.FormValue("phone"),
 		PaymentComplete: false,
 		Status:          fmt.Sprint(store.Reviewing),
+		PrintStatus:     fmt.Sprint(store.Available),
 	}
 	err = orderStore.CreateOrder(order)
 	if err != nil {
