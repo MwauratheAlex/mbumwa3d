@@ -20329,6 +20329,7 @@ void main() {
   };
 
   // internal/assets/index.js
+  var animationFrameId = null;
   function initThreeJS() {
     const height = 610;
     const width = 890;
@@ -20396,21 +20397,46 @@ void main() {
       reader.readAsArrayBuffer(file);
     }
     const fileInput = document.querySelector("#dropzone-file");
-    fileInput.addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        loadModel(file);
-      }
-    });
+    if (fileInput && !fileInput.dataset.listenerAttached) {
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          loadModel(file);
+        }
+      });
+      fileInput.dataset.listenerAttached = true;
+    }
     loadInitialModel();
     function loop() {
       controls.update();
       renderer.render(scene, camera);
-      window.requestAnimationFrame(loop);
+      animationFrameId = window.requestAnimationFrame(loop);
     }
     loop();
   }
-  initThreeJS();
+  function stopThreeJS() {
+    if (animationFrameId !== null) {
+      window.cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("anim initialized");
+    if (document.querySelector("#viewer")) {
+      initThreeJS();
+    }
+  });
+  document.body.addEventListener("htmx:beforeSwap", (event) => {
+    if (event.detail.target.id === "content-container" && document.querySelector("#viewer")) {
+      stopThreeJS();
+      console.log("stopping 2js");
+    }
+  });
+  document.body.addEventListener("htmx:afterSwap", (event) => {
+    if (event.detail.target.id === "content-container" && document.querySelector("#viewer")) {
+      initThreeJS();
+    }
+  });
 })();
 /*! Bundled license information:
 

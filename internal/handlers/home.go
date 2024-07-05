@@ -10,6 +10,9 @@ import (
 )
 
 func HandleHome(w http.ResponseWriter, r *http.Request) error {
+	if IsHtmx(r) {
+		return Render(w, r, home.HomeContent())
+	}
 	return Render(w, r, home.Index())
 }
 

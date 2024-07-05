@@ -36,12 +36,6 @@ func PostPayment(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	paymentProcessor := payment.NewPaymentProcessor(int(intPhone))
-	fmt.Println("PHONE NUMBER: ", paymentProcessor.PhoneNumber)
-	fmt.Println(len(cart.Orders))
-	for i := 0; i < len(cart.Orders); i++ {
-		order := cart.Orders[i]
-		fmt.Println(order.Price)
-	}
 	paymentProcessor.InitiateStkPush(1)
 
 	// clear the cart

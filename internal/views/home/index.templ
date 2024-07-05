@@ -4,26 +4,26 @@ import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
 import "github.com/mwaurathealex/mbumwa3d/internal/views/components"
 
 templ Index() {
-	@layouts.Base() {
-		@HomeContent()
-	}
+@layouts.Base() {
+@HomeContent()
+}
 }
 
 templ HomeContent() {
-	<main class="container h-[90vh] mt-20">
-		/* hero section */
-		<div class="grid grid-cols-2">
-			/* 3D fireworks */
-			<canvas id="viewer" class=" mt-4"></canvas>
-			/* cta */
-			<div class="flex items-start justify-end pt-4 pr-4">
-				<div class="relative text-[#A0E5FF] flex flex-col gap-2">
-					<p class="text-lg font-semibold opacity-55">
-						3D printing <span class="text-orange-600">excellence</span> at your fingertips
-					</p>
-					@components.UploadForm()
-				</div>
+<main class="container h-[90vh] mt-20">
+	/* hero section */
+	<div class="grid grid-cols-2">
+		/* 3D fireworks */
+		<canvas id="viewer" class=" mt-4"></canvas>
+		/* cta */
+		<div class="flex items-start justify-end pt-4 pr-4">
+			<div class="relative text-[#A0E5FF] flex flex-col gap-2">
+				<p class="text-lg font-semibold opacity-55">
+					3D printing <span class="text-orange-600">excellence</span> at your fingertips
+				</p>
+				@components.UploadForm()
 			</div>
 		</div>
-	</main>
+	</div>
+</main>
 }

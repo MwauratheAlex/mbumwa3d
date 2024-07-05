@@ -1,101 +1,51 @@
 package components
 
 templ Navbar() {
-	<nav hx-headers='{"HX-Request": "true"}' class="absolute top-0 w-full text-white   bg-[#000E12] pt-4 pb-4 z-50">
-		<div class=" flex items-center justify-between container">
-			<a href="/">
-				@Logo("153", "22")
-			</a>
-			<div class="flex flex-row text-gray-500 font-normal">
-				<a
-					href="/shop"
-					hx-get="/shop"
-					hx-target="#content-container"
-					hx-push-url="true"
-					class="text-orange-300 text-opacity-60 pl-4 pr-4 pt-2 pb-2 mr-20"
-				>Shop</a>
-				<a
-					href="/processing"
-					hx-get="/processing"
-					hx-target="#content-container"
-					hx-push-url="true"
-					class="pl-4 pr-4 pt-2 pb-2 "
-				>Processing...</a>
-				<a
-					href="/complete"
-					hx-get="/complete"
-					hx-target="#content-container"
-					hx-push-url="true"
-					class="pl-4 pr-4 pt-2 pb-2 mr-32"
-				>Complete</a>
-			</div>
-			<div hx-get="/usermenu" hx-trigger="load" id="usermenu">
-				@LoggedOutUserMenu()
-			</div>
+<nav hx-headers='{"HX-Request": "true"}' class="absolute top-0 w-full text-white   bg-[#000E12] pt-4 pb-4 z-50">
+	<div class=" flex items-center justify-between container">
+		<a hx-get="/" hx-target="#content-container" hx-push-url="true" href="/">
+			@Logo("153", "22")
+		</a>
+		<div class="flex flex-row text-gray-500 font-normal">
+			<a href="/shop" hx-get="/shop" hx-target="#content-container" hx-push-url="true"
+				class="text-orange-300 text-opacity-60 pl-4 pr-4 pt-2 pb-2 mr-20">Shop</a>
+			<a href="/processing" hx-get="/processing" hx-target="#content-container" hx-push-url="true"
+				class="pl-4 pr-4 pt-2 pb-2 ">Processing...</a>
+			<a href="/complete" hx-get="/complete" hx-target="#content-container" hx-push-url="true"
+				class="pl-4 pr-4 pt-2 pb-2 mr-32">Complete</a>
 		</div>
-	</nav>
+		<div hx-get="/usermenu" hx-trigger="load" id="usermenu">
+			@LoggedOutUserMenu()
+		</div>
+	</div>
+</nav>
 }
 
 templ LoggedOutUserMenu() {
-	<div class="flex flex-row text-gray-500 font-normal">
-		<a
-			href="/login"
-			hx-get="/login"
-			hx-target="#content-container"
-			hx-push-url="true"
-			class="pl-4 pr-4 pt-2 pb-2 text-gray-500 "
-		>Login</a>
-		<a
-			href="/signup"
-			hx-get="/signup"
-			hx-target="#content-container"
-			hx-push-url="true"
-			class="pl-4 pr-4 pt-2 pb-2  text-gray-500 "
-		>SignUp</a>
-	</div>
+<div class="flex flex-row text-gray-500 font-normal">
+	<a href="/login" hx-get="/login" hx-target="#content-container" hx-push-url="true"
+		class="pl-4 pr-4 pt-2 pb-2 text-gray-500 ">Login</a>
+	<a href="/signup" hx-get="/signup" hx-target="#content-container" hx-push-url="true"
+		class="pl-4 pr-4 pt-2 pb-2  text-gray-500 ">SignUp</a>
+</div>
 }
 
 templ LoggedInUserMenu() {
-	<div class="flex flex-row text-gray-500 font-normal">
-		<a
-			href="/profile"
-			hx-get="/profile"
-			hx-target="#content-container"
-			hx-push-url="true"
-			class="pl-4 pr-4 pt-2 pb-2 text-gray-500 "
-		>Profile</a>
-		<a
-			hx-post="/logout"
-			hx-target="#usermenu"
-			hx-swap="innerHTML"
-			class="pl-4 pr-4 pt-2 pb-2 cursor-pointer text-gray-500 "
-		>Logout</a>
-	</div>
+<div class="flex flex-row text-gray-500 font-normal">
+	<a href="/profile" hx-get="/profile" hx-target="#content-container" hx-push-url="true"
+		class="pl-4 pr-4 pt-2 pb-2 text-gray-500 ">Profile</a>
+	<a hx-post="/logout" hx-target="#usermenu" hx-swap="innerHTML"
+		class="pl-4 pr-4 pt-2 pb-2 cursor-pointer text-gray-500 ">Logout</a>
+</div>
 }
 
 templ HasPrinterUserMenu() {
-	<div class="flex flex-row text-gray-500 font-normal">
-		<a
-			href="/dashboard"
-			hx-get="/dashboard"
-			hx-target="#content-container"
-			hx-push-url="true"
-			class="pl-4 pr-4 pt-2 pb-2 text-gray-500 "
-		>Dashboard</a>
-		<a
-			href="/profile"
-			hx-get="/profile"
-			hx-target="#content-container"
-			hx-push-url="true"
-			class="pl-4 pr-4 pt-2 pb-2 text-gray-500 "
-		>Profile</a>
-		<a
-			href="/logout"
-			hx-push-url="false"
-			hx-post="/logout"
-			hx-target="#usermenu"
-			hx-swap="innerHTML"
-			class="pl-4 pr-4 pt-2 pb-2 cursor-pointer text-gray-500 "
-		>Logout</a>
-	</div>
+<div class="flex flex-row text-gray-500 font-normal">
+	<a href="/dashboard" hx-get="/dashboard" hx-target="#content-container" hx-push-url="true"
+		class="pl-4 pr-4 pt-2 pb-2 text-gray-500 ">Dashboard</a>
+	<a href="/profile" hx-get="/profile" hx-target="#content-container" hx-push-url="true"
+		class="pl-4 pr-4 pt-2 pb-2 text-gray-500 ">Profile</a>
+	<a href="/logout" hx-push-url="false" hx-post="/logout" hx-target="#usermenu" hx-swap="innerHTML"
+		class="pl-4 pr-4 pt-2 pb-2 cursor-pointer text-gray-500 ">Logout</a>
+</div>
 }

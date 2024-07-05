@@ -1,12 +1,10 @@
 package handlers
 
 import (
-	"fmt"
-	"net/http"
-	"strconv"
-
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/auth"
+	"net/http"
+	"strconv"
 )
 
 type PostSignupHandler struct {
@@ -32,8 +30,6 @@ func (h *PostSignupHandler) PostSignup(w http.ResponseWriter, r *http.Request) e
 	} else {
 		hasPrinter = bool(hasPrinter)
 	}
-
-	fmt.Println(hasPrinter)
 
 	err = h.userStore.CreateUser(email, password, hasPrinter)
 

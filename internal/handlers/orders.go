@@ -1,21 +1,16 @@
 package handlers
 
 import (
-	"fmt"
-	"net/http"
-
 	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/dashboard"
+	"net/http"
 )
 
 func GetAvailableOrders(w http.ResponseWriter, r *http.Request) error {
 	orderStore := dbstore.NewOrderStore()
 	availableOrders := orderStore.GetPrintAvailable()
-	for _, order := range availableOrders {
-		fmt.Print(order.File.FileName)
-	}
 	if IsHtmx(r) {
 		return Render(w, r, dashboard.AvailableOrdersContent(availableOrders))
 	}

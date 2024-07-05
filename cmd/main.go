@@ -32,7 +32,6 @@ func main() {
 		)
 
 		r.Handle("/*", public())
-
 		r.Get("/", handlers.Make(handlers.HandleHome))
 		r.Get("/login", handlers.Make(handlers.HandleLogin))
 		r.Get("/signup", handlers.Make(handlers.HandleSignup))

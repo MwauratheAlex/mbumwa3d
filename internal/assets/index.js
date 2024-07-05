@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 
+let animationFrameId = null;
+
 function initThreeJS() {
   const height = 610
   const width = 890
@@ -93,22 +95,56 @@ function initThreeJS() {
 
   // event listener
   const fileInput = document.querySelector("#dropzone-file")
-  fileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      loadModel(file)
-    }
-  });
+  if (fileInput && !fileInput.dataset.listenerAttached) {
+    fileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0]
+      if (file) {
+        loadModel(file)
+      }
+    });
+    fileInput.dataset.listenerAttached = true;
+  }
 
   loadInitialModel();
+
   function loop() {
     controls.update();
     renderer.render(scene, camera);
-    window.requestAnimationFrame(loop);
+    animationFrameId = window.requestAnimationFrame(loop);
   }
 
   loop();
 }
 
-initThreeJS()
+// Function to stop the animation
+function stopThreeJS() {
+  if (animationFrameId !== null) {
+    window.cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("anim initialized")
+  if (document.querySelector("#viewer")) {
+    initThreeJS();
+  }
+});
+
+// Reinitialize Three.js on HTMX content swap
+document.body.addEventListener("htmx:beforeSwap", (event) => {
+  if (event.detail.target.id === "content-container"
+    && document.querySelector("#viewer")) {
+    stopThreeJS(); // Stop any existing animation loop
+    console.log("stopping 2js");
+  }
+});
+
+// Reinitialize Three.js on HTMX content swap
+document.body.addEventListener("htmx:afterSwap", (event) => {
+  if (event.detail.target.id === "content-container"
+    && document.querySelector("#viewer")) {
+    initThreeJS();
+  }
+});
 

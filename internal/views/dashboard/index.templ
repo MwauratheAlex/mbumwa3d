@@ -14,20 +14,21 @@ templ Content() {
 		<div>
 			<ul class="flex gap-2">
 				<li hx-get="/orders/available" hx-target="#dashboard-content" hx-swap="innerHTML"
-					class="rounded-md bg-opacity-100 bg-orange-800 px-4 py-1 cursor-pointer">
+					class="dash-nav-btn transition-opacity  rounded-md bg-opacity-100 bg-orange-800 px-4 py-1 cursor-pointer">
 					Available Orders
 				</li>
 				<li hx-get="/orders/active" hx-target="#dashboard-content" hx-swap="innerHTML"
-					class="rounded-md bg-opacity-50 bg-orange-800 px-4 py-1 cursor-pointer">
+					class="dash-nav-btn transition-opacity rounded-md bg-opacity-30 bg-orange-800 px-4 py-1 cursor-pointer">
 					Active Orders
 				</li>
 				<li hx-get="/orders/completed" hx-target="#dashboard-content" hx-swap="innerHTML"
-					class="rounded-md bg-opacity-50 bg-orange-800 px-4 py-1 cursor-pointer">
+					class="dash-nav-btn transition-opacity rounded-md bg-opacity-30 bg-orange-800 px-4 py-1 cursor-pointer">
 					Completed Orders
 				</li>
 			</ul>
-			<div id="dashboard-content" hx-get="/orders/available" hx-swap="innerHTML" hx-trigger="load"></div>
+			<div id="dashboard-content" hx-get="/orders/available" hx-trigger="load"></div>
 		</div>
 	</div>
+	<script src="public/assets/dashboard.js" defer></script>
 </div>
 }
