@@ -54,7 +54,10 @@ dev:
 ## Check if node and npm are installed, if not install them
 check-node:
 	@if ! command -v node > /dev/null 2>&1; then \
-		curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
+		echo "Uninstalling existing Node.js versions..."; \
+		sudo apt-get remove --purge nodejs npm; \
+
+		curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
 		apt-get install -y nodejs; \
 	fi
 
