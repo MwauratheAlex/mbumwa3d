@@ -45,6 +45,26 @@ sync_assets:
 dev:
 	@make -j5  templ server watch-assets sync_assets watch-esbuild
 
+# build the application for production. This will compile your app
+# to a single binary with all its assets embedded.
+# build:
+# 	@npx tailwindcss -i app/assets/app.css -o ./public/assets/styles.css
+# 	@npx esbuild app/assets/index.js --bundle --outdir=public/assets
+# 	@go build -o bin/app_prod cmd/app/main.go
+# 	@echo "compiled you application with all its assets to a single binary => bin/app_prod"
+
+tailwind-build:
+	npx tailwindcss -i internal/assets/app.css -o public/assets/style.min.css --minify
+
+templ-generate:
+	templ generate
+
+build:
+	make tailwind-build
+	npx esbuild internal/assets/index.js --bundle --outdir=public/assets
+	make templ-generate
+	go build -ldflags "-X main.Environment=production" -o ./bin/mbumwa3d ./cmd/mbumwa3d/main.go
+
 # create new migrations
 db-create:
 	@GOOSE_DRIVER=$(GOOSE_DRIVER) GOOSE_DBSTRING=$(GOOSE_DBSTRING) goose -dir=$(GOOSE_MIGRATION_DIR) create $(filter-out $@,$(MAKECMDGOALS)) sql

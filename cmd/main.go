@@ -14,6 +14,8 @@ import (
 
 func init() {
 	initializers.LoadEnvVariables()
+	os.Setenv("env", "production")
+
 	initializers.ConnectToDB()
 }
 
