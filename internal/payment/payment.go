@@ -103,7 +103,7 @@ func (p *PaymentProcessor) InitiateStkPush(amount int) {
 		PartyA:            p.PhoneNumber,
 		PartyB:            businessShortCode,
 		PhoneNumber:       p.PhoneNumber,
-		CallBackURL:       "https://4cc7-197-232-61-202.ngrok-free.app/darajacallback",
+		CallBackURL:       "https://mbumwa3d-production.up.railway.app/darajacallback",
 		AccountReference:  "Mbumwa3D",
 		TransactionDesc:   "Payment of 3D Printing",
 	}
@@ -154,7 +154,7 @@ type StkCallbackResponse struct {
 
 func DarajaCallbackHandler(w http.ResponseWriter, r *http.Request) error {
 	var callbackResponse StkCallbackResponse
-	fmt.Println("IN CALLBACK")
+	fmt.Println("IN DARAJA CALLBACK")
 	err := json.NewDecoder(r.Body).Decode(&callbackResponse)
 	if err != nil {
 		fmt.Println(err)
