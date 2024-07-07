@@ -12,7 +12,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 
 # Install dependencies
-RUN --mount=type=cache,id=go-mod,target=/root/.cache/go-mod go mod download
+RUN --mount=type=cache,id=my-go-mod-cache,key=go-mod-cache,target=/root/.cache/go-mod go mod download
 
 # Copy the rest of the application code
 COPY . .
