@@ -5,6 +5,7 @@ go 1.22.0
 require (
 	github.com/a-h/templ v0.2.707
 	github.com/go-chi/chi/v5 v5.0.14
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/joho/godotenv v1.5.1
 	golang.org/x/crypto v0.24.0
 	gorm.io/driver/postgres v1.5.9
@@ -12,8 +13,6 @@ require (
 )
 
 require (
-	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
-	github.com/hschendel/stl v1.0.4 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/pgx/v5 v5.6.0 // indirect
