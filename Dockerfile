@@ -13,8 +13,6 @@ WORKDIR /app
 # Copy the Go Modules manifests
 COPY go.mod go.sum ./
 
-# Download dependencies (add debugging output)
-RUN go mod tidy
 
 # Copy the entire source code from the current directory to the working directory inside the container
 COPY . .
