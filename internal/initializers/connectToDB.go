@@ -24,11 +24,9 @@ func ConnectToDB() {
 
 func getConnectionString() string {
 
-	fmt.Println("HERE")
 	if os.Getenv("env") == "production" {
 		return os.Getenv("DATABASE_URL")
 	}
-	fmt.Println("HERE AfTER")
 	user := os.Getenv("PG_USER")
 	password := os.Getenv("PG_PASSWORD")
 	dbname := os.Getenv("PG_NAME")
