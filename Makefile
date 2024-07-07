@@ -15,7 +15,7 @@ MAIN_PATH="tmp/bin/main"
 # re-create _templ.txt files on change, then send reload event to browser. 
 # Default url: http://localhost:7331
 templ:
-	@npx templ generate --watch --proxy="http://localhost:3000" --open-browser=false
+	@templ generate --watch --proxy="http://localhost:3000" --open-browser=false
 
 server:
 	@go run github.com/cosmtrek/air@v1.51.0 \
@@ -64,7 +64,7 @@ tailwind-build:
 	npx tailwindcss -i internal/assets/app.css -o public/assets/style.min.css --minify
 
 templ-generate:
-	templ generate
+	npx templ generate
 
 build: check-node
 	make tailwind-build
