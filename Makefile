@@ -63,7 +63,7 @@ build:
 	make tailwind-build
 	npx esbuild internal/assets/index.js --bundle --outdir=public/assets
 	make templ-generate
-	go build -ldflags "-X main.Environment=production" -o ./bin/mbumwa3d ./cmd/mbumwa3d/main.go
+	go build -ldflags "-X main.Environment=production" -o ./bin/mbumwa3d ./cmd/main.go
 
 # create new migrations
 db-create:
