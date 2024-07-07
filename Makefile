@@ -64,7 +64,7 @@ tailwind-build:
 	npx tailwindcss -i internal/assets/app.css -o public/assets/style.min.css --minify
 
 templ-generate:
-	npx templ generate
+	go run github.com/a-h/templ/cmd/templ@latest generate
 
 build: check-node
 	make tailwind-build
