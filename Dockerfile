@@ -15,7 +15,7 @@ COPY go.mod go.sum ./
 
 # Download dependencies (add debugging output)
 RUN set -x \
-    && go mod download
+    && go mod tidy
 
 # Copy the entire source code from the current directory to the working directory inside the container
 COPY . .
