@@ -60,6 +60,7 @@ check-node:
 	fi
 
 tailwind-build:
+	@npm install tailwindcss@3.4.4
 	npx tailwindcss -i internal/assets/app.css -o public/assets/style.min.css --minify
 
 templ-generate:
