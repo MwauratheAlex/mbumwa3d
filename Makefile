@@ -71,7 +71,7 @@ build: check-node
 	go build -ldflags "-X main.Environment=production" -o ./bin/mbumwa3d ./cmd/main.go
 
 run :
-	./bin/mbumwa3d
+	chmod +x ./bin/mbumwa3d && ./bin/mbumwa3d
 
 
 # create new migrations
