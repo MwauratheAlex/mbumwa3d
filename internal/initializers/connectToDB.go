@@ -22,14 +22,15 @@ func ConnectToDB() {
 }
 
 func getConnectionString() string {
-
+	if os.Getenv("env") == "production" {
+		return os.Getenv("DATABASE_URL")
+	}
 	user := os.Getenv("PG_USER")
 	password := os.Getenv("PG_PASSWORD")
 	dbname := os.Getenv("PG_NAME")
-	sslmode := "disable"
 	hostname := os.Getenv("PG_HOST")
 
 	return fmt.Sprintf(
-		"postgres://%s:%s@%s/%s?sslmode=%s",
-		user, password, hostname, dbname, sslmode)
+		"postgres://%s:%s@%s/%s",
+		user, password, hostname, dbname)
 }
