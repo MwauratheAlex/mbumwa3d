@@ -51,6 +51,7 @@ func (p *PaymentProcessor) GetAuthToken() (string, error) {
 	darajaAuthHeader := os.Getenv("DARAJA_AUTH_HEADER")
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", darajaAuthHeader)
+	req.Header.Add("Host", "sandbox.safaricom.co.ke")
 
 	res, err := p.Client.Do(req)
 	if err != nil {
