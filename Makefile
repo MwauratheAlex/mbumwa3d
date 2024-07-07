@@ -15,7 +15,7 @@ MAIN_PATH="tmp/bin/main"
 # re-create _templ.txt files on change, then send reload event to browser. 
 # Default url: http://localhost:7331
 templ:
-	@templ generate --watch --proxy="http://localhost:3000" --open-browser=false
+	@npx templ generate --watch --proxy="http://localhost:3000" --open-browser=false
 
 server:
 	@go run github.com/cosmtrek/air@v1.51.0 \
