@@ -8,29 +8,12 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 # Set the working directory
 WORKDIR /app
 
-# Copy the Go Modules manifests
-COPY go.mod go.sum ./
-
-# Install dependencies
-RUN --mount=type=cache,id=my-go-mod-cache,key=go-mod-cache,target=/root/.cache/go-mod go mod download
-
-# Copy the rest of the application code
-COPY . .
-
-# Build the application
-RUN --mount=type=cache,id=go-build,target=/root/.cache/go-build make build
-
-# Use a minimal base image for the final container
-FROM gcr.io/distroless/base-debian10
-
 # Copy the built application binary from the build stage
-COPY --from=build /app/bin/$(APP_NAME) /usr/local/bin/$(APP_NAME)
+COPY --from=build /app/bin/mbumwa3d /usr/local/bin/mbumwa3d
 
 # Set the entry point for the container
-ENTRYPOINT ["/usr/local/bin/$(APP_NAME)"]
+ENTRYPOINT ["/usr/local/bin/mbumwa3d"]
 
 # Expose the application's port
 EXPOSE 3000
 
-# Set the default command
-CMD ["$(APP_NAME)"]
