@@ -51,7 +51,12 @@ dev:
 # 	@npx tailwindcss -i app/assets/app.css -o ./public/assets/styles.css
 # 	@npx esbuild app/assets/index.js --bundle --outdir=public/assets
 # 	@go build -o bin/app_prod cmd/app/main.go
-# 	@echo "compiled you application with all its assets to a single binary => bin/app_prod"
+## Check if node and npm are installed, if not install them
+check-node:
+	@if ! command -v node > /dev/null 2>&1; then \
+		curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
+		apt-get install -y nodejs; \
+	fi
 
 tailwind-build:
 	npx tailwindcss -i internal/assets/app.css -o public/assets/style.min.css --minify
@@ -59,7 +64,7 @@ tailwind-build:
 templ-generate:
 	templ generate
 
-build:
+build: check-node
 	make tailwind-build
 	npx esbuild internal/assets/index.js --bundle --outdir=public/assets
 	make templ-generate
