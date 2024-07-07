@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -65,7 +66,7 @@ func main() {
 
 	})
 
-	http.ListenAndServe(port, r)
+	http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), r)
 }
 
 func public() http.Handler {
