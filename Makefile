@@ -70,6 +70,10 @@ build: check-node
 	make templ-generate
 	go build -ldflags "-X main.Environment=production" -o ./bin/mbumwa3d ./cmd/main.go
 
+run :
+	./bin/mbumwa3d
+
+
 # create new migrations
 db-create:
 	@GOOSE_DRIVER=$(GOOSE_DRIVER) GOOSE_DBSTRING=$(GOOSE_DBSTRING) goose -dir=$(GOOSE_MIGRATION_DIR) create $(filter-out $@,$(MAKECMDGOALS)) sql
