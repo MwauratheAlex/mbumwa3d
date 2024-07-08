@@ -62,6 +62,9 @@ func main() {
 			r.Get("/completed", handlers.Make(handlers.GetCompletedOrders))
 
 			r.Post("/{orderID}/take", handlers.Make(handlers.TakeOrder))
+			r.Post("/{orderID}/download", handlers.Make(handlers.DownloadOrder))
+			r.Post("/{orderID}/cancel", handlers.Make(handlers.CancelOrder))
+			r.Post("/{orderID}/complete", handlers.Make(handlers.CompleteOrder))
 		})
 
 	})

@@ -15,8 +15,8 @@ function toggleSelected(button, navBtns) {
 
 (function() {
   const dashPopup = document.querySelector("#dash-popup");
-  document.body.addEventListener("orderTakenSuccess", () => {
-    dashPopup.innerHTML = "Order selected successfully"
+  document.body.addEventListener("dash-pop", (e) => {
+    dashPopup.innerHTML = e.detail.value
     dashPopup.classList.remove("hidden")
     dashPopup.classList.add("flex")
 

@@ -15,10 +15,10 @@ templ CompletedOrdersContent(orders []store.Order) {
 		@common.NothingFound("You have not completed any orders yet")
 	} else {
 		<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-			@common.TableHead()
+			@common.TableHead(0)
 			<tbody>
 				for _,order := range orders {
-					@common.TableRow(order)
+					@common.TableRow(order, false)
 				}
 			</tbody>
 		</table>

@@ -1,15 +1,35 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/http"
+	"strconv"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/dashboard"
-	"net/http"
-	"strconv"
 )
+
+type DashPopEventMsg struct {
+	DashPop string
+}
+
+func GetDashPopPayload(msg string) string {
+	payload := DashPopEventMsg{
+		DashPop: msg,
+	}
+	payloadJson, err := json.Marshal(payload)
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+	fmt.Println(string(payloadJson))
+
+	return string(payloadJson)
+}
 
 func GetAvailableOrders(w http.ResponseWriter, r *http.Request) error {
 	orderStore := dbstore.NewOrderStore()
@@ -45,32 +65,67 @@ func GetCompletedOrders(w http.ResponseWriter, r *http.Request) error {
 }
 
 func TakeOrder(w http.ResponseWriter, r *http.Request) error {
-	// get user id
 	user, _ := r.Context().Value(middleware.UserKey).(*store.User)
-
-	// get order id
 	orderID, err := strconv.ParseInt(chi.URLParam(r, "orderID"), 10, 64)
 	if err != nil {
 		fmt.Println("Error parsing orderID", err)
 		return err
 	}
-
-	// get order by id
 	orderStore := dbstore.NewOrderStore()
 	order, err := orderStore.GetByID(uint(orderID))
 	if err != nil {
-		fmt.Println("Error Fetching user", err)
+		fmt.Println("Error Fetching Order", err)
 		return err
 	}
-	// update order status
 	order.PrintStatus = fmt.Sprint(store.Selected)
-
-	// add user as printer to order
 	order.PrinterID = &user.ID
-
-	// save order
 	orderStore.Save(order)
-	//order-taken-success
-	w.Header().Add("HX-Trigger", "orderTakenSuccess")
+
+	w.Header().Add("HX-Trigger", GetDashPopPayload("Order Taken"))
+	return nil
+}
+
+func DownloadOrder(w http.ResponseWriter, r *http.Request) error {
+	return nil
+}
+
+func CancelOrder(w http.ResponseWriter, r *http.Request) error {
+	orderID, err := strconv.ParseInt(chi.URLParam(r, "orderID"), 10, 64)
+	if err != nil {
+		fmt.Println("Error parsing orderID", err)
+		return err
+	}
+	orderStore := dbstore.NewOrderStore()
+	order, err := orderStore.GetByID(uint(orderID))
+	if err != nil {
+		fmt.Println("Error Fetching Order", err)
+		return err
+	}
+	order.PrintStatus = fmt.Sprint(store.Available)
+
+	order.PrinterID = nil
+	orderStore.Save(order)
+
+	w.Header().Add("HX-Trigger", GetDashPopPayload("Order Cancelled"))
+	return nil
+}
+
+func CompleteOrder(w http.ResponseWriter, r *http.Request) error {
+	orderID, err := strconv.ParseInt(chi.URLParam(r, "orderID"), 10, 64)
+	if err != nil {
+		fmt.Println("Error parsing orderID", err)
+		return err
+	}
+	orderStore := dbstore.NewOrderStore()
+	order, err := orderStore.GetByID(uint(orderID))
+	if err != nil {
+		fmt.Println("Error Fetching Order", err)
+		return err
+	}
+	order.PrintStatus = fmt.Sprint(store.Completed)
+	order.Status = fmt.Sprint(store.Completed)
+
+	orderStore.Save(order)
+	w.Header().Add("HX-Trigger", GetDashPopPayload("Order Completed"))
 	return nil
 }

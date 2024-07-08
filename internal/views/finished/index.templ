@@ -1,9 +1,9 @@
 package finished
 
 import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
-import "fmt"
 import "github.com/mwaurathealex/mbumwa3d/internal/store"
 import "github.com/mwaurathealex/mbumwa3d/internal/views/components"
+import "github.com/mwaurathealex/mbumwa3d/internal/views/dashboard/common"
 
 templ Index(items []store.Order) {
 	@layouts.Base() {
@@ -18,64 +18,14 @@ templ Content(orders []store.Order) {
 		<div class="absolute top-20 w-full">
 			<div class="text-red-500 text-lg container ">
 				<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-					@TableHead()
+					@common.TableHead(0)
 					<tbody>
 						for _,order := range orders {
-							@TableRow(order)
+							@common.TableRow(order, false)
 						}
 					</tbody>
 				</table>
 			</div>
 		</div>
 	}
-}
-
-templ TableRow(order store.Order) {
-	<tr class="odd:bg-black odd:bg-opacity-20  even:bg-blue-800 even:bg-opacity-50  dark:border-gray-700">
-		<th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap text-gray-50">
-			{ fmt.Sprint(order.File.FileName) }
-		</th>
-		<td class="px-6 py-4">
-			{ fmt.Sprint(order.Status) }
-		</td>
-		<td class="px-6 py-4">
-			{ fmt.Sprint(order.Quantity) }
-		</td>
-		<td class="px-6 py-4">
-			{ fmt.Sprint(order.File.Color) }
-		</td>
-		<td class="px-6 py-4">
-			Ksh: { fmt.Sprintf("%.2f",order.Price) }
-		</td>
-		<td class="px-6 py-4">
-			<a href="#" class="font-medium text-blue-600 dark:text-orange-500 hover:underline">
-				Cancel
-			</a>
-		</td>
-	</tr>
-}
-
-templ TableHead() {
-	<thead class="text-xs  uppercase bg-gray-900 bg-opacity-30 text-gray-400">
-		<tr>
-			<th scope="col" class="px-6 py-3">
-				Filename
-			</th>
-			<th scope="col" class="px-6 py-3">
-				OrderStatus
-			</th>
-			<th scope="col" class="px-6 py-3">
-				Quantity
-			</th>
-			<th scope="col" class="px-6 py-3">
-				PrintColor
-			</th>
-			<th scope="col" class="px-6 py-3">
-				Price
-			</th>
-			<th scope="col" class="px-6 py-3">
-				Action
-			</th>
-		</tr>
-	</thead>
 }
