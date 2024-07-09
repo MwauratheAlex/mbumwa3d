@@ -104,7 +104,7 @@ func (p *PaymentProcessor) InitiateStkPush(amount int) {
 		PartyA:            p.PhoneNumber,
 		PartyB:            businessShortCode,
 		PhoneNumber:       p.PhoneNumber,
-		CallBackURL:       "",
+		CallBackURL:       "https://mbumwa3d-production.up.railway.app/darajacallback",
 		AccountReference:  "Mbumwa3D",
 		TransactionDesc:   "Payment of 3D Printing",
 	}
