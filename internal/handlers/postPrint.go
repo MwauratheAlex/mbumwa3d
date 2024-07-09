@@ -78,7 +78,6 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 		BuildTime:       72, // to be calculated
 		Quantity:        r.FormValue("quantity"),
 		Price:           price,
-		Phone:           r.FormValue("phone"),
 		PaymentComplete: false,
 		Status:          fmt.Sprint(store.Reviewing),
 		PrintStatus:     fmt.Sprint(store.Available),
@@ -94,10 +93,17 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 	// add order to cart
 	cartStore := dbstore.NewCartStore(user.ID)
 	cart := cartStore.GetCartByUserId()
-	cart.Orders = append(cart.Orders, *order)
-	cartStore.SaveCart(cart)
 
+	if cart.Transaction == nil {
+		cart.Transaction = &store.Transaction{
+			UserID:        user.ID,
+			PaymentStatus: fmt.Sprint(store.AwaitingPayment),
+		}
+	}
+	cart.Transaction.Orders = append(cart.Transaction.Orders, *order)
+	cartStore.SaveCart(cart)
 	err = cartStore.SaveCart(cart)
+
 	if err != nil {
 		fmt.Println("Error adding to cart", err)
 		w.WriteHeader(http.StatusInternalServerError)

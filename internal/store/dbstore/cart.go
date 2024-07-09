@@ -23,7 +23,7 @@ func (s *CartStore) Create() {}
 func (s *CartStore) GetCartByUserId() *store.Cart {
 	var cart store.Cart
 	cart.UserID = s.UserID
-	s.db.Preload("Orders").Where("user_id = ?", s.UserID).FirstOrCreate(&cart)
+	s.db.Preload("Transaction").Where("user_id = ?", s.UserID).FirstOrCreate(&cart)
 
 	return &cart
 }
@@ -33,7 +33,7 @@ func (s *CartStore) SaveCart(cart *store.Cart) error {
 }
 
 func (s *CartStore) ClearCart(cart *store.Cart) error {
-	return s.db.Model(cart).Association("Orders").Clear()
+	return s.db.Model(cart).Association("Transaction").Clear()
 }
 
 func (s *CartStore) AddItemToCart()      {}

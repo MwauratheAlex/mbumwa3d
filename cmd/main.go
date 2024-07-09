@@ -9,14 +9,11 @@ import (
 	"github.com/mwaurathealex/mbumwa3d/internal/handlers"
 	"github.com/mwaurathealex/mbumwa3d/internal/initializers"
 	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
-	"github.com/mwaurathealex/mbumwa3d/internal/payment"
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 )
 
 func init() {
 	initializers.LoadEnvVariables()
-	//os.Setenv("env", "production")
-
 	initializers.ConnectToDB()
 }
 
@@ -52,7 +49,7 @@ func main() {
 		r.Post("/logout", handlers.Make(handlers.PostLogout))
 		r.Post("/print", handlers.Make(handlers.PostPrint))
 		r.Post("/payment", handlers.Make(handlers.PostPayment))
-		r.Post("/darajacallback", handlers.Make(payment.DarajaCallbackHandler))
+		r.Post("/darajacallback", handlers.Make(handlers.DarajaCallbackHandler))
 		r.Post("/fileupload", handlers.Make(handlers.PostUploadFile))
 
 		r.Route("/orders", func(r chi.Router) {

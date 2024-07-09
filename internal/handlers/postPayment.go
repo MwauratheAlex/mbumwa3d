@@ -20,16 +20,13 @@ func PostPayment(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, components.UnauthorizedFormEror())
 	}
 
-	// get the cart
 	phone := r.FormValue("phone")
+
 	cartStore := dbstore.NewCartStore(user.ID)
 	cart := cartStore.GetCartByUserId()
-	orderStore := dbstore.NewOrderStore()
-	for _, order := range cart.Orders {
-		order.Phone = phone
-		orderStore.Save(&order)
-	}
-	cartStore.SaveCart(cart)
+
+	transaction := cart.Transaction
+	transaction.Phone = phone
 
 	// payment
 	phone = strings.TrimPrefix(phone, "0")
@@ -42,9 +39,20 @@ func PostPayment(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	paymentProcessor := payment.NewPaymentProcessor(int(intPhone))
-	paymentProcessor.InitiateStkPush(1)
+	// calculate sum of all prices
+	transactionResponse, err := paymentProcessor.InitiateStkPush(1)
+	if err != nil {
+		fmt.Println("Transaction failed", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return Render(w, r, components.UploadFormError("Transaction failed."))
+	}
 
-	// clear the cart
+	// save the transaction and wait for callback
+	transaction.CheckoutRequestId = transactionResponse.CheckoutRequestID
+	transaction.PaymentStatus = fmt.Sprint(store.ProcessingPayment)
+
+	transactionStore := dbstore.NewTransactionStore(user.ID)
+	transactionStore.SaveTransaction(transaction)
 	cartStore.ClearCart(cart)
 
 	return Render(w, r, components.UploadForm())

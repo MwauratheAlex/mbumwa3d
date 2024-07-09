@@ -14,6 +14,9 @@ const (
 	Completed
 	Available
 	Selected
+	AwaitingPayment
+	ProcessingPayment
+	PaymentComplete
 )
 
 func (os State) String() string {
@@ -24,6 +27,9 @@ func (os State) String() string {
 		"Completed",
 		"Available",
 		"Selected",
+		"AwaitingPayment",
+		"ProcessingPayment",
+		"PaymentComplete",
 	}[os]
 }
 
@@ -76,7 +82,6 @@ type Order struct {
 	BuildTime       uint
 	Quantity        string
 	Price           float64
-	Phone           string
 	PaymentComplete bool
 	Status          string
 }
@@ -86,9 +91,23 @@ type OrderStore interface {
 }
 
 type Cart struct {
-	ID     uint    `gorm:"primaryKey;autoIncrement"`
-	UserID uint    `gorm:"index"`
-	Orders []Order `gorm:"many2many:cart_orders;"`
+	ID            uint `gorm:"primaryKey;autoIncrement"`
+	UserID        uint `gorm:"index"`
+	TransactionID uint
+	Transaction   *Transaction
+}
+
+type Transaction struct {
+	ID                uint    `gorm:"primaryKey;autoIncrement"`
+	UserID            uint    `gorm:"index"`
+	Orders            []Order `gorm:"many2many:transaction_orders;"`
+	PaymentStatus     string
+	CheckoutRequestId string
+	Phone             string
+}
+type TransactionStore interface {
+	GetTransactionByUserId() *Transaction
+	SaveTransaction(*Transaction) error
 }
 
 type CartStore interface {
