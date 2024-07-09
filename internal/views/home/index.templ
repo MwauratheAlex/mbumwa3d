@@ -4,26 +4,38 @@ import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
 import "github.com/mwaurathealex/mbumwa3d/internal/views/components"
 
 templ Index() {
-@layouts.Base() {
-@HomeContent()
-}
+	@layouts.Base() {
+		@HomeContent()
+	}
 }
 
 templ HomeContent() {
-<main class="container h-[90vh] mt-20">
-	/* hero section */
-	<div class="grid grid-cols-2">
-		/* 3D fireworks */
-		<canvas id="viewer" class=" mt-4"></canvas>
-		/* cta */
-		<div class="flex items-start justify-end pt-4 pr-4">
-			<div class="relative text-[#A0E5FF] flex flex-col gap-2">
-				<p class="text-lg font-semibold opacity-55">
-					3D printing <span class="text-orange-600">excellence</span> at your fingertips
-				</p>
-				@components.UploadForm()
+	<main class="container">
+		/* hero section */
+		<div class="flex justify-between flex-col md:flex-row">
+			/* 3D fireworks */
+			<div class="md:w-8/12 w-full md:h-auto" id="canvas-div">
+				<canvas id="viewer" class="mt-4"></canvas>
+			</div>
+			/* cta */
+			<div class="flex pt-4 pr-4">
+				<div class="flex flex-col items-center gap-8">
+					<div class="relative text-[#A0E5FF] flex flex-col gap-2">
+						<p class="text-lg font-semibold opacity-55">
+							3D printing <span class="text-orange-600">excellence</span> at your fingertips
+						</p>
+						@components.UploadForm()
+					</div>
+					<div class="text-center flex flex-col gap-2">
+						<p class="text-sm text-gray-500">
+							Do you own a 3D printer?
+						</p>
+						<button type="button" class="font-semibold text-sm text-orange-900 hover:underline transition-all">
+							Make money with us
+						</button>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-</main>
+	</main>
 }

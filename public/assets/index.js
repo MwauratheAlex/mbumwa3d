@@ -20331,8 +20331,10 @@ void main() {
   // internal/assets/index.js
   var animationFrameId = null;
   function initThreeJS() {
-    const height = 610;
-    const width = 890;
+    const canvas = document.querySelector("#viewer");
+    const canvasDiv = document.querySelector("#canvas-div");
+    const height = canvasDiv.offsetHeight;
+    const width = canvasDiv.offsetWidth;
     const scene = new Scene();
     const light = new DirectionalLight(16698549, 0.9);
     light.position.set(0, 2, 20);
@@ -20345,7 +20347,6 @@ void main() {
     const camera = new PerspectiveCamera(75, width / height, 0.1, 1e3);
     camera.position.z = 60;
     scene.add(camera);
-    const canvas = document.querySelector("#viewer");
     const renderer = new WebGLRenderer({ canvas, alpha: true });
     renderer.setClearColor(10670847, 0.03);
     renderer.setSize(width, height);

@@ -15,14 +15,16 @@ templ ActiveOrdersContent(orders []store.Order) {
 	if len(orders) == 0 {
 		@common.NothingFound("You do not have any active orders")
 	} else {
-		<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-			@common.TableHead(3)
-			<tbody>
-				for _,order := range orders {
-					@TableRow(order)
-				}
-			</tbody>
-		</table>
+		<div class="overflow-scroll">
+			<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+				@common.TableHead(3)
+				<tbody>
+					for _,order := range orders {
+						@TableRow(order)
+					}
+				</tbody>
+			</table>
+		</div>
 	}
 }
 

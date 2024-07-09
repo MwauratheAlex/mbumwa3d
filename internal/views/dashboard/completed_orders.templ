@@ -14,13 +14,15 @@ templ CompletedOrdersContent(orders []store.Order) {
 	if len(orders) == 0 {
 		@common.NothingFound("You have not completed any orders yet")
 	} else {
-		<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-			@common.TableHead(0)
-			<tbody>
-				for _,order := range orders {
-					@common.TableRow(order, false)
-				}
-			</tbody>
-		</table>
+		<div class="overflow-scroll">
+			<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+				@common.TableHead(0)
+				<tbody>
+					for _,order := range orders {
+						@common.TableRow(order, false)
+					}
+				</tbody>
+			</table>
+		</div>
 	}
 }

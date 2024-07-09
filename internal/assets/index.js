@@ -5,8 +5,10 @@ import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 let animationFrameId = null;
 
 function initThreeJS() {
-  const height = 610
-  const width = 890
+  const canvas = document.querySelector("#viewer");
+  const canvasDiv = document.querySelector("#canvas-div");
+  const height = canvasDiv.offsetHeight;
+  const width = canvasDiv.offsetWidth;
 
   // scene
   const scene = new THREE.Scene();
@@ -32,7 +34,6 @@ function initThreeJS() {
 
 
   // renderer
-  const canvas = document.querySelector("#viewer");
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
   renderer.setClearColor(0xa2d2ff, 0.03); // the default
   renderer.setSize(width, height);
