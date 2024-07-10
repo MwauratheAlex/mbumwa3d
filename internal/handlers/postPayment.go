@@ -51,7 +51,7 @@ func PostPayment(w http.ResponseWriter, r *http.Request) error {
 	transaction.CheckoutRequestId = transactionResponse.CheckoutRequestID
 	transaction.PaymentStatus = fmt.Sprint(store.ProcessingPayment)
 
-	transactionStore := dbstore.NewTransactionStore(user.ID)
+	transactionStore := dbstore.NewTransactionStore()
 	transactionStore.SaveTransaction(transaction)
 	cartStore.ClearCart(cart)
 
