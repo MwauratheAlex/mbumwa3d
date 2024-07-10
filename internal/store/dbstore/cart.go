@@ -18,8 +18,6 @@ func NewCartStore(userID uint) *CartStore {
 	}
 }
 
-func (s *CartStore) Create() {}
-
 func (s *CartStore) GetCartByUserId() *store.Cart {
 	var cart store.Cart
 	cart.UserID = s.UserID
@@ -35,6 +33,3 @@ func (s *CartStore) SaveCart(cart *store.Cart) error {
 func (s *CartStore) ClearCart(cart *store.Cart) error {
 	return s.db.Model(cart).Association("Transaction").Clear()
 }
-
-func (s *CartStore) AddItemToCart()      {}
-func (s *CartStore) RemoveItemFromCart() {}

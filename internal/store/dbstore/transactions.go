@@ -7,22 +7,26 @@ import (
 )
 
 type TransactionStore struct {
-	db     *gorm.DB
-	UserID uint
+	db *gorm.DB
 }
 
-func NewTransactionStore(userId uint) *TransactionStore {
+func NewTransactionStore() *TransactionStore {
 	return &TransactionStore{
-		UserID: userId,
-		db:     initializers.DB,
+		db: initializers.DB,
 	}
+}
+
+func (s *TransactionStore) UpdateTransactionState(checkoutId string, state string) error {
+	var transaction store.Transaction
+	err := s.db.
+		Model(&transaction).
+		Where("checkout_request_id", checkoutId).
+		Update("payment_status", state).Error
+	return err
 }
 
 func (s *TransactionStore) GetTransactionByUserId() *store.Transaction {
 	var transaction store.Transaction
-	transaction.UserID = s.UserID
-	s.db.Preload("Orders").Where("user_id = ?", s.UserID).First(&transaction)
-
 	return &transaction
 }
 

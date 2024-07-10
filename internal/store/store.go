@@ -17,6 +17,7 @@ const (
 	AwaitingPayment
 	ProcessingPayment
 	PaymentComplete
+	PaymentFailed
 )
 
 func (os State) String() string {
@@ -30,6 +31,7 @@ func (os State) String() string {
 		"AwaitingPayment",
 		"ProcessingPayment",
 		"PaymentComplete",
+		"PaymentFailed",
 	}[os]
 }
 
