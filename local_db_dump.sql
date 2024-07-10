@@ -250,7 +250,6 @@ ALTER TABLE ONLY public.goose_db_version ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 COPY public.carts (id, user_id, transaction_id) FROM stdin;
-4	98	\N
 \.
 
 
@@ -259,42 +258,6 @@ COPY public.carts (id, user_id, transaction_id) FROM stdin;
 --
 
 COPY public.files (id, inserted_at, updated_at, user_id, local_path, file_name, technology, color) FROM stdin;
-58	2024-07-04 09:01:16	2024-07-04 09:01:16	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-59	2024-07-04 09:02:52	2024-07-04 09:02:52	98	left_rod_mount.stl	left_rod_mount.stl	FDM (Plastic)	Any
-60	2024-07-04 09:03:13	2024-07-04 09:03:13	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-61	2024-07-04 09:03:35	2024-07-04 09:03:35	98	left_rod_mount.stl	left_rod_mount.stl	FDM (Plastic)	Any
-62	2024-07-04 09:05:06	2024-07-04 09:05:06	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-63	2024-07-04 09:07:17	2024-07-04 09:07:17	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-64	2024-07-05 11:14:54	2024-07-05 11:14:54	98	left_rod_mount.stl	left_rod_mount.stl	FDM (Plastic)	Any
-65	2024-07-05 11:22:29	2024-07-05 11:22:29	98	left_rod_mount.stl	left_rod_mount.stl	FDM (Plastic)	Any
-66	2024-07-05 11:28:12	2024-07-05 11:28:12	98	left_rod_mount.stl	left_rod_mount.stl	FDM (Plastic)	Any
-67	2024-07-05 11:33:34	2024-07-05 11:33:34	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-68	2024-07-05 11:47:02	2024-07-05 11:47:02	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-69	2024-07-05 11:51:58	2024-07-05 11:51:58	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-70	2024-07-05 11:56:59	2024-07-05 11:56:59	98	left_rod_mount.stl	left_rod_mount.stl	FDM (Plastic)	Any
-71	2024-07-07 21:38:31	2024-07-07 21:38:31	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-72	2024-07-08 10:34:25	2024-07-08 10:34:25	98	left_rod_mount.stl	left_rod_mount.stl	FDM (Plastic)	Any
-73	2024-07-08 10:51:52	2024-07-08 10:51:52	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-74	2024-07-09 08:58:05	2024-07-09 08:58:05	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-75	2024-07-09 08:58:39	2024-07-09 08:58:39	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-76	2024-07-09 09:00:00	2024-07-09 09:00:00	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-77	2024-07-09 09:19:53	2024-07-09 09:19:53	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-78	2024-07-09 09:21:14	2024-07-09 09:21:14	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-79	2024-07-09 09:22:31	2024-07-09 09:22:31	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-80	2024-07-09 09:24:54	2024-07-09 09:24:54	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-81	2024-07-09 09:35:19	2024-07-09 09:35:19	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-82	2024-07-09 09:36:46	2024-07-09 09:36:46	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-83	2024-07-09 09:38:21	2024-07-09 09:38:21	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-84	2024-07-09 09:40:02	2024-07-09 09:40:02	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-85	2024-07-09 14:51:06	2024-07-09 14:51:06	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-86	2024-07-09 18:28:00	2024-07-09 18:28:00	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-87	2024-07-09 18:29:54	2024-07-09 18:29:54	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-88	2024-07-09 18:30:59	2024-07-09 18:30:59	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-89	2024-07-09 18:32:37	2024-07-09 18:32:37	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-90	2024-07-09 19:11:36	2024-07-09 19:11:36	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-91	2024-07-09 19:14:31	2024-07-09 19:14:31	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-92	2024-07-09 19:16:09	2024-07-09 19:16:09	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
-93	2024-07-09 19:37:26	2024-07-09 19:37:26	98	ServoArm.STL	ServoArm.STL	FDM (Plastic)	Any
 \.
 
 
@@ -326,35 +289,6 @@ COPY public.goose_db_version (id, version_id, is_applied, tstamp) FROM stdin;
 --
 
 COPY public.orders (id, user_id, file_id, inserted_at, updated_at, build_time, quantity, price, payment_complete, status, print_status, printer_id) FROM stdin;
-38	98	73	2024-07-08 10:51:52	2024-07-08 10:51:55	72	1	46.736343011271096	f	Reviewing	Available	\N
-39	98	74	2024-07-09 08:58:05	2024-07-09 08:58:08	72	1	46.736343011271096	f	Reviewing	Available	\N
-40	98	75	2024-07-09 08:58:39	2024-07-09 08:58:42	72	1	46.736343011271096	f	Reviewing	Available	\N
-41	98	76	2024-07-09 09:00:00	2024-07-09 09:00:05	72	1	46.736343011271096	f	Reviewing	Available	\N
-42	98	77	2024-07-09 09:19:53	2024-07-09 09:19:56	72	1	46.736343011271096	f	Reviewing	Available	\N
-43	98	78	2024-07-09 09:21:14	2024-07-09 09:21:17	72	1	46.736343011271096	f	Reviewing	Available	\N
-44	98	79	2024-07-09 09:22:31	2024-07-09 09:22:37	72	1	46.736343011271096	f	Reviewing	Available	\N
-45	98	80	2024-07-09 09:24:54	2024-07-09 09:24:57	72	1	46.736343011271096	f	Reviewing	Available	\N
-46	98	81	2024-07-09 09:35:19	2024-07-09 09:35:22	72	1	46.736343011271096	f	Reviewing	Available	\N
-47	98	82	2024-07-09 09:36:46	2024-07-09 09:36:49	72	1	46.736343011271096	f	Reviewing	Available	\N
-34	98	69	2024-07-05 11:51:58	2024-07-08 09:55:49	72	1	46.736343011271096	f	Completed	Completed	98
-48	98	83	2024-07-09 09:38:21	2024-07-09 09:38:24	72	1	46.736343011271096	f	Reviewing	Available	\N
-49	98	84	2024-07-09 09:40:02	2024-07-09 09:40:12	72	1	46.736343011271096	f	Reviewing	Available	\N
-50	98	85	2024-07-09 14:51:06	2024-07-09 14:51:09	72	1	46.736343011271096	f	Reviewing	Available	\N
-35	98	70	2024-07-05 11:56:59	2024-07-08 10:03:12	72	1	1223.457307794972	f	Completed	Completed	98
-8	98	63	2024-07-04 09:07:17	2024-07-08 10:03:13	72	1	46.736343011271096	f	Completed	Completed	98
-51	98	86	2024-07-09 18:28:00	2024-07-09 18:28:05	72	1	46.736343011271096	f	Reviewing	Available	\N
-27	98	58	2024-07-04 09:01:16	2024-07-08 10:20:36	72	1	46.736343011271096	f	Completed	Completed	98
-28	98	63	2024-07-04 09:07:17	2024-07-08 10:22:17	72	1	46.736343011271096	f	Completed	Completed	98
-52	98	87	2024-07-09 18:29:54	2024-07-09 18:31:02	72	1	46.736343011271096	f	Reviewing	Available	\N
-53	98	88	2024-07-09 18:30:59	2024-07-09 18:31:02	72	1	46.736343011271096	f	Reviewing	Available	\N
-54	98	89	2024-07-09 18:32:37	2024-07-09 18:32:40	72	1	46.736343011271096	f	Reviewing	Available	\N
-55	98	90	2024-07-09 19:11:36	2024-07-09 19:11:36	72	1	46.736343011271096	f	Reviewing	Available	\N
-56	98	91	2024-07-09 19:14:31	2024-07-09 19:14:31	72	1	46.736343011271096	f	Reviewing	Available	\N
-57	98	92	2024-07-09 19:16:09	2024-07-09 19:16:09	72	1	46.736343011271096	f	Reviewing	Available	\N
-58	98	93	2024-07-09 19:37:26	2024-07-09 19:37:26	72	1	46.736343011271096	f	Reviewing	Available	\N
-36	98	71	2024-07-07 21:38:31	2024-07-08 10:29:10	72	1	46.736343011271096	f	Completed	Completed	98
-33	98	68	2024-07-05 11:47:02	2024-07-08 10:29:15	72	1	46.736343011271096	f	Completed	Completed	98
-37	98	72	2024-07-08 10:34:25	2024-07-08 10:37:57	72	1	1223.457307794972	f	Completed	Completed	98
 \.
 
 
@@ -363,13 +297,6 @@ COPY public.orders (id, user_id, file_id, inserted_at, updated_at, build_time, q
 --
 
 COPY public.transaction_orders (transaction_id, order_id) FROM stdin;
-2	52
-2	53
-3	54
-4	55
-4	56
-4	57
-4	58
 \.
 
 
@@ -378,9 +305,6 @@ COPY public.transaction_orders (transaction_id, order_id) FROM stdin;
 --
 
 COPY public.transactions (id, user_id, payment_status, checkout_request_id, inserted_at, updated_at, phone) FROM stdin;
-2	98	AwaitingPayment	ws_CO_09072024183429674713958070	2024-07-09 15:31:04	2024-07-09 15:31:04	\N
-3	98	AwaitingPayment	ws_CO_09072024183608599713958070	2024-07-09 15:32:42	2024-07-09 15:32:42	\N
-4	98	ProcessingPayment	ws_CO_09072024193735890713958070	2024-07-09 16:11:36	2024-07-09 16:11:36	0713958070
 \.
 
 
@@ -389,8 +313,6 @@ COPY public.transactions (id, user_id, payment_status, checkout_request_id, inse
 --
 
 COPY public.users (id, email, password_hash, inserted_at, updated_at, has_printer) FROM stdin;
-99	mwaurad@mail.com	$2a$10$GebcvV9OOSvnRPe2kQ75dO5XYfYT8wFR9gyyIJ4L5nHRdpJh5yn/6	2024-07-03 12:04:25	2024-07-03 12:04:25	f
-98	mwaurathealex@gmail.com	$2a$10$cjejOu6tHT.UHid2kIjSsOv1GHPsrGNcjIJc4/5KyPsgFDGyldsGC	2024-07-03 12:03:35	2024-07-03 12:03:35	t
 \.
 
 
@@ -405,7 +327,7 @@ SELECT pg_catalog.setval('public.carts_id_seq', 4, true);
 -- Name: files_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.files_id_seq', 93, true);
+SELECT pg_catalog.setval('public.files_id_seq', 95, true);
 
 
 --
@@ -419,14 +341,14 @@ SELECT pg_catalog.setval('public.goose_db_version_id_seq', 15, true);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.orders_id_seq', 58, true);
+SELECT pg_catalog.setval('public.orders_id_seq', 60, true);
 
 
 --
 -- Name: transactions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.transactions_id_seq', 4, true);
+SELECT pg_catalog.setval('public.transactions_id_seq', 6, true);
 
 
 --

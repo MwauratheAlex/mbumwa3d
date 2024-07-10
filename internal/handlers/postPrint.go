@@ -102,6 +102,9 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 	}
 	cart.Transaction.Orders = append(cart.Transaction.Orders, *order)
 	cartStore.SaveCart(cart)
+	cart.TransactionID = cart.Transaction.ID
+
+	cartStore.SaveCart(cart)
 	err = cartStore.SaveCart(cart)
 
 	if err != nil {
