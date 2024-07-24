@@ -12,7 +12,7 @@ import (
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 )
 
-var Environment string = "dev"
+var Environment string
 
 func init() {
 	switch Environment {
