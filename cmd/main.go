@@ -12,12 +12,22 @@ import (
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 )
 
+var Environment string = "dev"
+
 func init() {
-	initializers.LoadEnvVariables()
+	switch Environment {
+	case "docker-prod":
+		initializers.LoadEnvVariables()
+		os.Setenv("env", "production")
+		break
+	case "dev":
+		initializers.LoadEnvVariables()
+	}
 	initializers.ConnectToDB()
 }
 
 func main() {
+
 	port := os.Getenv("PORT")
 	r := chi.NewMux()
 

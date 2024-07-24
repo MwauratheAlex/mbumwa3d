@@ -5,24 +5,24 @@ import "github.com/mwaurathealex/mbumwa3d/internal/views/dashboard/common"
 import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
 
 templ CompletedOrders(orders []store.Order) {
-	@layouts.Base() {
-		@CompletedOrders(orders)
-	}
+@layouts.Base() {
+@CompletedOrders(orders)
+}
 }
 
 templ CompletedOrdersContent(orders []store.Order) {
-	if len(orders) == 0 {
-		@common.NothingFound("You have not completed any orders yet")
-	} else {
-		<div class="overflow-scroll">
-			<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-				@common.TableHead(0)
-				<tbody>
-					for _,order := range orders {
-						@common.TableRow(order, false)
-					}
-				</tbody>
-			</table>
-		</div>
-	}
+if len(orders) == 0 {
+@common.NothingFound("You have not completed any orders yet")
+} else {
+<div class="overflow-scroll md:overflow-x-hidden">
+	<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+		@common.TableHead(0)
+		<tbody>
+			for _,order := range orders {
+			@common.TableRow(order, false)
+			}
+		</tbody>
+	</table>
+</div>
+}
 }

@@ -6,76 +6,63 @@ import "github.com/mwaurathealex/mbumwa3d/internal/views/dashboard/common"
 import "fmt"
 
 templ ActiveOrders(orders []store.Order) {
-	@layouts.Base() {
-		@ActiveOrdersContent(orders)
-	}
+@layouts.Base() {
+@ActiveOrdersContent(orders)
+}
 }
 
 templ ActiveOrdersContent(orders []store.Order) {
-	if len(orders) == 0 {
-		@common.NothingFound("You do not have any active orders")
-	} else {
-		<div class="overflow-scroll">
-			<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-				@common.TableHead(3)
-				<tbody>
-					for _,order := range orders {
-						@TableRow(order)
-					}
-				</tbody>
-			</table>
-		</div>
-	}
+if len(orders) == 0 {
+@common.NothingFound("You do not have any active orders")
+} else {
+<div class="overflow-scroll overflow-x-hidden">
+	<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+		@common.TableHead(3)
+		<tbody>
+			for _,order := range orders {
+			@TableRow(order)
+			}
+		</tbody>
+	</table>
+</div>
+}
 }
 
 templ TableRow(order store.Order) {
-	<tr
-		id={ fmt.Sprintf("available-row-%d", order.ID) }
-		class="odd:bg-black odd:bg-opacity-20  even:bg-blue-800 even:bg-opacity-50  dark:border-gray-700"
-	>
-		<th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap text-gray-50">
-			{ fmt.Sprint(order.File.FileName) }
-		</th>
-		<td class="px-6 py-4">
-			{ fmt.Sprint(order.PrintStatus) }
-		</td>
-		<td class="px-6 py-4">
-			{ fmt.Sprint(order.Quantity) }
-		</td>
-		<td class="px-6 py-4">
-			{ fmt.Sprint(order.File.Color) }
-		</td>
-		<td class="px-6 py-4">
-			Ksh: { fmt.Sprintf("%.2f",order.Price) }
-		</td>
-		<td
-			hx-post={ fmt.Sprintf("orders/%d/take", order.ID) }
-			hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
-			class="px-6 py-4"
-		>
-			<button class="font-medium text-blue-400  hover:underline">
-				Download Model
-			</button>
-		</td>
-		<td
-			hx-post={ fmt.Sprintf("orders/%d/cancel", order.ID) }
-			hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
-			hx-confirm="Are you sure you want to cancel the order?"
-			class="px-6 py-4"
-		>
-			<button class="font-medium text-blue-400  hover:underline">
-				Cancel Order
-			</button>
-		</td>
-		<td
-			hx-post={ fmt.Sprintf("orders/%d/complete", order.ID) }
-			hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
-			hx-confirm="Are you sure you have completed the order?"
-			class="px-6 py-4"
-		>
-			<button class="font-medium text-orange-500 hover:underline">
-				Mark Complete
-			</button>
-		</td>
-	</tr>
+<tr id={ fmt.Sprintf("available-row-%d", order.ID) }
+	class="odd:bg-black odd:bg-opacity-20  even:bg-blue-800 even:bg-opacity-50  dark:border-gray-700">
+	<th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap text-gray-50">
+		{ fmt.Sprint(order.File.FileName) }
+	</th>
+	<td class="px-6 py-4">
+		{ fmt.Sprint(order.PrintStatus) }
+	</td>
+	<td class="px-6 py-4">
+		{ fmt.Sprint(order.Quantity) }
+	</td>
+	<td class="px-6 py-4">
+		{ fmt.Sprint(order.File.Color) }
+	</td>
+	<td class="px-6 py-4">
+		Ksh: { fmt.Sprintf("%.2f",order.Price) }
+	</td>
+	<td hx-post={ fmt.Sprintf("orders/%d/take", order.ID) } hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
+		class="px-6 py-4">
+		<button class="font-medium text-blue-400  hover:underline">
+			Download Model
+		</button>
+	</td>
+	<td hx-post={ fmt.Sprintf("orders/%d/cancel", order.ID) } hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
+		hx-confirm="Are you sure you want to cancel the order?" class="px-6 py-4">
+		<button class="font-medium text-blue-400  hover:underline">
+			Cancel Order
+		</button>
+	</td>
+	<td hx-post={ fmt.Sprintf("orders/%d/complete", order.ID) } hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
+		hx-confirm="Are you sure you have completed the order?" class="px-6 py-4">
+		<button class="font-medium text-orange-500 hover:underline">
+			Mark Complete
+		</button>
+	</td>
+</tr>
 }

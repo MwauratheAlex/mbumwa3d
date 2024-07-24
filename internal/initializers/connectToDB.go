@@ -14,7 +14,6 @@ func ConnectToDB() {
 	dsn := getConnectionString()
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		fmt.Println(dsn)
 		panic(fmt.Sprintf("Error connecting to database: %s", err))
 	} else {
 		fmt.Println("Connected to db successfully")
@@ -23,7 +22,6 @@ func ConnectToDB() {
 }
 
 func getConnectionString() string {
-
 	if os.Getenv("env") == "production" {
 		return os.Getenv("DATABASE_URL")
 	}

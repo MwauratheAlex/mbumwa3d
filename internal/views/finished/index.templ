@@ -6,26 +6,26 @@ import "github.com/mwaurathealex/mbumwa3d/internal/views/components"
 import "github.com/mwaurathealex/mbumwa3d/internal/views/dashboard/common"
 
 templ Index(items []store.Order) {
-	@layouts.Base() {
-		@Content(items)
-	}
+@layouts.Base() {
+@Content(items)
+}
 }
 
 templ Content(orders []store.Order) {
-	if len(orders) == 0 {
-		@components.NothingFound()
-	} else {
-		<div class="absolute top-20 w-full">
-			<div class="text-red-500 text-lg container  overflow-scroll">
-				<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-					@common.TableHead(0)
-					<tbody>
-						for _,order := range orders {
-							@common.TableRow(order, false)
-						}
-					</tbody>
-				</table>
-			</div>
-		</div>
-	}
+if len(orders) == 0 {
+@components.NothingFound()
+} else {
+<div class="absolute top-20 w-full">
+	<div class="text-red-500 text-lg container  overflow-scroll md:overflow-x-hidden">
+		<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+			@common.TableHead(0)
+			<tbody>
+				for _,order := range orders {
+				@common.TableRow(order, false)
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+}
 }
