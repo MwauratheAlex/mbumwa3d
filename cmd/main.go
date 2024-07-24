@@ -17,7 +17,6 @@ var Environment string = "dev"
 func init() {
 	switch Environment {
 	case "docker-prod":
-		initializers.LoadEnvVariables()
 		os.Setenv("env", "production")
 		break
 	case "dev":
