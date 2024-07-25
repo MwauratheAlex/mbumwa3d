@@ -72,7 +72,7 @@ func LoginContent() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section class=\"flex justify-center items-center flex-col\" hx-ext=\"response-targets\"><div class=\"flex flex-col items-center justify-center  mx-auto min-w-96\"><div class=\"w-full  rounded-lg shadow mt-0 sm:max-w-md xl:p-0 bg-gray-800 bg-opacity-20 border-gray-700\"><div class=\"p-6 space-y-4 md:space-y-6 sm:p-8\"><form hx-target-401=\"#login-error\" hx-post=\"/login\" hx-trigger=\"submit\" hx-swap=\"innerHTML\" class=\"space-y-4 md:space-y-6\"><h1 class=\"text-xl font-bold leading-tight tracking-tight opacity-80  md:text-2xl text-cyan-500\">Sign in to your account</h1><div class=\"text-green-400\" id=\"login-error\"></div><div><label for=\"email\" class=\"block mb-2 text-sm font-medium text-white\">Your email</label> <input type=\"email\" name=\"email\" id=\"email\" class=\"border  rounded-lg   block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500\" placeholder=\"name@mail.com\" required=\"\"></div><div><label for=\"password\" class=\"block mb-2 text-sm font-medium text-white\">Password</label> <input type=\"password\" name=\"password\" id=\"password\" placeholder=\"••••••••\" class=\"border rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500\" required=\"\"></div><div class=\"flex items-center justify-between\"><div class=\"flex items-start\"><div class=\"flex items-center h-5\"><input id=\"remember\" aria-describedby=\"remember\" type=\"checkbox\" class=\"w-4 h-4 border  rounded  focus:ring-3 focus:ring-primary-300 \n\t\t\t\t\t\t\t\t\tbg-gray-900 border-gray-600 focus:ring-primary-600 \n\t\t\t\t\t\t\t\t\tring-offset-gray-800 opacity-80\"></div><div class=\"ml-3 text-sm\"><label for=\"remember\" class=\" text-gray-300\">Remember me</label></div></div><a href=\"#\" class=\"text-sm font-medium text-blue-500 hover:underline\">Forgot password?</a></div><button type=\"submit\" class=\"w-full text-white bg-blue-700 bg-opacity-80 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   focus:ring-primary-800\">Sign in</button><p class=\"text-sm font-light  text-gray-400\">Don’t have an account yet? <a href=\"#\" class=\"font-medium  hover:underline text-blue-500\">Sign up</a></p></form></div></div></div></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -98,7 +98,7 @@ func LoginSuccess() templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"text-xl font-bold leading-tight tracking-tight opacity-80  md:text-2xl text-cyan-500\">Signup successful</h1><p class=\"text-gray-400\">Go to the <a class=\"text-blue-500\" href=\"/login\">login page</a></p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -124,7 +124,7 @@ func LoginError() templ.Component {
 			templ_7745c5c3_Var5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<p class=\"text-sm text-red-600\">Invalid email or password</p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

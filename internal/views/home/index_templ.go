@@ -73,7 +73,7 @@ func HomeContent() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"container\"><div class=\"flex justify-between flex-col md:flex-row\"><div class=\"md:w-8/12 w-full md:h-auto\" id=\"canvas-div\"><canvas id=\"viewer\" class=\"mt-4\"></canvas></div><div class=\"flex pt-4 pr-4\"><div class=\"flex flex-col items-center gap-8\"><div class=\"relative text-[#A0E5FF] flex flex-col gap-2\"><p class=\"text-lg font-semibold opacity-55\">3D printing <span class=\"text-orange-600\">excellence</span> at your fingertips</p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -81,7 +81,7 @@ func HomeContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"text-center flex flex-col gap-2\"><p class=\"text-sm text-gray-500\">Do you own a 3D printer?</p><button type=\"button\" class=\"font-semibold text-sm text-orange-900 hover:underline transition-all\">Make money with us</button></div></div></div></div></main>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
