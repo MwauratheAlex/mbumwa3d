@@ -2,15 +2,14 @@ package handlers
 
 import (
 	"fmt"
-	"net/http"
-	"strconv"
-	"strings"
-
 	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
 	"github.com/mwaurathealex/mbumwa3d/internal/payment"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
+	"net/http"
+	"strconv"
+	"strings"
 )
 
 func PostPayment(w http.ResponseWriter, r *http.Request) error {
@@ -38,7 +37,8 @@ func PostPayment(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, components.UploadFormError("Internal server error."))
 	}
 
-	paymentProcessor := payment.NewPaymentProcessor(int(intPhone))
+	paymentProcessor, err := payment.NewPaymentProcessor(int(intPhone))
+
 	// calculate sum of all prices
 	transactionResponse, err := paymentProcessor.InitiateStkPush(1)
 	if err != nil {
@@ -50,6 +50,9 @@ func PostPayment(w http.ResponseWriter, r *http.Request) error {
 	// save the transaction and wait for callback
 	transaction.CheckoutRequestId = transactionResponse.CheckoutRequestID
 	transaction.PaymentStatus = fmt.Sprint(store.ProcessingPayment)
+
+	status, err := paymentProcessor.GetTransactionStatus(transactionResponse.CheckoutRequestID)
+	fmt.Println("STATUS:", status, err)
 
 	transactionStore := dbstore.NewTransactionStore()
 	transactionStore.SaveTransaction(transaction)

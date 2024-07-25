@@ -12,7 +12,7 @@ import (
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 )
 
-var Environment string
+var Environment string = "dev"
 
 func init() {
 	switch Environment {
@@ -59,6 +59,7 @@ func main() {
 		r.Post("/print", handlers.Make(handlers.PostPrint))
 		r.Post("/payment", handlers.Make(handlers.PostPayment))
 		r.Post("/darajacallback", handlers.Make(handlers.DarajaCallbackHandler))
+		r.Post("/payment-status-callback", handlers.Make(handlers.DarajaPaymentStatusCallback))
 		r.Post("/fileupload", handlers.Make(handlers.PostUploadFile))
 
 		r.Route("/orders", func(r chi.Router) {
