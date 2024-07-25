@@ -26,7 +26,7 @@ func FileUpload() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"  flex items-center justify-center w-full flex-col gap-4\"><label for=\"dropzone-file\" class=\"flex flex-col items-center justify-center w-full h-40 border-2 \n\t\tborder-dashed rounded-lg cursor-pointer bg-[#041014]\n\t\tborder-[#031A1D] hover:border-[#041014] hover:bg-[#0A1A22]\"><div id=\"dropzone-label\" class=\"flex flex-col items-center justify-center pt-5 pb-6\"><svg class=\"w-8 h-8 mb-4 text-gray-500\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 16\"><path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2\"></path></svg><p class=\"mb-2 text-sm text-gray-400\" id=\"selected-file\"><span class=\"font-semibold\">Click to upload</span> or drag and drop</p><p class=\"text-xs text-gray-500\">STL Files</p></div><input name=\"file\" accept=\".stl\" id=\"dropzone-file\" type=\"file\" class=\"hidden\"></label><script src=\"public/assets/uploadform.js\" defer></script></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -52,7 +52,7 @@ func FileUploadWithContent(fileName string) templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<p class=\"mb-2 text-sm text-gray-400\">File selected: <span class=\"font-semibold\">$")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -65,7 +65,7 @@ func FileUploadWithContent(fileName string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></p>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

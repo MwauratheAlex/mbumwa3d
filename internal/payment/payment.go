@@ -166,9 +166,5 @@ func (p *PaymentProcessor) GetTransactionStatus(checkoutRequestId string) (*Tran
 		return nil, err
 	}
 
-	if statusResponse.ResponseCode != "200" {
-		return nil, fmt.Errorf("received non-200 response code: %s", statusResponse.ResponseCode)
-	}
-
 	return &statusResponse, nil
 }
