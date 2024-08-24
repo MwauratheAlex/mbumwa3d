@@ -13,21 +13,18 @@ import (
 	"github.com/mwaurathealex/mbumwa3d/internal/views/dashboard"
 )
 
-type DashPopEventMsg struct {
-	DashPop string
+type ToastEventMsg struct {
+	Message string `json:"message"`
 }
 
-func GetDashPopPayload(msg string) string {
-	payload := DashPopEventMsg{
-		DashPop: msg,
+func GetToastPayload(eventName, msg string) string {
+	payload := map[string]ToastEventMsg{
+		eventName: {Message: msg},
 	}
 	payloadJson, err := json.Marshal(payload)
 	if err != nil {
-		fmt.Println(err)
 		return ""
 	}
-	fmt.Println(string(payloadJson))
-
 	return string(payloadJson)
 }
 
@@ -81,7 +78,7 @@ func TakeOrder(w http.ResponseWriter, r *http.Request) error {
 	order.PrinterID = &user.ID
 	orderStore.Save(order)
 
-	w.Header().Add("HX-Trigger", GetDashPopPayload("Order Taken"))
+	w.Header().Add("HX-Trigger", GetToastPayload("DashPop", "Order Taken"))
 	return nil
 }
 
@@ -106,7 +103,7 @@ func CancelOrder(w http.ResponseWriter, r *http.Request) error {
 	order.PrinterID = nil
 	orderStore.Save(order)
 
-	w.Header().Add("HX-Trigger", GetDashPopPayload("Order Cancelled"))
+	w.Header().Add("HX-Trigger", GetToastPayload("DashPop", "Order Cancelled"))
 	return nil
 }
 
@@ -126,6 +123,6 @@ func CompleteOrder(w http.ResponseWriter, r *http.Request) error {
 	order.Status = fmt.Sprint(store.Completed)
 
 	orderStore.Save(order)
-	w.Header().Add("HX-Trigger", GetDashPopPayload("Order Completed"))
+	w.Header().Add("HX-Trigger", GetToastPayload("DashPop", "Order Completed"))
 	return nil
 }

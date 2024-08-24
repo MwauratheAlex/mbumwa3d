@@ -20494,6 +20494,16 @@ void main() {
     }
   }
   window.beforePostPrint = beforePostPrint;
+  (function() {
+    document.body.addEventListener("print-error", (e) => {
+      const message = e.detail.message;
+      switch (message) {
+        case "unauthorized":
+          showToastNotification("Please login to continue", "error");
+          break;
+      }
+    });
+  })();
 })();
 /*! Bundled license information:
 

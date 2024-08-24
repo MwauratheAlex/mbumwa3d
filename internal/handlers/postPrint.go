@@ -15,8 +15,9 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 	user, ok := r.Context().Value(middleware.UserKey).(*store.User)
 
 	if ok == false {
+		w.Header().Add("HX-Trigger", GetToastPayload("PrintError", "unauthorized"))
 		w.WriteHeader(http.StatusUnauthorized)
-		return Render(w, r, components.UnauthorizedFormEror())
+		return nil
 	}
 
 	err := r.ParseMultipartForm(10 << 20) // 10MB max size
