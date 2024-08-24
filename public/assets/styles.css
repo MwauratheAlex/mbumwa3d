@@ -701,6 +701,191 @@ html {
   }
 }
 
+.daisy-btn {
+  display: inline-flex;
+  height: 3rem;
+  min-height: 3rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--rounded-btn, 0.5rem);
+  border-color: transparent;
+  border-color: oklch(var(--btn-color, var(--b2)) / var(--tw-border-opacity));
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1em;
+  gap: 0.5rem;
+  font-weight: 600;
+  text-decoration-line: none;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  border-width: var(--border-btn, 1px);
+  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  --tw-text-opacity: 1;
+  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  outline-color: var(--fallback-bc,oklch(var(--bc)/1));
+  background-color: oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity));
+  --tw-bg-opacity: 1;
+  --tw-border-opacity: 1;
+}
+
+.daisy-btn-disabled,
+  .daisy-btn[disabled],
+  .daisy-btn:disabled {
+  pointer-events: none;
+}
+
+:where(.daisy-btn:is(input[type="checkbox"])),
+:where(.daisy-btn:is(input[type="radio"])) {
+  width: auto;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
+.daisy-btn:is(input[type="checkbox"]):after,
+.daisy-btn:is(input[type="radio"]):after {
+  --tw-content: attr(aria-label);
+  content: var(--tw-content);
+}
+
+@media (hover: hover) {
+  .daisy-btn:hover {
+    --tw-border-opacity: 1;
+    border-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-border-opacity)));
+    --tw-bg-opacity: 1;
+    background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity)));
+  }
+
+  @supports (color: color-mix(in oklab, black, black)) {
+    .daisy-btn:hover {
+      background-color: color-mix(
+            in oklab,
+            oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%,
+            black
+          );
+      border-color: color-mix(
+            in oklab,
+            oklch(var(--btn-color, var(--b2)) / var(--tw-border-opacity, 1)) 90%,
+            black
+          );
+    }
+  }
+
+  @supports not (color: oklch(0% 0 0)) {
+    .daisy-btn:hover {
+      background-color: var(--btn-color, var(--fallback-b2));
+      border-color: var(--btn-color, var(--fallback-b2));
+    }
+  }
+
+  .daisy-btn.daisy-glass:hover {
+    --glass-opacity: 25%;
+    --glass-border-opacity: 15%;
+  }
+
+  .daisy-btn-disabled:hover,
+    .daisy-btn[disabled]:hover,
+    .daisy-btn:disabled:hover {
+    --tw-border-opacity: 0;
+    background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
+    --tw-bg-opacity: 0.2;
+    color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+    --tw-text-opacity: 0.2;
+  }
+
+  @supports (color: color-mix(in oklab, black, black)) {
+    .daisy-btn:is(input[type="checkbox"]:checked):hover, .daisy-btn:is(input[type="radio"]:checked):hover {
+      background-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
+      border-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
+    }
+  }
+}
+
+.daisy-modal {
+  pointer-events: none;
+  position: fixed;
+  inset: 0px;
+  margin: 0px;
+  display: grid;
+  height: 100%;
+  max-height: none;
+  width: 100%;
+  max-width: none;
+  justify-items: center;
+  padding: 0px;
+  opacity: 0;
+  overscroll-behavior: contain;
+  z-index: 999;
+  background-color: transparent;
+  color: inherit;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-property: transform, opacity, visibility;
+  overflow-y: hidden;
+}
+
+:where(.daisy-modal) {
+  align-items: center;
+}
+
+.daisy-modal-box {
+  max-height: calc(100vh - 5em);
+  grid-column-start: 1;
+  grid-row-start: 1;
+  width: 91.666667%;
+  max-width: 32rem;
+  --tw-scale-x: .9;
+  --tw-scale-y: .9;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  border-bottom-right-radius: var(--rounded-box, 1rem);
+  border-bottom-left-radius: var(--rounded-box, 1rem);
+  border-top-left-radius: var(--rounded-box, 1rem);
+  border-top-right-radius: var(--rounded-box, 1rem);
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+  padding: 1.5rem;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-duration: 200ms;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.daisy-modal-open,
+.daisy-modal:target,
+.daisy-modal-toggle:checked + .daisy-modal,
+.daisy-modal[open] {
+  pointer-events: auto;
+  visibility: visible;
+  opacity: 1;
+}
+
+.daisy-modal-action {
+  display: flex;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+
+:root:has(:is(.daisy-modal-open, .daisy-modal:target, .daisy-modal-toggle:checked + .daisy-modal, .daisy-modal[open])) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
 .daisy-toast {
   position: fixed;
   display: flex;
@@ -726,6 +911,67 @@ html {
   color: var(--fallback-erc,oklch(var(--erc)/var(--tw-text-opacity)));
   --alert-bg: var(--fallback-er,oklch(var(--er)/1));
   --alert-bg-mix: var(--fallback-b1,oklch(var(--b1)/1));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .daisy-btn {
+    animation: button-pop var(--animation-btn, 0.25s) ease-out;
+  }
+}
+
+.daisy-btn:active:hover,
+  .daisy-btn:active:focus {
+  animation: button-pop 0s ease-out;
+  transform: scale(var(--btn-focus-scale, 0.97));
+}
+
+@supports not (color: oklch(0% 0 0)) {
+  .daisy-btn {
+    background-color: var(--btn-color, var(--fallback-b2));
+    border-color: var(--btn-color, var(--fallback-b2));
+  }
+}
+
+.daisy-btn:focus-visible {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-offset: 2px;
+}
+
+.daisy-btn.daisy-glass {
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  outline-color: currentColor;
+}
+
+.daisy-btn.daisy-glass.daisy-btn-active {
+  --glass-opacity: 25%;
+  --glass-border-opacity: 15%;
+}
+
+.daisy-btn.daisy-btn-disabled,
+  .daisy-btn[disabled],
+  .daisy-btn:disabled {
+  --tw-border-opacity: 0;
+  background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
+  --tw-bg-opacity: 0.2;
+  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+  --tw-text-opacity: 0.2;
+}
+
+.daisy-btn:is(input[type="checkbox"]:checked),
+.daisy-btn:is(input[type="radio"]:checked) {
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
+}
+
+.daisy-btn:is(input[type="checkbox"]:checked):focus-visible, .daisy-btn:is(input[type="radio"]:checked):focus-visible {
+  outline-color: var(--fallback-p,oklch(var(--p)/1));
 }
 
 @keyframes button-pop {
@@ -754,6 +1000,42 @@ html {
   100% {
     background-position-y: 0;
   }
+}
+
+.daisy-join > :where(*:not(:first-child)):is(.daisy-btn) {
+  margin-inline-start: calc(var(--border-btn) * -1);
+}
+
+.daisy-modal:not(dialog:not(.daisy-modal-open)),
+  .daisy-modal::backdrop {
+  background-color: #0006;
+  animation: modal-pop 0.2s ease-out;
+}
+
+.daisy-modal-backdrop {
+  z-index: -1;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  display: grid;
+  align-self: stretch;
+  justify-self: stretch;
+  color: transparent;
+}
+
+.daisy-modal-open .daisy-modal-box,
+.daisy-modal-toggle:checked + .daisy-modal .daisy-modal-box,
+.daisy-modal:target .daisy-modal-box,
+.daisy-modal[open] .daisy-modal-box {
+  --tw-translate-y: 0px;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.daisy-modal-action > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 @keyframes modal-pop {
@@ -880,6 +1162,53 @@ html {
   top: 0px;
   --tw-translate-y: 0px;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.daisy-join.daisy-join-vertical > :where(*:not(:first-child)):is(.daisy-btn) {
+  margin-top: calc(var(--border-btn) * -1);
+}
+
+.daisy-join.daisy-join-horizontal > :where(*:not(:first-child)):is(.daisy-btn) {
+  margin-inline-start: calc(var(--border-btn) * -1);
+}
+
+.daisy-modal-top :where(.daisy-modal-box) {
+  width: 100%;
+  max-width: none;
+  --tw-translate-y: -2.5rem;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  border-bottom-right-radius: var(--rounded-box, 1rem);
+  border-bottom-left-radius: var(--rounded-box, 1rem);
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.daisy-modal-middle :where(.daisy-modal-box) {
+  width: 91.666667%;
+  max-width: 32rem;
+  --tw-translate-y: 0px;
+  --tw-scale-x: .9;
+  --tw-scale-y: .9;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  border-top-left-radius: var(--rounded-box, 1rem);
+  border-top-right-radius: var(--rounded-box, 1rem);
+  border-bottom-right-radius: var(--rounded-box, 1rem);
+  border-bottom-left-radius: var(--rounded-box, 1rem);
+}
+
+.daisy-modal-bottom :where(.daisy-modal-box) {
+  width: 100%;
+  max-width: none;
+  --tw-translate-y: 2.5rem;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  border-top-left-radius: var(--rounded-box, 1rem);
+  border-top-right-radius: var(--rounded-box, 1rem);
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
 
 .absolute {
@@ -1073,6 +1402,15 @@ html {
   width: min-content;
 }
 
+.w-6 {
+  width: 1.5rem;
+}
+
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
+}
+
 .min-w-96 {
   min-width: 24rem;
 }
@@ -1100,6 +1438,10 @@ html {
 .scale-0 {
   --tw-scale-x: 0;
   --tw-scale-y: 0;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1131,6 +1473,10 @@ html {
 
 .items-center {
   align-items: center;
+}
+
+.justify-start {
+  justify-content: flex-start;
 }
 
 .justify-center {

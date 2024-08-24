@@ -22,17 +22,24 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 
 	err := r.ParseMultipartForm(10 << 20) // 10MB max size
 	if err != nil {
+		w.Header().Add("HX-Trigger", GetToastPayload(
+			"PrintError",
+			"File size should be less than 10MB",
+		))
+		w.WriteHeader(http.StatusBadRequest)
 		fmt.Println("Unable to parse form data:", err)
-		return Render(w, r, components.UploadFormError("Invalid form data."))
+		return nil
 	}
 
 	file, handler, err := r.FormFile("file")
 	if err != nil {
-		fmt.Println("error getting file", err)
+		w.Header().Add("HX-Trigger", GetToastPayload(
+			"PrintError",
+			"Please upload a file before submitting.",
+		))
 		w.WriteHeader(http.StatusBadRequest)
-		return Render(w, r, components.UploadFormError(
-			"Please upload a file before submitting."),
-		)
+		fmt.Println("Unable to parse form data:", err)
+		return nil
 	}
 
 	// file

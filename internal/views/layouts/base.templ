@@ -4,49 +4,47 @@ import "os"
 import "github.com/mwaurathealex/mbumwa3d/internal/views/components"
 
 templ Base() {
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<title>mbumwa 3D | For all your 3D printing needs</title>
-	<link rel="icon" type="image/x-icon" href="/public/favicon.ico" />
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	if os.Getenv("env") == "production" {
-	<link rel="stylesheet" href="/public/assets/style.min.css" />
-	} else {
-	<link rel="stylesheet" href="/public/assets/styles.css" />
-	}
-	<script src="/public/assets/index.js" defer></script>
-	<script src="/public/assets/htmx.min.js" defer></script>
-	<script src="public/assets/response-targets.js" defer></script>
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-	<link href="https://fonts.googleapis.com/css2?family=Recursive:wght@300..1000&display=swap" rel="stylesheet" />
-	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
-
-<body hx-ext="response-targets" class="antialiased relative">
-	<div class="flex flex-col min-h-screen grainy-light">
-		<div>
-			@components.Navbar()
-		</div>
-		<div id="content-container" class="flex-1 flex flex-col justify-center items-center">
-			{ children... }
-		</div>
-		<div>
-			@components.Footer()
-		</div>
-		@Toast()
-	</div>
-</body>
-
-</html>
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<title>mbumwa 3D | For all your 3D printing needs</title>
+			<link rel="icon" type="image/x-icon" href="/public/favicon.ico"/>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			if os.Getenv("env") == "production" {
+				<link rel="stylesheet" href="/public/assets/style.min.css"/>
+			} else {
+				<link rel="stylesheet" href="/public/assets/styles.css"/>
+			}
+			<script src="/public/assets/index.js" defer></script>
+			<script src="/public/assets/htmx.min.js" defer></script>
+			<script src="public/assets/response-targets.js" defer></script>
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=Recursive:wght@300..1000&display=swap" rel="stylesheet"/>
+			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+		</head>
+		<body hx-ext="response-targets" class="antialiased relative">
+			<div class="flex flex-col min-h-screen grainy-light">
+				<div>
+					@components.Navbar()
+				</div>
+				<div id="content-container" class="flex-1 flex flex-col justify-center items-center">
+					{ children... }
+				</div>
+				<div>
+					@components.Footer()
+				</div>
+				@Toast()
+				@components.LoginModal()
+			</div>
+		</body>
+	</html>
 }
 
 templ Toast() {
-<div class="daisy-toast daisy-toast-top daisy-toast-center top-12" id="toast-notification">
-	// "daisy-alert daisy-alert-success w-min flex items-center py-1 rounded-md text-center text-sm"
-	// "text-gray-black tracking-wider scale-0 transition-all daisy-alert-error"
-</div>
+	<div class="daisy-toast daisy-toast-top daisy-toast-center top-12" id="toast-notification">
+		// "daisy-alert daisy-alert-success w-min flex items-center py-1 rounded-md text-center text-sm"
+		// "text-gray-black tracking-wider scale-0 transition-all daisy-alert-error"
+	</div>
 }
