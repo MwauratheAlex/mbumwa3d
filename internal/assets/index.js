@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 
 let animationFrameId = null;
+let scene, camera, renderer, controls, loader, currentMesh;
 
 function initThreeJS() {
   const canvas = document.querySelector("#viewer");
@@ -11,7 +12,7 @@ function initThreeJS() {
   const width = canvasDiv.offsetWidth;
 
   // scene
-  const scene = new THREE.Scene();
+  scene = new THREE.Scene();
 
   // light
   const light = new THREE.DirectionalLight(0xfeccb5, 0.9);
@@ -28,20 +29,19 @@ function initThreeJS() {
   scene.add(ambientLight);
 
   // camera
-  const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+  camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
   camera.position.z = 60;
   scene.add(camera);
 
-
   // renderer
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+  renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
   renderer.setClearColor(0xa2d2ff, 0.03); // the default
   renderer.setSize(width, height);
   renderer.setPixelRatio(2);
   renderer.render(scene, camera);
 
   // controls
-  const controls = new OrbitControls(camera, canvas);
+  controls = new OrbitControls(camera, canvas);
   controls.enableDamping = true;
   controls.enablePan = false;
   controls.enableZoom = false;
@@ -49,72 +49,94 @@ function initThreeJS() {
   controls.autoRotateSpeed = 4;
 
 
-  const loader = new STLLoader();
-  let currentMesh = null;
-
-  function addToScene(geometry) {
-    geometry.computeBoundingBox();
-    const bbox = geometry.boundingBox;
-    const center = new THREE.Vector3();
-    bbox.getCenter(center)
-    geometry.translate(-center.x, -center.y, -center.z);
-
-    const material = new THREE.MeshStandardMaterial({ color: 0x00ff83, roughness: 0.0001 });
-    const mesh = new THREE.Mesh(geometry, material);
-
-    const pivot = new THREE.Object3D();
-    pivot.add(mesh)
-
-    if (currentMesh) {
-      scene.remove(currentMesh);
-    }
-    currentMesh = pivot;
-    scene.add(pivot);
-  }
-
-  function loadInitialModel() {
-    loader.load('public/models/pen_holder.stl',
-      (geometry) => addToScene(geometry),
-      (xhr) => {
-        console.log(xhr.loaded / xhr.total * 100 + '% loaded');
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
-  // load model
-  function loadModel(file) {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const content = e.target.result;
-      const geometry = loader.parse(content);
-      addToScene(geometry);
-    };
-    reader.readAsArrayBuffer(file);
-  }
-
-  // event listener
-  const fileInput = document.querySelector("#dropzone-file")
-  if (fileInput && !fileInput.dataset.listenerAttached) {
-    fileInput.addEventListener("change", (e) => {
-      const file = e.target.files[0]
-      if (file) {
-        loadModel(file)
-      }
-    });
-    fileInput.dataset.listenerAttached = true;
-  }
-
-  loadInitialModel();
-
-  function loop() {
-    controls.update();
-    renderer.render(scene, camera);
-    animationFrameId = window.requestAnimationFrame(loop);
-  }
+  loader = new STLLoader();
+  currentMesh = null;
 
   loop();
+}
+
+const fileInput = document.querySelector("#dropzone-file");
+const fileUploadContainer = document.getElementById("file-upload-container");
+if (fileInput && !fileInput.dataset.listenerAttached) {
+  fileInput.addEventListener("change", (e) => {
+
+    const filename = e.target.files[0].name
+    const selectedFileLabel = document.getElementById("selected-file");
+    selectedFileLabel.innerHTML = `File: ${filename}`;
+
+    fileUploadContainer.classList.add("hidden");
+
+    const file = e.target.files[0]
+    if (file) {
+      loadModel(file)
+    }
+  });
+  fileInput.dataset.listenerAttached = true;
+}
+
+const uploadNewFileBtn = document.getElementById("upload-new-file");
+uploadNewFileBtn.addEventListener("click", () => clearScene());
+
+function clearScene() {
+  if (currentMesh) {
+    scene.remove(currentMesh);
+    currentMesh = null;
+  }
+
+  if (fileInput) {
+    fileInput.value = "";
+  }
+  fileUploadContainer.classList.remove("hidden");
+  document.getElementById("selected-file").innerHTML = "";
+
+  const canvas = document.querySelector("#viewer");
+  const uploadNewFileBtn = document.getElementById("upload-new-file");
+
+  canvas.classList.add("hidden");
+  uploadNewFileBtn.classList.add("hidden");
+}
+
+function loadModel(file) {
+  const canvas = document.querySelector("#viewer");
+  const uploadNewFileBtn = document.getElementById("upload-new-file");
+
+  canvas.classList.remove("hidden");
+  uploadNewFileBtn.classList.remove("hidden");
+
+
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    const content = e.target.result;
+    const geometry = loader.parse(content);
+    addToScene(geometry);
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function addToScene(geometry) {
+  geometry.computeBoundingBox();
+  const bbox = geometry.boundingBox;
+  const center = new THREE.Vector3();
+  bbox.getCenter(center)
+  geometry.translate(-center.x, -center.y, -center.z);
+
+  const material = new THREE.MeshStandardMaterial({ color: 0x00ff83, roughness: 0.0001 });
+  const mesh = new THREE.Mesh(geometry, material);
+
+  const pivot = new THREE.Object3D();
+  pivot.add(mesh)
+
+  if (currentMesh) {
+    scene.remove(currentMesh);
+  }
+  currentMesh = pivot;
+  scene.add(pivot);
+}
+
+function loop() {
+  controls.update();
+  renderer.render(scene, camera);
+  animationFrameId = window.requestAnimationFrame(loop);
 }
 
 // Function to stop the animation
@@ -148,4 +170,5 @@ document.body.addEventListener("htmx:afterSwap", (event) => {
     initThreeJS();
   }
 });
+
 

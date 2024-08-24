@@ -1,12 +1,13 @@
 package components
 
 templ FileUpload() {
-	<div class="  flex items-center justify-center w-full flex-col gap-4">
+	<div class="flex items-center justify-center h-full w-full flex-col gap-4">
 		<label
 			for="dropzone-file"
-			class="flex flex-col items-center justify-center w-full h-40 border-2 
-		border-dashed rounded-lg cursor-pointer bg-[#041014]
-		border-[#031A1D] hover:border-[#041014] hover:bg-[#0A1A22]"
+			class="flex flex-col items-center justify-center w-full border
+		border-dashed rounded-lg cursor-pointer h-full
+		border-gray-300 bg-blue-50/20 hover:bg-blue-50/60"
+			id="file-upload-container"
 		>
 			<div id="dropzone-label" class="flex flex-col items-center justify-center pt-5 pb-6">
 				<svg
@@ -24,20 +25,14 @@ templ FileUpload() {
 						d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
 					></path>
 				</svg>
-				<p class="mb-2 text-sm text-gray-400" id="selected-file">
+				<p class="mb-2 text-sm text-gray-800 text-center" id="selected-file">
 					<span class="font-semibold">Click to upload</span>
-					or drag and drop
+					<br/>
+					or drag & drop your STL Files here
 				</p>
 				<p class="text-xs text-gray-500">STL Files</p>
 			</div>
 			<input name="file" accept=".stl" id="dropzone-file" type="file" class="hidden"/>
 		</label>
-		<script src="public/assets/uploadform.js" defer></script>
 	</div>
-}
-
-templ FileUploadWithContent(fileName string) {
-	<p class="mb-2 text-sm text-gray-400">
-		File selected: <span class="font-semibold">${ fileName }</span>
-	</p>
 }

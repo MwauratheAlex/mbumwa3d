@@ -34,7 +34,12 @@ func (p *PaymentProcessor) GetAuthToken() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	darajaAuthHeader := os.Getenv("DARAJA_AUTH_HEADER")
+	consumerKey := os.Getenv("CONSUMER_KEY")
+	consumerSecret := os.Getenv("CONSUMER_SECRET")
+	authString := fmt.Sprintf("%s:%s", consumerKey, consumerSecret)
+	encodedAuth := base64.StdEncoding.EncodeToString([]byte(authString))
+	darajaAuthHeader := fmt.Sprintf("Basic %s", encodedAuth)
+
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", darajaAuthHeader)
 	req.Header.Add("Host", "sandbox.safaricom.co.ke")
@@ -127,16 +132,17 @@ func (p *PaymentProcessor) InitiateStkPush(amount int) (*TransactionResponse, er
 
 func (p *PaymentProcessor) GetTransactionStatus(checkoutRequestId string) (*TransactionStatusResponse, error) {
 	requestData := &TransactionStatusRequest{
-		Initiator:          os.Getenv("DARAJA_TRANSACTION_STATUS_INITIATOR"),
-		SecurityCredential: os.Getenv("DARAJA_TRANSACTION_STATUS_CREDENTIALS"),
-		CommandID:          "TransactionStatusQuery",
-		TransactionID:      checkoutRequestId,
-		PartyA:             p.BusinessShortCode,
-		IdentifierType:     "4", // 4 - Organization shortcode (BusinessShortCode),
-		ResultURL:          "https://3d.mbumwa.com/payment-status-callback",
-		QueueTimeOutURL:    "https://3d.mbumwa.com/payment-status-callback",
-		Remarks:            "OK",
-		Occasion:           "Mbumwa3d Transaction",
+		Initiator:                os.Getenv("DARAJA_TRANSACTION_STATUS_INITIATOR"),
+		SecurityCredential:       os.Getenv("DARAJA_TRANSACTION_STATUS_CREDENTIALS"),
+		CommandID:                "TransactionStatusQuery",
+		TransactionID:            checkoutRequestId,
+		OriginatorConversationID: checkoutRequestId,
+		PartyA:                   p.BusinessShortCode,
+		IdentifierType:           "4", // 4 - Organization shortcode (BusinessShortCode),
+		ResultURL:                "https://3d.mbumwa.com/payment-status-callback",
+		QueueTimeOutURL:          "https://3d.mbumwa.com/payment-status-callback",
+		Remarks:                  "OK",
+		Occasion:                 "Mbumwa3d Transaction",
 	}
 
 	jsonData, err := json.Marshal(requestData)

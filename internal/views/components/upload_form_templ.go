@@ -26,15 +26,7 @@ func UploadForm() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-post=\"/print\" hx-target-error=\"#file-upload-errors\" class=\"flex  gap-4  flex-col\" hx-swap=\"outerHTML\" hx-encoding=\"multipart/form-data\" id=\"main-form\"><div class=\"mt-0 text-sm text-red-600\" id=\"file-upload-errors\"></div>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = FileUpload().Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"upload-form\" class=\"max-w-sm mx-auto w-full flex gap-4 flex-col\"><p class=\"text-lg font-semibold opacity-55\">Customize your print</p><div class=\"grid grid-cols-2  gap-4\"><div><label for=\"underline_select\" class=\"text-sm opacity-40\">Technology</label> <select name=\"technology\" id=\"underline_select\" class=\"block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer\"><option selected>FDM (Plastic)</option></select></div><div><label for=\"underline_select\" class=\"text-sm opacity-40\">Choose a material</label> <select name=\"material\" id=\"underline_select\" class=\"block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer\"><option selected>ABS</option> <option value=\"US\">PLA</option> <option value=\"CA\">ASA</option> <option value=\"FR\">PA12-CF</option> <option value=\"FR\">True Plastic</option></select></div><div><label for=\"underline_select\" class=\"text-sm opacity-40\">Pick a color</label> <select name=\"color\" id=\"underline_select\" class=\"block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer\"><option selected>Any</option> <option value=\"US\">Red</option> <option value=\"CA\">White</option> <option value=\"FR\">Black</option></select></div><div><label for=\"underline_select\" class=\"text-sm opacity-40\">Quantity</label> <input name=\"quantity\" type=\"number\" value=\"1\" id=\"underline_select\" class=\"block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer\"></div></div><div class=\"bg-orange-500 bg-opacity-30 blur-3xl  drop-shadow-xl h-6 mt-8    \"></div><button type=\"submit\" class=\"absolute bottom-0 w-[94%] font-semibold  text-cyan-100 rounded-lg p-2 \n\t\t\t\t\t\t\tbg-orange-800 bg-opacity-80 \">Let's print</button></div><script src=\"public/assets/uploadform.js\" defer></script></form>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -60,20 +52,20 @@ func UploadFormError(message string) templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mt-0 text-sm text-red-600\" id=\"file-upload-errors\"><p>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(message)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/components/upload_form.templ`, Line: 64, Col: 13}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/components/upload_form.templ`, Line: 83, Col: 14}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -99,7 +91,7 @@ func UnauthorizedFormEror() templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mt-0 text-sm text-red-600\" id=\"file-upload-errors\"><p>Please login before submitting</p></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -125,7 +117,7 @@ func FileUploadSuccess() templ.Component {
 			templ_7745c5c3_Var5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mt-0 text-sm text-red-600\" id=\"file-upload-errors\"><p class=\"text-green-600\">Submitted, thank you for trusting us.</p></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

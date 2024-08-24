@@ -1,10 +1,32 @@
 package components
 
 templ Footer() {
-<footer class="z-50  opacity-80 w-full text-white   bg-[#000E12] pt-2 pb-2 mt-4 md:mt-8">
-	<div class=" flex items-center justify-between container text-sm">
-		<p class="text-orange-800  md:pl-4 md:pr-4 md:pt-2 md:pb-2 md:mr-20  pt-1 pb-1">3d.mbumwa.com</p>
-		<p href="./signup" class="md:pl-4 md:pr-4 md:pt-2 md:pb-2  text-gray-500 pt-1 pb-1">&copy;2024 mbumwa.com</p>
-	</div>
-</footer>
+	<footer class="bg-white h-20 relative">
+		@MaxWidthWrapper() {
+			<div class="border-t border-gray-200"></div>
+			<div class="h-full flex flex-col md:flex-row md:justify-between justify-center items-center">
+				<div class="text-center md:text-left pb-2 md:pb-0">
+					<p class="text-sm text-muted-foreground">
+						&copy; <span id="current-year"></span> All rights reserved
+					</p>
+				</div>
+				<div class="flex items-center justify-center">
+					<div class="flex space-x-8">
+						<a href="#" class="text-sm text-muted-foreground hover:text-gray-600">
+							Terms
+						</a>
+						<a href="#" class="text-sm text-muted-foreground hover:text-gray-600">
+							Privacy Policy
+						</a>
+						<a href="#" class="text-sm text-muted-foreground hover:text-gray-600">
+							Cookie Policy
+						</a>
+					</div>
+				</div>
+			</div>
+		}
+		<script>
+		document.getElementById("current-year").innerHTML = new Date().getFullYear();
+	</script>
+	</footer>
 }
