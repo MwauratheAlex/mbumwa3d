@@ -16,6 +16,15 @@ module.exports = {
       }
     },
   },
+  plugins: [
+    require('daisyui'),
+  ],
+  daisyui: {
+    styled: true,
+    prefix: "daisy-",
+    themes: ["bumblebee"],
+  },
+
   extend: {},
   fontFamily: {
     sans: [...fontFamily.sans]

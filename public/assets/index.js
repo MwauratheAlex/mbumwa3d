@@ -20457,6 +20457,43 @@ void main() {
       initThreeJS();
     }
   });
+  var toastNotification = document.getElementById("toast-notification");
+  function showToastNotification(message, type) {
+    toastNotification.innerHTML = `
+	 <div 
+       class="daisy-alert daisy-alert-${type} w-min transition-all flex items-center py-1 rounded-md text-center text-sm">
+       <span class="text-gray-black tracking-wider">
+         ${message}
+       </span>
+	 </div>
+  `;
+    setTimeout(
+      () => {
+        toastNotification.innerHTML = "";
+      },
+      3e3
+    );
+  }
+  function capitalize(s) {
+    return s[0].toUpperCase() + s.slice(1);
+  }
+  function beforePostPrint(event) {
+    if (!Boolean(fileInput.value)) {
+      event.preventDefault();
+      showToastNotification("An STL File is required", "error");
+      return;
+    }
+    const form = event.target;
+    const formData = new FormData(form);
+    for (const [key, value] of formData.entries()) {
+      if (value === "Please select") {
+        event.preventDefault();
+        showToastNotification(`${capitalize(key)} is required`, "error");
+        return;
+      }
+    }
+  }
+  window.beforePostPrint = beforePostPrint;
 })();
 /*! Bundled license information:
 

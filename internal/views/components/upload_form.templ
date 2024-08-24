@@ -3,6 +3,7 @@ package components
 templ UploadForm() {
 	<form
 		hx-post="/print"
+		hx-on::before-request="beforePostPrint(event)"
 		hx-target-error="#file-upload-errors"
 		class="flex pt-0 gap-4  flex-col"
 		hx-swap="outerHTML"
@@ -18,11 +19,12 @@ templ UploadForm() {
 				<div>
 					<label for="underline_select" class="text-sm opacity-60">Technology</label>
 					<select
-						name="material"
+						name="technology"
 						id="underline_select"
 						class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer"
 					>
-						<option class="py-8" selected>FDM</option>
+						<option selected>Please select</option>
+						<option class="py-8" value="FDM">FDM</option>
 					</select>
 				</div>
 				// material
@@ -33,11 +35,12 @@ templ UploadForm() {
 						id="underline_select"
 						class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer"
 					>
-						<option class="py-8" selected>ABS</option>
-						<option class="py-8" value="US">PLA</option>
-						<option class="py-8" value="CA">ASA</option>
-						<option class="py-4" value="FR">PA12-CF</option>
-						<option class="py-4" value="FR">True Plastic</option>
+						<option selected>Please select</option>
+						<option class="py-8" value="ABS">ABS</option>
+						<option class="py-8" value="PLA">PLA</option>
+						<option class="py-8" value="ASA">ASA</option>
+						<option class="py-4" value="PA12-CF">PA12-CF</option>
+						<option class="py-4" value="True Plastic">True Plastic</option>
 					</select>
 				</div>
 				// color
@@ -48,7 +51,7 @@ templ UploadForm() {
 						id="underline_select"
 						class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer"
 					>
-						<option selected>Any</option>
+						<option selected>Please select</option>
 						<option value="US">Red</option>
 						<option value="CA">White</option>
 						<option value="FR">Black</option>
