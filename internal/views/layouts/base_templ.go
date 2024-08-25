@@ -8,8 +8,10 @@ package layouts
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "os"
-import "github.com/mwaurathealex/mbumwa3d/internal/views/components"
+import (
+	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
+	"os"
+)
 
 func Base() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {

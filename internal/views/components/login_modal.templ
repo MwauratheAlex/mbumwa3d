@@ -4,13 +4,13 @@ templ LoginModal() {
 	<div>
 		<dialog id="login_modal" class="daisy-modal">
 			<div class="daisy-modal-box text-center">
-				<h3 class="text-3xl font-bold">Please login to continue</h3>
+				<h3 class="text-2xl font-bold">Please login to continue</h3>
 				<div class="py-4 flex text-left flex-col mx-auto gap-2 w-max">
 					<p class="flex gap-2">
 						@CheckMarkSvg()
 						Your data has been saved.
 					</p>
-					<p class="flex gap-2">
+					<p class="flex gap-2 text-sm">
 						@XSvg()
 						Press ESC key or click outside to close
 					</p>
@@ -25,8 +25,7 @@ templ LoginModal() {
 			</form>
 		</dialog>
 		<script>
-		//document.getElementById("login_modal").showModal();
-	</script>
+  </script>
 	</div>
 }
 

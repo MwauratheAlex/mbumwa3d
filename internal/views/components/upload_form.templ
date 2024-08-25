@@ -8,7 +8,7 @@ templ UploadForm() {
 		class="flex pt-0 gap-4  flex-col"
 		hx-swap="outerHTML"
 		hx-encoding="multipart/form-data"
-		id="main-form"
+		id="print-config-form"
 	>
 		<div id="upload-form" class="max-w-sm mx-auto w-full flex gap-4 flex-col mt-0">
 			<p class="text-3xl font-semibold">
@@ -52,9 +52,9 @@ templ UploadForm() {
 						class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer"
 					>
 						<option selected>Please select</option>
-						<option value="US">Red</option>
-						<option value="CA">White</option>
-						<option value="FR">Black</option>
+						<option value="Red">Red</option>
+						<option value="White">White</option>
+						<option value="Black">Black</option>
 					</select>
 				</div>
 				// Quantity

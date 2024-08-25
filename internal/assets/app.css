@@ -7,6 +7,8 @@
   padding-right: 10px;
 }
 
+
+
 .select {
   cursor: pointer;
   display: inline-block;
@@ -111,4 +113,8 @@ html {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+:root:has(:is(.daisy-modal-open, .daisy-modal:target, .daisy-modal-toggle:checked + .daisy-modal, .daisy-modal[open])) {
+  scrollbar-gutter: auto !important;
 }

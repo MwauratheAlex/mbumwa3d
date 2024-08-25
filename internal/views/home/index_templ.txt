@@ -1,5 +1,5 @@
 <main class=\"container\">
- <h1 class=\"text-2xl\">3D printing <span class=\"px-2 py-1 bg-green-600 rounded-md text-white\">excelence</span> in your fingertips</h1>    <div class=\"flex flex-col md:flex-row gap-8\"><div class=\"w-full flex flex-col gap-2 py-4 pb-0\"><div class=\"flex-none flex items-center justify-between\"><p class=\"text-sm text-gray-500\">
+ <h1 class=\"text-2xl\">3D printing <span class=\"px-2 py-1 bg-green-600 rounded-md text-white\">excelence</span> at your fingertips</h1><div class=\"flex flex-col md:flex-row gap-8\"><div class=\"w-full flex flex-col gap-2 py-4 pb-0\"><div class=\"flex-none flex items-center justify-between\"><p class=\"text-sm text-gray-500\">
 </p><p class=\"text-sm text-gray-500\" id=\"selected-file\"></p></div><div class=\"flex-grow relative\" id=\"canvas-div\"><canvas class=\"absolute z-0 hidden border border-gray-200\" id=\"viewer\"></canvas><div class=\"h-full z-[10]\">
 </div>
 </div></div><div class=\"flex gap-2 py-4 pb-0 flex-col w-full\"><p class=\"text-sm text-gray-500\">

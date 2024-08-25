@@ -20497,9 +20497,24 @@ void main() {
   (function() {
     document.body.addEventListener("print-error", (e) => {
       const message = e.detail.message;
+      const loginModal = document.getElementById("login_modal");
       switch (message) {
         case "unauthorized":
-          showToastNotification("Please login to continue", "error");
+          const form = document.getElementById("print-config-form");
+          const formData = new FormData(form);
+          const formObject = {};
+          formData.forEach((value, key) => formObject[key] = value);
+          const timestamp = Date.now();
+          const hour = 3600 * 1e3;
+          const expiryTime = timestamp + hour;
+          localStorage.setItem("printConfigFormData", JSON.stringify({
+            data: formObject,
+            expiredAt: expiryTime
+          }));
+          loginModal.showModal();
+          break;
+        default:
+          showToastNotification(message);
           break;
       }
     });
