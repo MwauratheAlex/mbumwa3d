@@ -9,6 +9,7 @@ import (
 	"github.com/mwaurathealex/mbumwa3d/internal/auth"
 	"github.com/mwaurathealex/mbumwa3d/internal/handlers"
 	"github.com/mwaurathealex/mbumwa3d/internal/initializers"
+	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 )
 
 var Environment string = "dev"
@@ -29,12 +30,13 @@ func main() {
 	port := os.Getenv("PORT")
 	r := chi.NewMux()
 
-	// userStore := dbstore.NewUserStore()
+	userStore := dbstore.NewUserStore()
 
 	// authMiddleware := middleware.NewAuthMiddleware("Authorization", userStore)
-	//auth.NewAuth()
 	auth.NewAuth()
-	authHandler := handlers.NewAuthHandler()
+	authHandler := handlers.NewAuthHandler(
+		handlers.AuthHandlerParams{UserStore: userStore},
+	)
 
 	r.Group(func(r chi.Router) {
 		//r.Use(
@@ -43,7 +45,7 @@ func main() {
 		//)
 
 		r.Get("/auth/{provider}/callback", handlers.Make(authHandler.AuthCallback))
-		r.Get("/auth/{provider}", authHandler.BeginAuth)
+		r.Get("/auth/{provider}", handlers.Make(authHandler.BeginAuth))
 
 		r.Handle("/*", public())
 		r.Get("/", handlers.Make(handlers.HandleHome))

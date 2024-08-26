@@ -3,7 +3,6 @@ package dbstore
 import (
 	"github.com/mwaurathealex/mbumwa3d/internal/initializers"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -18,14 +17,9 @@ func NewUserStore() *UserStore {
 }
 
 func (s *UserStore) CreateUser(email string, password string, hasPrinter bool) error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 10)
-	if err != nil {
-		return err
-	}
 	return s.db.Create(&store.User{
-		Email:        email,
-		PasswordHash: string(hashedPassword),
-		HasPrinter:   hasPrinter,
+		Email:      email,
+		HasPrinter: hasPrinter,
 	}).Error
 }
 
@@ -47,4 +41,14 @@ func (s *UserStore) GetUserById(id uint) (*store.User, error) {
 		return nil, err
 	}
 	return &user, err
+}
+
+func (s *UserStore) GetOrCreate(user *store.User) (*store.User, error) {
+	err := s.db.Where("email = ?", user.Email).FirstOrCreate(user).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }

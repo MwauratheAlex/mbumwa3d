@@ -17,8 +17,8 @@ type Auth struct {
 }
 
 const (
-	key    = "randomstring"
-	MaxAge = 86400 * 30
+	key    = "randomstring" // session secret
+	MaxAge = 86400 * 30     // 30 days
 	IsProd = false
 )
 
@@ -31,9 +31,11 @@ func NewAuth() {
 	store := sessions.NewCookieStore([]byte(key))
 	store.MaxAge(MaxAge)
 	store.Options.Path = "/"
+	store.Options.HttpOnly = true
 	store.Options.Secure = IsProd
-	store.Options.SameSite = http.SameSiteLaxMode
-
+	if !IsProd {
+		store.Options.SameSite = http.SameSiteLaxMode
+	}
 	gothic.Store = store
 
 	goth.UseProviders(

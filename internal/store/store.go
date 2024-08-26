@@ -36,19 +36,21 @@ func (os State) String() string {
 }
 
 type User struct {
-	ID           uint   `gorm:"primaryKey;autoIncrement"`
-	Email        string `gorm:"type:citext;unique;not null"`
-	PasswordHash string `gorm:"type:varchar(255)"`
-	Orders       []Order
-	HasPrinter   bool
-	InsertedAt   time.Time `gorm:"autoCreateTime"`
-	UpdatedAt    time.Time `gorm:"autoUpdateTime"`
+	ID         uint   `gorm:"primaryKey;autoIncrement"`
+	Email      string `gorm:"type:citext;unique;not null"`
+	Name       string
+	PhotoUrl   string
+	Orders     []Order
+	HasPrinter bool
+	InsertedAt time.Time `gorm:"autoCreateTime"`
+	UpdatedAt  time.Time `gorm:"autoUpdateTime"`
 }
 
 type UserStore interface {
 	CreateUser(email string, password string, hasPrinter bool) error
 	GetUser(email string) (*User, error)
 	GetUserById(id uint) (*User, error)
+	GetOrCreate(user *User) (*User, error)
 }
 
 type File struct {
