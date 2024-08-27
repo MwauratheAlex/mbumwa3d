@@ -34,9 +34,16 @@ func main() {
 
 	// authMiddleware := middleware.NewAuthMiddleware("Authorization", userStore)
 	auth.NewAuth()
-	authHandler := handlers.NewAuthHandler(
-		handlers.AuthHandlerParams{UserStore: userStore},
+	sessionName := "user-session"
+
+	authHandler := handlers.NewAuthHandler(handlers.AuthHandlerParams{
+		UserStore:   userStore,
+		SessionName: sessionName},
 	)
+
+	fileHandler := handlers.NewFileHandler(handlers.FileHandlerParams{
+		SessionName: sessionName,
+	})
 
 	r.Group(func(r chi.Router) {
 		//r.Use(
@@ -47,6 +54,8 @@ func main() {
 		r.Get("/auth/{provider}/callback", handlers.Make(authHandler.AuthCallback))
 		r.Get("/auth/{provider}", handlers.Make(authHandler.BeginAuth))
 
+		r.Post("/file", fileHandler.Post)
+
 		r.Handle("/*", public())
 		r.Get("/", handlers.Make(handlers.HandleHome))
 		r.Get("/complete", handlers.Make(handlers.HandleFinished))
@@ -54,7 +63,6 @@ func main() {
 		r.Get("/usermenu", handlers.Make(handlers.GetUserMenu))
 		r.Get("/dashboard", handlers.Make(handlers.HandleDashboard))
 
-		r.Post("/logout", handlers.Make(handlers.PostLogout))
 		r.Post("/print", handlers.Make(handlers.PostPrint))
 		r.Post("/payment", handlers.Make(handlers.PostPayment))
 		r.Post("/darajacallback", handlers.Make(handlers.DarajaCallbackHandler))

@@ -14,13 +14,24 @@ import (
 )
 
 type ToastEventMsg struct {
-	Message string `json:"message"`
+	Message     string `json:"message"`
+	Description string `json:"description"`
 }
 
-func GetToastPayload(eventName, msg string) string {
+type GetToastPayloadParams struct {
+	EventName   string
+	Message     string
+	Description string
+}
+
+func GetToastPayload(params *GetToastPayloadParams) string {
 	payload := map[string]ToastEventMsg{
-		eventName: {Message: msg},
+		params.EventName: {
+			Message:     params.Message,
+			Description: params.Description,
+		},
 	}
+
 	payloadJson, err := json.Marshal(payload)
 	if err != nil {
 		return ""
@@ -78,7 +89,7 @@ func TakeOrder(w http.ResponseWriter, r *http.Request) error {
 	order.PrinterID = &user.ID
 	orderStore.Save(order)
 
-	w.Header().Add("HX-Trigger", GetToastPayload("DashPop", "Order Taken"))
+	// w.Header().Add("HX-Trigger", GetToastPayload("DashPop", "Order Taken"))
 	return nil
 }
 
@@ -103,7 +114,7 @@ func CancelOrder(w http.ResponseWriter, r *http.Request) error {
 	order.PrinterID = nil
 	orderStore.Save(order)
 
-	w.Header().Add("HX-Trigger", GetToastPayload("DashPop", "Order Cancelled"))
+	// w.Header().Add("HX-Trigger", GetToastPayload("DashPop", "Order Cancelled"))
 	return nil
 }
 
@@ -123,6 +134,6 @@ func CompleteOrder(w http.ResponseWriter, r *http.Request) error {
 	order.Status = fmt.Sprint(store.Completed)
 
 	orderStore.Save(order)
-	w.Header().Add("HX-Trigger", GetToastPayload("DashPop", "Order Completed"))
+	// w.Header().Add("HX-Trigger", GetToastPayload("DashPop", "Order Completed"))
 	return nil
 }

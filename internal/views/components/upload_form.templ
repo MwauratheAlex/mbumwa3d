@@ -3,7 +3,7 @@ package components
 templ UploadForm() {
 	<form
 		hx-post="/print"
-		hx-on::before-request="beforePostPrint(event)"
+		hx-on::before-request="beforePostConfig(event)"
 		hx-target-error="#file-upload-errors"
 		class="flex pt-0 gap-4  flex-col"
 		hx-swap="outerHTML"

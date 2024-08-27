@@ -53,18 +53,38 @@ type UserStore interface {
 	GetOrCreate(user *User) (*User, error)
 }
 
+// stored in cookie store
+// with only the file id updated first
+// and build progressively until we
+// finally save to db
+// files in cloundflare where order is complete will be deleted after a while
+type PrintConfig struct {
+	ID         uint
+	Technology string
+	Material   string
+	Color      string
+	Quantity   string
+	FileID     string // SaveToDisk name OR FileID in cloudflare
+	User       User
+	UserID     uint
+	FileVolume float64
+}
+
+// cookie store until transfer to config
 type File struct {
 	ID         uint `gorm:"primaryKey;autoIncrement"`
 	UserID     uint
 	User       User      `gorm:"foreignKey:UserID"`
 	InsertedAt time.Time `gorm:"autoCreateTime"`
 	UpdatedAt  time.Time `gorm:"autoUpdateTime"`
-
 	LocalPath  string
+
+	FileID     string
+	ConfigID   uint
+	Volume     string
 	FileName   string
 	Technology string
-
-	Color string
+	Color      string
 }
 
 type FileStore interface {

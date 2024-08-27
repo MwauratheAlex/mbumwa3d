@@ -58,22 +58,6 @@ function initThreeJS() {
 const fileInput = document.querySelector("#dropzone-file");
 const fileUploadContainer = document.getElementById("file-upload-container");
 
-if (fileInput && !fileInput.dataset.listenerAttached) {
-  fileInput.addEventListener("change", (e) => {
-
-    const filename = e.target.files[0].name
-    const selectedFileLabel = document.getElementById("selected-file");
-    selectedFileLabel.innerHTML = `File: ${filename}`;
-
-    fileUploadContainer.classList.add("hidden");
-
-    const file = e.target.files[0]
-    if (file) {
-      loadModel(file)
-    }
-  });
-  fileInput.dataset.listenerAttached = true;
-}
 
 const uploadNewFileBtn = document.getElementById("upload-new-file");
 uploadNewFileBtn.addEventListener("click", () => clearScene());
@@ -196,7 +180,19 @@ function capitalize(s) {
   return s[0].toUpperCase() + s.slice(1);
 }
 
-function beforePostPrint(event) {
+function beforeUploadFile(event) {
+  const filename = event.target.files[0].name;
+  const fileExtension = filename.split(".").pop().toLowerCase();
+
+  if (fileExtension !== "stl") {
+    showToastNotification("Please upload a valid STL file", "error");
+    event.preventDefault();
+    event.target.value = ""
+    return;
+  }
+}
+
+function beforePostConfig(event) {
   if (!Boolean(fileInput.value)) {
     event.preventDefault();
     showToastNotification("An STL File is required", "error");
@@ -214,13 +210,15 @@ function beforePostPrint(event) {
   }
 }
 
-window.beforePostPrint = beforePostPrint;
+window.beforePostConfig = beforePostConfig;
+window.beforeUploadFile = beforeUploadFile;
 
 
 
 (function() {
-  document.body.addEventListener("print-error", (e) => {
+  document.body.addEventListener("file-config-upload-event", (e) => {
     const message = e.detail.message;
+    const description = e.detail.description;
     const loginModal = document.getElementById("login_modal");
 
     switch (message) {
@@ -242,8 +240,20 @@ window.beforePostPrint = beforePostPrint;
 
         loginModal.showModal();
         break;
+      case "success":
+        const file = fileInput.files[0];
+        const selectedFileLabel = document.getElementById("selected-file");
+
+        selectedFileLabel.innerHTML = `File: ${file.name}`;
+        fileUploadContainer.classList.add("hidden");
+
+        if (file) {
+          loadModel(file)
+          showToastNotification(description, message);
+        }
+        break
       default:
-        showToastNotification(message);
+        showToastNotification(description, message);
         break;
     }
   });
