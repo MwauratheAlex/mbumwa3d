@@ -21,7 +21,7 @@ type FileStore struct {
 func NewFileStore() *FileStore {
 	return &FileStore{
 		db:      initializers.DB,
-		FileDir: "./model_storage",
+		FileDir: "./public/model_storage",
 	}
 }
 

@@ -32,6 +32,17 @@ func NewAuthHandler(params AuthHandlerParams) *AuthHandler {
 func (h *AuthHandler) BeginAuth(w http.ResponseWriter, r *http.Request) error {
 	provider := chi.URLParam(r, "provider")
 
+	from := r.URL.Query().Get("from")
+	state := "from=" + from
+
+	session, _ := gothic.Store.Get(r, h.SessionName)
+	session.Values["state"] = state
+	err := session.Save(r, w)
+
+	if err != nil {
+		panic("Error saving url state")
+	}
+
 	r = r.WithContext(context.WithValue(context.Background(), "provider", provider))
 
 	gothic.BeginAuthHandler(w, r)
@@ -39,6 +50,11 @@ func (h *AuthHandler) BeginAuth(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (h *AuthHandler) AuthCallback(w http.ResponseWriter, r *http.Request) error {
+	session, _ := gothic.Store.Get(r, h.SessionName)
+	state, ok := session.Values["state"].(string)
+	fmt.Println("state in callback: ", state, ok)
+
+	err := session.Save(r, w)
 	provider := chi.URLParam(r, "provider")
 
 	r = r.WithContext(context.WithValue(context.Background(), "provider", provider))
@@ -54,22 +70,22 @@ func (h *AuthHandler) AuthCallback(w http.ResponseWriter, r *http.Request) error
 		PhotoUrl: user.AvatarURL,
 	})
 
-	session, _ := gothic.Store.Get(r, h.SessionName)
-	session.Values["user"] = user
-	err = session.Save(r, w)
-	if err != nil {
-		fmt.Println("ERROR adding user to session")
+	session.Values["user"] = goth.User{
+		UserID: string(userInDb.ID),
+		Email:  userInDb.Email,
 	}
 
-	fmt.Println(userInDb)
+	err = session.Save(r, w)
+	if err != nil {
+		fmt.Println("ERROR adding user to session", err)
+		panic(err)
+	}
 
 	//	 TODO:
 	//
-	// 3. fileId  = cookie[fileId]
-	// 5. if !file, then return; show toast, login success
-	//
-	// 6. else we show the summary of config?????? from local storage, so we can just send down an event (form-after-login???)
-	// 7. Edit or continue to payment.
+	// 6. else we show the summary of config
+	//      -local storage - primary data
+	// 7. Send down an event with the fileID from store
 
 	http.Redirect(w, r, "/", http.StatusFound)
 	return nil

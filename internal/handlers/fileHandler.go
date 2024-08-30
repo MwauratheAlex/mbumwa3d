@@ -14,10 +14,12 @@ import (
 
 type FileHandler struct {
 	SessionName string
+	FileStore   *dbstore.FileStore
 }
 
 type FileHandlerParams struct {
 	SessionName string
+	FileStore   *dbstore.FileStore
 }
 
 func NewFileHandler(params FileHandlerParams) *FileHandler {
@@ -26,6 +28,7 @@ func NewFileHandler(params FileHandlerParams) *FileHandler {
 	}
 	return &FileHandler{
 		SessionName: params.SessionName,
+		FileStore:   params.FileStore,
 	}
 }
 
@@ -53,10 +56,9 @@ func (h *FileHandler) Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	filestore := dbstore.NewFileStore()
-	fileNameInDisk, err := filestore.SaveToDisk(file, handler.Filename)
+	fileNameInDisk, err := h.FileStore.SaveToDisk(file, handler.Filename)
 
-	filePath := filepath.Join(filestore.FileDir, fileNameInDisk)
+	filePath := filepath.Join(h.FileStore.FileDir, fileNameInDisk)
 	stlCalc, err := stl.NewSTLCalc(filePath)
 	defer stlCalc.Close()
 	fileVolume, err := stlCalc.GetVolume("cm")

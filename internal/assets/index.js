@@ -230,7 +230,6 @@ function afterPostConfig(event) {
     }));
   }
 
-
   loginModal.showModal();
 }
 
@@ -242,27 +241,8 @@ window.afterPostConfig = afterPostConfig;
   document.body.addEventListener("file-config-upload-event", (e) => {
     const message = e.detail.message;
     const description = e.detail.description;
-    const loginModal = document.getElementById("login_modal");
 
     switch (message) {
-      case "unauthorized":
-        const form = document.getElementById("print-config-form");
-        const formData = new FormData(form);
-
-        const formObject = {}
-        formData.forEach((value, key) => formObject[key] = value);
-
-        const timestamp = Date.now();
-        const hour = 3600 * 1000;
-        const expiryTime = timestamp + hour;
-
-        localStorage.setItem("printConfigFormData", JSON.stringify({
-          data: formObject,
-          expiredAt: expiryTime,
-        }));
-
-        loginModal.showModal();
-        break;
       case "success":
         const file = fileInput.files[0];
         const selectedFileLabel = document.getElementById("selected-file");

@@ -25,7 +25,7 @@ templ PrintSummaryModal() {
 templ SummaryModalContent(params store.SummaryModalParams) {
 	<div class="flex flex-row gap-10 py-2 px-4">
 		<div>
-			@OrderSummary()
+			@OrderSummary(params.PrintContif)
 		</div>
 		<div>
 			if params.IsLoggedInUser {
@@ -126,16 +126,16 @@ templ MpesaSvg() {
 	</svg>
 }
 
-templ OrderSummary() {
+templ OrderSummary(printConfig store.PrintConfig) {
 	<div class="flex flex-col gap-2 text-left">
 		<h3 class="text-lg text-gray-600">Print Summary</h3>
 		<div class="rounded-md border-gray-100 shadow-black/50 shadow-2xl">
-			@OrderSummaryTable()
+			@OrderSummaryTable(printConfig)
 		</div>
 	</div>
 }
 
-templ OrderSummaryTable() {
+templ OrderSummaryTable(printConfig store.PrintConfig) {
 	<div class="overflow-x-auto">
 		<table class="daisy-table daisy-table-zebra">
 			<!-- head -->
@@ -154,10 +154,10 @@ templ OrderSummaryTable() {
 				<tr>
 					<th>1</th>
 					<td>File3.stl</td>
-					<td>FDM</td>
-					<td>PA12-CF</td>
-					<td>Black</td>
-					<td>5</td>
+					<td>{ printConfig.Technology }</td>
+					<td>{ printConfig.Material }</td>
+					<td>{ printConfig.Color }</td>
+					<td>{ printConfig.Quantity }</td>
 				</tr>
 			</tbody>
 		</table>
@@ -165,7 +165,7 @@ templ OrderSummaryTable() {
 }
 
 templ GoogleLoginButton() {
-	<button class="daisy-btn" onclick="window.location.href='/auth/google'">
+	<button class="daisy-btn" onclick="window.location.href='/auth/google?from=print-summary'">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			width="20"

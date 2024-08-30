@@ -32,20 +32,25 @@ func init() {
 
 func main() {
 
-	port := os.Getenv("PORT")
 	r := chi.NewMux()
 
+	auth.NewAuth()
+	port := os.Getenv("PORT")
+
 	userStore := dbstore.NewUserStore()
+	fileStore := dbstore.NewFileStore()
 
 	// authMiddleware := middleware.NewAuthMiddleware("Authorization", userStore)
-	auth.NewAuth()
 	sessionName := "user-session"
+
 	authHandler := handlers.NewAuthHandler(handlers.AuthHandlerParams{
 		UserStore:   userStore,
 		SessionName: sessionName},
 	)
+
 	fileHandler := handlers.NewFileHandler(handlers.FileHandlerParams{
 		SessionName: sessionName,
+		FileStore:   fileStore,
 	})
 	printConfigHandler := handlers.NewPrintConfigHandler(
 		handlers.PrintConfigHandlerParams{
