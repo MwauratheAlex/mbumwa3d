@@ -210,10 +210,33 @@ function beforePostConfig(event) {
   }
 }
 
+function afterPostConfig(event) {
+  const loginModal = document.getElementById("login_modal");
+  const form = document.getElementById("print-config-form");
+  const formData = new FormData(form);
+
+  const statusCode = event.detail.xhr.status;
+  if (statusCode === 401) { // unauthorized
+    const formObject = {}
+    formData.forEach((value, key) => formObject[key] = value);
+
+    const timestamp = Date.now();
+    const hour = 3600 * 1000;
+    const expiryTime = timestamp + hour;
+
+    localStorage.setItem("printConfigFormData", JSON.stringify({
+      data: formObject,
+      expiredAt: expiryTime,
+    }));
+  }
+
+
+  loginModal.showModal();
+}
+
 window.beforePostConfig = beforePostConfig;
 window.beforeUploadFile = beforeUploadFile;
-
-
+window.afterPostConfig = afterPostConfig;
 
 (function() {
   document.body.addEventListener("file-config-upload-event", (e) => {
@@ -250,6 +273,8 @@ window.beforeUploadFile = beforeUploadFile;
         if (file) {
           loadModel(file)
           showToastNotification(description, message);
+        } else {
+          //TODO: get file from server - link in event description
         }
         break
       default:

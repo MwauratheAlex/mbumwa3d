@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"net/http"
 	"os"
@@ -9,12 +10,16 @@ import (
 	"github.com/mwaurathealex/mbumwa3d/internal/auth"
 	"github.com/mwaurathealex/mbumwa3d/internal/handlers"
 	"github.com/mwaurathealex/mbumwa3d/internal/initializers"
+	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 )
 
 var Environment string = "dev"
 
 func init() {
+	// register stuff to cookie store
+	gob.Register(store.PrintConfig{})
+
 	switch Environment {
 	case "docker-prod":
 		os.Setenv("env", "production")
@@ -35,35 +40,41 @@ func main() {
 	// authMiddleware := middleware.NewAuthMiddleware("Authorization", userStore)
 	auth.NewAuth()
 	sessionName := "user-session"
-
 	authHandler := handlers.NewAuthHandler(handlers.AuthHandlerParams{
 		UserStore:   userStore,
 		SessionName: sessionName},
 	)
-
 	fileHandler := handlers.NewFileHandler(handlers.FileHandlerParams{
 		SessionName: sessionName,
 	})
+	printConfigHandler := handlers.NewPrintConfigHandler(
+		handlers.PrintConfigHandlerParams{
+			SessionName: sessionName,
+			UserStore:   userStore,
+		},
+	)
 
 	r.Group(func(r chi.Router) {
 		//r.Use(
 		//middleware.TextHTMLMiddleware,
 		// authMiddleware.AddUserToContext,
 		//)
+		r.Handle("/*", public())
 
 		r.Get("/auth/{provider}/callback", handlers.Make(authHandler.AuthCallback))
 		r.Get("/auth/{provider}", handlers.Make(authHandler.BeginAuth))
 
 		r.Post("/file", fileHandler.Post)
+		r.Post("/config", handlers.Make(printConfigHandler.Post))
 
-		r.Handle("/*", public())
+		///////////
+
 		r.Get("/", handlers.Make(handlers.HandleHome))
 		r.Get("/complete", handlers.Make(handlers.HandleFinished))
 		r.Get("/processing", handlers.Make(handlers.HandleProcessing))
 		r.Get("/usermenu", handlers.Make(handlers.GetUserMenu))
 		r.Get("/dashboard", handlers.Make(handlers.HandleDashboard))
 
-		r.Post("/print", handlers.Make(handlers.PostPrint))
 		r.Post("/payment", handlers.Make(handlers.PostPayment))
 		r.Post("/darajacallback", handlers.Make(handlers.DarajaCallbackHandler))
 		r.Post("/payment-status-callback", handlers.Make(handlers.DarajaPaymentStatusCallback))

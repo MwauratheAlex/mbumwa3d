@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"path/filepath"
 
@@ -20,6 +21,9 @@ type FileHandlerParams struct {
 }
 
 func NewFileHandler(params FileHandlerParams) *FileHandler {
+	if params.SessionName == "" {
+		panic("NewFileHandler is missing SessionName")
+	}
 	return &FileHandler{
 		SessionName: params.SessionName,
 	}
@@ -71,7 +75,16 @@ func (h *FileHandler) Post(w http.ResponseWriter, r *http.Request) {
 
 	session, _ := gothic.Store.Get(r, h.SessionName)
 	session.Values["print_config"] = printConfig
-	session.Save(r, w)
+	err = session.Save(r, w)
+	if err != nil {
+		w.Header().Add("HX-Trigger", GetToastPayload(&GetToastPayloadParams{
+			EventName:   "FileConfigUploadEvent",
+			Message:     "error",
+			Description: "Something went wrong. Please try again.",
+		}))
+		log.Fatalf("Error adding PrintConfig to session: ", err)
+		return
+	}
 
 	w.Header().Add("HX-Trigger", GetToastPayload(&GetToastPayloadParams{
 		EventName:   "FileConfigUploadEvent",

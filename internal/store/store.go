@@ -70,6 +70,11 @@ type PrintConfig struct {
 	FileVolume float64
 }
 
+type SummaryModalParams struct {
+	IsLoggedInUser bool
+	PrintContif    PrintConfig
+}
+
 // cookie store until transfer to config
 type File struct {
 	ID         uint `gorm:"primaryKey;autoIncrement"`

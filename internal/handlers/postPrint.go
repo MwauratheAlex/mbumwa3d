@@ -1,31 +1,52 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
-
-	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
-	"github.com/mwaurathealex/mbumwa3d/internal/store"
 )
 
 func PostPrint(w http.ResponseWriter, r *http.Request) error {
-	user, ok := r.Context().Value(middleware.UserKey).(*store.User)
-	errorEventPayload := &GetToastPayloadParams{
-		EventName: "FileConfigUploadEvent",
-		Message:   "error",
-	}
+	// user, ok := r.Context().Value(middleware.UserKey).(*store.User)
 
-	if ok == false {
-		errorEventPayload.Description = "unauthorized"
-		w.Header().Add("HX-Trigger", GetToastPayload(errorEventPayload))
-		w.WriteHeader(http.StatusUnauthorized)
-		return nil
-	}
+	// if ok == false {
+	// 	w.Header().Add("HX-Trigger", GetToastPayload("PrintError", "unauthorized"))
+	// 	w.WriteHeader(http.StatusUnauthorized)
+	// 	return nil
+	// }
 
-	fmt.Println(user)
-	return nil
+	// err := r.ParseMultipartForm(10 << 20) // 10MB max size
+	// if err != nil {
+	// 	w.Header().Add("HX-Trigger", GetToastPayload(
+	// 		"PrintError",
+	// 		"File size should be less than 10MB",
+	// 	))
+	// 	w.WriteHeader(http.StatusBadRequest)
+	// 	fmt.Println("Unable to parse form data:", err)
+	// 	return nil
+	// }
 
-	// price
+	// file, handler, err := r.FormFile("file")
+	// if err != nil {
+	// 	w.Header().Add("HX-Trigger", GetToastPayload(
+	// 		"PrintError",
+	// 		"Please upload a file before submitting.",
+	// 	))
+	// 	w.WriteHeader(http.StatusBadRequest)
+	// 	fmt.Println("Unable to parse form data:", err)
+	// 	return nil
+
+	// }
+
+	// // file
+	// filestore := dbstore.NewFileStore()
+	// dstPath, msg, err := filestore.SaveToDisk(file, handler.Filename)
+
+	// if err != nil {
+	// 	fmt.Println(msg, err)
+	// 	w.WriteHeader(http.StatusInternalServerError)
+	// 	return Render(w, r, components.UploadFormError("Internal server error."))
+	// }
+
+	// // price
 	// stlCalc, err := stl.NewSTLCalc(dstPath)
 	// if err != nil {
 	// 	fmt.Println("Error creating stl calc: ", err)
@@ -98,4 +119,5 @@ func PostPrint(w http.ResponseWriter, r *http.Request) error {
 	// 	fmt.Sprintf("%.2f", order.Price),
 	// 	fmt.Sprintf("%d", order.BuildTime),
 	// ))
+	return nil
 }

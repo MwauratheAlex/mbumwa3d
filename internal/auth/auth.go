@@ -16,9 +16,11 @@ type Auth struct {
 	CookieStore *sessions.CookieStore
 }
 
+const oneDay = 86400
+
 const (
 	key    = "randomstring" // session secret
-	MaxAge = 86400 * 30     // 30 days
+	MaxAge = oneDay
 	IsProd = false
 )
 

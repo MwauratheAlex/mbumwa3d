@@ -2,9 +2,12 @@ package handlers
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 )
@@ -52,8 +55,13 @@ func (h *AuthHandler) AuthCallback(w http.ResponseWriter, r *http.Request) error
 	})
 
 	session, _ := gothic.Store.Get(r, h.SessionName)
-	session.Values["user_id"] = userInDb.ID
-	session.Save(r, w)
+	session.Values["user"] = user
+	err = session.Save(r, w)
+	if err != nil {
+		fmt.Println("ERROR adding user to session")
+	}
+
+	fmt.Println(userInDb)
 
 	//	 TODO:
 	//
@@ -69,4 +77,33 @@ func (h *AuthHandler) AuthCallback(w http.ResponseWriter, r *http.Request) error
 
 func (h *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) error {
 	return nil
+}
+
+func (h *AuthHandler) GetSessionUser(r *http.Request) (goth.User, error) {
+	session, err := gothic.Store.Get(r, h.SessionName)
+	if err != nil {
+		return goth.User{}, err
+	}
+
+	user := session.Values["user"]
+	if user == nil {
+		return goth.User{}, fmt.Errorf("User is not authenticated! %v", user)
+	}
+
+	return user.(goth.User), nil
+}
+
+func (h *AuthHandler) RequreAuth(handlerFunc http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		session, err := h.GetSessionUser(r)
+		if err != nil {
+			log.Println("User is not authenticated!")
+			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+			return
+		}
+
+		log.Printf("user is authenticated! user: %v!", session.Name)
+		handlerFunc(w, r)
+
+	}
 }

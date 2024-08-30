@@ -20490,8 +20490,27 @@ void main() {
       }
     }
   }
+  function afterPostConfig(event) {
+    const loginModal = document.getElementById("login_modal");
+    const form = document.getElementById("print-config-form");
+    const formData = new FormData(form);
+    const statusCode = event.detail.xhr.status;
+    if (statusCode === 401) {
+      const formObject = {};
+      formData.forEach((value, key) => formObject[key] = value);
+      const timestamp = Date.now();
+      const hour = 3600 * 1e3;
+      const expiryTime = timestamp + hour;
+      localStorage.setItem("printConfigFormData", JSON.stringify({
+        data: formObject,
+        expiredAt: expiryTime
+      }));
+    }
+    loginModal.showModal();
+  }
   window.beforePostConfig = beforePostConfig;
   window.beforeUploadFile = beforeUploadFile;
+  window.afterPostConfig = afterPostConfig;
   (function() {
     document.body.addEventListener("file-config-upload-event", (e) => {
       const message = e.detail.message;
@@ -20520,6 +20539,7 @@ void main() {
           if (file) {
             loadModel(file);
             showToastNotification(description, message);
+          } else {
           }
           break;
         default:

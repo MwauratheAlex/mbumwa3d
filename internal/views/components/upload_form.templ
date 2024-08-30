@@ -2,12 +2,12 @@ package components
 
 templ UploadForm() {
 	<form
-		hx-post="/print"
+		hx-post="/config"
 		hx-on::before-request="beforePostConfig(event)"
-		hx-target-error="#file-upload-errors"
+		hx-on::after-request="afterPostConfig(event)"
+		hx-target="#summary-modal-content"
+		hx-target-401="#summary-modal-content"
 		class="flex pt-0 gap-4  flex-col"
-		hx-swap="outerHTML"
-		hx-encoding="multipart/form-data"
 		id="print-config-form"
 	>
 		<div id="upload-form" class="max-w-sm mx-auto w-full flex gap-4 flex-col mt-0">
@@ -17,10 +17,10 @@ templ UploadForm() {
 			<div class="grid grid-cols-1  gap-2 pb-4">
 				// Technology
 				<div>
-					<label for="underline_select" class="text-sm opacity-60">Technology</label>
+					<label for="tech-underline_select" class="text-sm opacity-60">Technology</label>
 					<select
 						name="technology"
-						id="underline_select"
+						id="tech-underline_select"
 						class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer"
 					>
 						<option selected>Please select</option>
@@ -29,10 +29,10 @@ templ UploadForm() {
 				</div>
 				// material
 				<div>
-					<label for="underline_select" class="text-sm opacity-60">Material</label>
+					<label for="material-underline_select" class="text-sm opacity-60">Material</label>
 					<select
 						name="material"
-						id="underline_select"
+						id="material-underline_select"
 						class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer"
 					>
 						<option selected>Please select</option>
@@ -45,10 +45,10 @@ templ UploadForm() {
 				</div>
 				// color
 				<div>
-					<label for="underline_select" class="text-sm opacity-60">Color</label>
+					<label for="color-underline_select" class="text-sm opacity-60">Color</label>
 					<select
 						name="color"
-						id="underline_select"
+						id="color-underline_select"
 						class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200 peer"
 					>
 						<option selected>Please select</option>
@@ -59,12 +59,12 @@ templ UploadForm() {
 				</div>
 				// Quantity
 				<div>
-					<label for="underline_select" class="text-sm opacity-80">Quantity</label>
+					<label for="qty-underline_select" class="text-sm opacity-80">Quantity</label>
 					<input
 						name="quantity"
 						type="number"
 						value="1"
-						id="underline_select"
+						id="qty-underline_select"
 						class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none  focus:outline-none focus:ring-0 focus:border-gray-200 peer"
 					/>
 				</div>
