@@ -2,7 +2,7 @@ package components
 
 templ UploadForm() {
 	<form
-		hx-post="/config"
+		hx-post="/print-summary"
 		hx-on::before-request="beforePostConfig(event)"
 		hx-on::after-request="afterPostConfig(event)"
 		hx-target="#summary-modal-content"

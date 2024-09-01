@@ -3,25 +3,38 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/mwaurathealex/mbumwa3d/internal/middleware"
-	"github.com/mwaurathealex/mbumwa3d/internal/store"
+	"github.com/markbates/goth"
+	"github.com/markbates/goth/gothic"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/home"
 )
 
-func HandleHome(w http.ResponseWriter, r *http.Request) error {
+type HomeHandler struct {
+	SessionName string
+}
+
+func NewHomeHandler(sessionName string) *HomeHandler {
+	return &HomeHandler{
+		SessionName: sessionName,
+	}
+}
+
+func (h *HomeHandler) HandleHome(w http.ResponseWriter, r *http.Request) error {
 	if IsHtmx(r) {
 		return Render(w, r, home.HomeContent())
 	}
+
 	return Render(w, r, home.Index())
 }
 
-func GetUserMenu(w http.ResponseWriter, r *http.Request) error {
-	user, ok := r.Context().Value(middleware.UserKey).(*store.User)
+func (h *HomeHandler) GetUserMenu(w http.ResponseWriter, r *http.Request) error {
+	session, _ := gothic.Store.Get(r, h.SessionName)
+	_, ok := session.Values["user"].(goth.User)
+
 	if ok {
-		if user.HasPrinter {
-			return Render(w, r, components.HasPrinterUserMenu())
-		}
+		//if user.HasPrinter {
+		//	return Render(w, r, components.HasPrinterUserMenu())
+		//}
 		return Render(w, r, components.LoggedInUserMenu())
 	}
 

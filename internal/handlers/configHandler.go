@@ -2,40 +2,45 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
-	"net/http"
+	"github.com/mwaurathealex/mbumwa3d/internal/views/printSummary"
 )
 
-type PrintConfigHandler struct {
+type PrintSummaryHandler struct {
 	SessionName string
 	UserStore   store.UserStore
 }
 
-type PrintConfigHandlerParams struct {
+type PrintSummaryHandlerParams struct {
 	SessionName string
 	UserStore   store.UserStore
 }
 
-func NewPrintConfigHandler(params PrintConfigHandlerParams) *PrintConfigHandler {
+func NewPrintSummaryHandler(params PrintSummaryHandlerParams) *PrintSummaryHandler {
 	if params.SessionName == "" {
 		panic("Session Name is requred in PrintConfigHandler")
 	}
-	return &PrintConfigHandler{
+	return &PrintSummaryHandler{
 		SessionName: params.SessionName,
 		UserStore:   params.UserStore,
 	}
 }
 
-func (h *PrintConfigHandler) Post(w http.ResponseWriter, r *http.Request) error {
+func (h *PrintSummaryHandler) HandlePrintSummary(w http.ResponseWriter, r *http.Request) error {
+
 	printConfig, _ := h.GetSessionPrintConfig(r)
 
-	printConfig.Technology = r.FormValue("technology")
-	printConfig.Material = r.FormValue("material")
-	printConfig.Color = r.FormValue("color")
-	printConfig.Quantity = r.FormValue("quantity")
+	if r.Method == "POST" {
+		printConfig.Technology = r.FormValue("technology")
+		printConfig.Material = r.FormValue("material")
+		printConfig.Color = r.FormValue("color")
+		printConfig.Quantity = r.FormValue("quantity")
+	}
 
 	err := h.ValidateFormData(&printConfig)
 
@@ -60,31 +65,39 @@ func (h *PrintConfigHandler) Post(w http.ResponseWriter, r *http.Request) error 
 	}
 
 	_, err = h.GetSessionUser(r)
+	isLoggedIn := err == nil
 
 	if err != nil {
-		errorEventPayload.Message = "unauthorized"
-		errorEventPayload.Description = "Please login to continue"
 		w.WriteHeader(http.StatusUnauthorized)
+	}
+
+	if r.Method == "GET" {
+		if IsHtmx(r) {
+			return Render(w, r,
+				components.SummaryModalContent(
+					store.SummaryModalParams{
+						PrintContif:    printConfig,
+						IsLoggedInUser: isLoggedIn,
+					}),
+			)
+		}
 
 		return Render(w, r,
-			components.SummaryModalContent(
+			printSummary.PrintSummaryPage(
 				store.SummaryModalParams{
-					IsLoggedInUser: false,
 					PrintContif:    printConfig,
+					IsLoggedInUser: isLoggedIn,
 				}),
 		)
 	}
 
-	return Render(w, r,
-		components.SummaryModalContent(
-			store.SummaryModalParams{
-				IsLoggedInUser: true,
-				PrintContif:    printConfig,
-			}),
-	)
+	return Render(w, r, components.SummaryModalContent(store.SummaryModalParams{
+		IsLoggedInUser: isLoggedIn,
+		PrintContif:    printConfig,
+	}))
 }
 
-func (h *PrintConfigHandler) ValidateFormData(
+func (h *PrintSummaryHandler) ValidateFormData(
 	printConfig *store.PrintConfig) error {
 
 	if printConfig.FileID == "" || printConfig.FileVolume == 0 {
@@ -106,7 +119,7 @@ func (h *PrintConfigHandler) ValidateFormData(
 	return nil
 }
 
-func (h *PrintConfigHandler) GetSessionUser(r *http.Request) (goth.User, error) {
+func (h *PrintSummaryHandler) GetSessionUser(r *http.Request) (goth.User, error) {
 	session, err := gothic.Store.Get(r, h.SessionName)
 	if err != nil {
 		return goth.User{}, err
@@ -121,7 +134,7 @@ func (h *PrintConfigHandler) GetSessionUser(r *http.Request) (goth.User, error) 
 	return user, nil
 }
 
-func (h *PrintConfigHandler) GetSessionPrintConfig(
+func (h *PrintSummaryHandler) GetSessionPrintConfig(
 	r *http.Request) (store.PrintConfig, error) {
 
 	session, err := gothic.Store.Get(r, h.SessionName)

@@ -33,10 +33,9 @@ func (h *AuthHandler) BeginAuth(w http.ResponseWriter, r *http.Request) error {
 	provider := chi.URLParam(r, "provider")
 
 	from := r.URL.Query().Get("from")
-	state := "from=" + from
 
 	session, _ := gothic.Store.Get(r, h.SessionName)
-	session.Values["state"] = state
+	session.Values["auth-from"] = from
 	err := session.Save(r, w)
 
 	if err != nil {
@@ -50,13 +49,7 @@ func (h *AuthHandler) BeginAuth(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (h *AuthHandler) AuthCallback(w http.ResponseWriter, r *http.Request) error {
-	session, _ := gothic.Store.Get(r, h.SessionName)
-	state, ok := session.Values["state"].(string)
-	fmt.Println("state in callback: ", state, ok)
-
-	err := session.Save(r, w)
 	provider := chi.URLParam(r, "provider")
-
 	r = r.WithContext(context.WithValue(context.Background(), "provider", provider))
 
 	user, err := gothic.CompleteUserAuth(w, r)
@@ -70,6 +63,8 @@ func (h *AuthHandler) AuthCallback(w http.ResponseWriter, r *http.Request) error
 		PhotoUrl: user.AvatarURL,
 	})
 
+	session, _ := gothic.Store.Get(r, h.SessionName)
+
 	session.Values["user"] = goth.User{
 		UserID: string(userInDb.ID),
 		Email:  userInDb.Email,
@@ -81,13 +76,15 @@ func (h *AuthHandler) AuthCallback(w http.ResponseWriter, r *http.Request) error
 		panic(err)
 	}
 
-	//	 TODO:
-	//
-	// 6. else we show the summary of config
-	//      -local storage - primary data
-	// 7. Send down an event with the fileID from store
+	authFrom, ok := session.Values["auth-from"].(string)
 
-	http.Redirect(w, r, "/", http.StatusFound)
+	redirectUrl := "/"
+
+	if ok && authFrom == "print-summary" {
+		redirectUrl = "/print-summary"
+	}
+
+	http.Redirect(w, r, redirectUrl, http.StatusFound)
 	return nil
 }
 

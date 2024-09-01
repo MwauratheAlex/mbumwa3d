@@ -18503,9 +18503,9 @@ void main() {
   var Cache = {
     enabled: false,
     files: {},
-    add: function(key, file) {
+    add: function(key, file2) {
       if (this.enabled === false) return;
-      this.files[key] = file;
+      this.files[key] = file2;
     },
     get: function(key) {
       if (this.enabled === false) return;
@@ -18577,12 +18577,12 @@ void main() {
         }
         return this;
       };
-      this.getHandler = function(file) {
+      this.getHandler = function(file2) {
         for (let i = 0, l = handlers.length; i < l; i += 2) {
           const regex = handlers[i];
           const loader2 = handlers[i + 1];
           if (regex.global) regex.lastIndex = 0;
-          if (regex.test(file)) {
+          if (regex.test(file2)) {
             return loader2;
           }
         }
@@ -20387,7 +20387,7 @@ void main() {
     canvas.classList.add("hidden");
     uploadNewFileBtn2.classList.add("hidden");
   }
-  function loadModel(file) {
+  function loadModel(file2) {
     const canvas = document.querySelector("#viewer");
     const uploadNewFileBtn2 = document.getElementById("upload-new-file");
     canvas.classList.remove("hidden");
@@ -20398,7 +20398,7 @@ void main() {
       const geometry = loader.parse(content);
       addToScene(geometry);
     };
-    reader.readAsArrayBuffer(file);
+    reader.readAsArrayBuffer(file2);
   }
   function addToScene(geometry) {
     geometry.computeBoundingBox();
@@ -20491,7 +20491,7 @@ void main() {
     }
   }
   function afterPostConfig(event) {
-    const loginModal = document.getElementById("login_modal");
+    const summaryModal = document.getElementById("summary_modal");
     const form = document.getElementById("print-config-form");
     const formData = new FormData(form);
     const statusCode = event.detail.xhr.status;
@@ -20506,7 +20506,7 @@ void main() {
         expiredAt: expiryTime
       }));
     }
-    loginModal.showModal();
+    summaryModal.showModal();
   }
   window.beforePostConfig = beforePostConfig;
   window.beforeUploadFile = beforeUploadFile;
@@ -20517,18 +20517,32 @@ void main() {
       const description = e.detail.description;
       switch (message) {
         case "success":
-          const file = fileInput.files[0];
-          const selectedFileLabel = document.getElementById("selected-file");
-          selectedFileLabel.innerHTML = `File: ${file.name}`;
+          const file2 = fileInput.files[0];
+          const selectedFileLabel2 = document.getElementById("selected-file");
+          selectedFileLabel2.innerHTML = `File: ${file2.name}`;
           fileUploadContainer.classList.add("hidden");
-          if (file) {
-            loadModel(file);
+          if (file2) {
+            loadModel(file2);
             showToastNotification(description, message);
           } else {
           }
           break;
         default:
           showToastNotification(description, message);
+          break;
+      }
+    });
+    document.body.addEventListener("auth-success", (e) => {
+      const message = e.detail.message;
+      const description = e.detail.description;
+      switch (message) {
+        case "reload-config":
+          const fileId = description;
+          loadModel(`/public/${fileId}`);
+          showToastNotification("Login Sucessful!", "success");
+          selectedFileLabel.innerHTML = `File: ${file.name}`;
+          fileUploadContainer.classList.add("hidden");
+          console.log("Here");
           break;
       }
     });

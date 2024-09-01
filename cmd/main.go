@@ -52,12 +52,14 @@ func main() {
 		SessionName: sessionName,
 		FileStore:   fileStore,
 	})
-	printConfigHandler := handlers.NewPrintConfigHandler(
-		handlers.PrintConfigHandlerParams{
+	printSummaryHandler := handlers.NewPrintSummaryHandler(
+		handlers.PrintSummaryHandlerParams{
 			SessionName: sessionName,
 			UserStore:   userStore,
 		},
 	)
+
+	homeHandler := handlers.NewHomeHandler(sessionName)
 
 	r.Group(func(r chi.Router) {
 		//r.Use(
@@ -68,16 +70,20 @@ func main() {
 
 		r.Get("/auth/{provider}/callback", handlers.Make(authHandler.AuthCallback))
 		r.Get("/auth/{provider}", handlers.Make(authHandler.BeginAuth))
-
 		r.Post("/file", fileHandler.Post)
-		r.Post("/config", handlers.Make(printConfigHandler.Post))
+		r.Post("/print-summary", handlers.Make(
+			printSummaryHandler.HandlePrintSummary,
+		))
+		r.Get("/print-summary", handlers.Make(
+			printSummaryHandler.HandlePrintSummary,
+		))
 
 		///////////
 
-		r.Get("/", handlers.Make(handlers.HandleHome))
+		r.Get("/", handlers.Make(homeHandler.HandleHome))
 		r.Get("/complete", handlers.Make(handlers.HandleFinished))
 		r.Get("/processing", handlers.Make(handlers.HandleProcessing))
-		r.Get("/usermenu", handlers.Make(handlers.GetUserMenu))
+		r.Get("/usermenu", handlers.Make(homeHandler.GetUserMenu))
 		r.Get("/dashboard", handlers.Make(handlers.HandleDashboard))
 
 		r.Post("/payment", handlers.Make(handlers.PostPayment))

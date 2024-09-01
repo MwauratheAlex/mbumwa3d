@@ -20,7 +20,7 @@ const oneDay = 86400
 
 const (
 	key    = "randomstring" // session secret
-	MaxAge = oneDay
+	MaxAge = oneDay * 30
 	IsProd = false
 )
 

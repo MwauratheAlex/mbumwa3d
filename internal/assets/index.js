@@ -211,7 +211,7 @@ function beforePostConfig(event) {
 }
 
 function afterPostConfig(event) {
-  const loginModal = document.getElementById("login_modal");
+  const summaryModal = document.getElementById("summary_modal");
   const form = document.getElementById("print-config-form");
   const formData = new FormData(form);
 
@@ -230,7 +230,7 @@ function afterPostConfig(event) {
     }));
   }
 
-  loginModal.showModal();
+  summaryModal.showModal();
 }
 
 window.beforePostConfig = beforePostConfig;
@@ -262,4 +262,21 @@ window.afterPostConfig = afterPostConfig;
         break;
     }
   });
+
+  document.body.addEventListener("auth-success", (e) => {
+    const message = e.detail.message;
+    const description = e.detail.description;
+
+    switch (message) {
+      case "reload-config":
+        const fileId = description;
+        loadModel(`/public/${fileId}`);
+        showToastNotification("Login Sucessful!", "success");
+        selectedFileLabel.innerHTML = `File: ${file.name}`;
+        fileUploadContainer.classList.add("hidden");
+        console.log("Here")
+        break;
+    }
+  });
+
 })();
