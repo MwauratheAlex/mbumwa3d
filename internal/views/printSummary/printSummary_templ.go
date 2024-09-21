@@ -32,7 +32,7 @@ func PrintSummaryModal() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><dialog id=\"summary_modal\" class=\"daisy-modal\"><div class=\"daisy-modal-box text-center max-w-max\"><h3 class=\"text-left px-4 text-2xl font-semibold\">mbumwa<span class=\"text-green-600\">3D</span></h3><div id=\"summary-modal-content\"></div></div><form method=\"dialog\" class=\"daisy-modal-backdrop\"><button>close</button></form></dialog><script>\n    //const loginModal = document.getElementById(\"login_modal\");\n    //loginModal.showModal();\n  </script></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
