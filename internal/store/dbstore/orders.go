@@ -28,6 +28,10 @@ func (s *OrderStore) GetByID(orderID uint) (*store.Order, error) {
 	return &order, err
 }
 
+func (s *OrderStore) CreatePrintConfig(printConfig *store.PrintConfig) error {
+	return s.db.Create(printConfig).Error
+}
+
 func (s *OrderStore) CreateOrder(order *store.Order) error {
 	return s.db.Create(order).Error
 }
@@ -63,7 +67,7 @@ func (s *OrderStore) GetCompleted(userID uint) []store.Order {
 func (s *OrderStore) GetPrintAvailable() []store.Order {
 	var orders []store.Order
 
-	s.db.Preload("File").Where("print_status = ?", fmt.Sprint(store.Available)).Find(&orders)
+	s.db.Preload("File").Where("print_status = ?", fmt.Sprint("")).Find(&orders)
 
 	return orders
 }
@@ -73,7 +77,7 @@ func (s *OrderStore) GetPrintActive(printerID uint) []store.Order {
 
 	s.db.Preload("File").Where(
 		"print_status = ? AND printer_id = ?",
-		store.Selected, printerID,
+		// store.Selected, printerID,
 	).Find(&orders)
 
 	return orders

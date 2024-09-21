@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/mwaurathealex/mbumwa3d/internal/initializers"
-	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"gorm.io/gorm"
 )
 
@@ -25,17 +24,13 @@ func NewFileStore() *FileStore {
 	}
 }
 
-func (s *FileStore) SaveFileToDB(file *store.File) error {
-	return s.db.Create(file).Error
-}
-
 func (s *FileStore) SaveToDisk(file multipart.File, filename string) (string, error) {
 	defer file.Close()
 	if err := os.MkdirAll(s.FileDir, os.ModePerm); err != nil {
 		return "", err
 	}
 
-	fileNameInDisk := s.GenerateUniqueFilename(filename)
+	fileNameInDisk := s.generateUniqueFilename(filename)
 
 	dstPath := filepath.Join(s.FileDir, fileNameInDisk)
 	dst, err := os.Create(dstPath)
@@ -51,7 +46,7 @@ func (s *FileStore) SaveToDisk(file multipart.File, filename string) (string, er
 	return fileNameInDisk, nil
 }
 
-func (s *FileStore) GenerateUniqueFilename(originalFileName string) string {
+func (s *FileStore) generateUniqueFilename(originalFileName string) string {
 	timestamp := time.Now().Unix()
 	return fmt.Sprintf("%d-%s", timestamp, originalFileName)
 

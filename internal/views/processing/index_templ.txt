@@ -1,3 +1,0 @@
-<div class=\"absolute top-20 w-full \"><div class=\"text-red-500 text-lg container  overflow-scroll md:overflow-x-hidden \"><table class=\"w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 \">
-<tbody>
-</tbody></table></div></div>

@@ -10,6 +10,7 @@ import (
 	"github.com/mwaurathealex/mbumwa3d/internal/auth"
 	"github.com/mwaurathealex/mbumwa3d/internal/handlers"
 	"github.com/mwaurathealex/mbumwa3d/internal/initializers"
+	"github.com/mwaurathealex/mbumwa3d/internal/payment"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/store/dbstore"
 )
@@ -39,9 +40,11 @@ func main() {
 
 	userStore := dbstore.NewUserStore()
 	fileStore := dbstore.NewFileStore()
+	orderStore := dbstore.NewOrderStore()
 
 	// authMiddleware := middleware.NewAuthMiddleware("Authorization", userStore)
 	sessionName := "user-session"
+	homeHandler := handlers.NewHomeHandler(sessionName)
 
 	authHandler := handlers.NewAuthHandler(handlers.AuthHandlerParams{
 		UserStore:   userStore,
@@ -58,8 +61,12 @@ func main() {
 			UserStore:   userStore,
 		},
 	)
-
-	homeHandler := handlers.NewHomeHandler(sessionName)
+	paymentProcessor := payment.NewPaymentProcessor()
+	paymentHandler := handlers.NewPaymentHandler(handlers.PaymentHandlerParams{
+		PaymentProcessor: paymentProcessor,
+		SessionName:      sessionName,
+		OrderStore:       orderStore,
+	})
 
 	r.Group(func(r chi.Router) {
 		//r.Use(
@@ -67,9 +74,11 @@ func main() {
 		// authMiddleware.AddUserToContext,
 		//)
 		r.Handle("/*", public())
+		r.Get("/", handlers.Make(homeHandler.HandleHome))
 
 		r.Get("/auth/{provider}/callback", handlers.Make(authHandler.AuthCallback))
 		r.Get("/auth/{provider}", handlers.Make(authHandler.BeginAuth))
+
 		r.Post("/file", fileHandler.Post)
 		r.Post("/print-summary", handlers.Make(
 			printSummaryHandler.HandlePrintSummary,
@@ -77,19 +86,18 @@ func main() {
 		r.Get("/print-summary", handlers.Make(
 			printSummaryHandler.HandlePrintSummary,
 		))
+		r.Post("/payment", handlers.Make(paymentHandler.Post))
+		r.Post("/darajacallback", handlers.Make(paymentHandler.DarajaCallback))
+		r.Post("/payment-status-callback", handlers.Make(
+			paymentHandler.DarajaPaymentStatusCallback,
+		))
 
 		///////////
 
-		r.Get("/", handlers.Make(homeHandler.HandleHome))
 		r.Get("/complete", handlers.Make(handlers.HandleFinished))
 		r.Get("/processing", handlers.Make(handlers.HandleProcessing))
 		r.Get("/usermenu", handlers.Make(homeHandler.GetUserMenu))
 		r.Get("/dashboard", handlers.Make(handlers.HandleDashboard))
-
-		r.Post("/payment", handlers.Make(handlers.PostPayment))
-		r.Post("/darajacallback", handlers.Make(handlers.DarajaCallbackHandler))
-		r.Post("/payment-status-callback", handlers.Make(handlers.DarajaPaymentStatusCallback))
-		r.Post("/fileupload", handlers.Make(handlers.PostUploadFile))
 
 		r.Route("/orders", func(r chi.Router) {
 			// r.Use(authMiddleware.AuthRedirect)

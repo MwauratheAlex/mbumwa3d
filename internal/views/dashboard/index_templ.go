@@ -72,7 +72,7 @@ func Content() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container  text-gray-200\"><div class=\"min-h-[80vh] py-1  flex flex-col gap-2\"><div class=\"flex justify-between\"><ul class=\"flex gap-2\"><li hx-get=\"/orders/available\" hx-target=\"#dashboard-content\" hx-swap=\"innerHTML\" class=\"dash-nav-btn transition-opacity  rounded-md bg-opacity-100 bg-orange-800 px-4 py-1 cursor-pointer\">Available Orders</li><li hx-get=\"/orders/active\" hx-target=\"#dashboard-content\" hx-swap=\"innerHTML\" class=\"dash-nav-btn transition-opacity rounded-md bg-opacity-30 bg-orange-800 px-4 py-1 cursor-pointer\">Active Orders</li><li hx-get=\"/orders/completed\" hx-target=\"#dashboard-content\" hx-swap=\"innerHTML\" class=\"dash-nav-btn transition-opacity rounded-md bg-opacity-30 bg-orange-800 px-4 py-1 cursor-pointer\">Completed Orders</li></ul><div id=\"dash-popup\" class=\"hidden ml-8 text-green-600 px-4 bg-opacity-10 bg-gray-500 rounded-md  z-50 top-20  items-center justify-center\"></div></div><div id=\"dashboard-content\" hx-get=\"/orders/available\" hx-trigger=\"load\"></div></div><script src=\"public/assets/dashboard.js\" defer></script></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

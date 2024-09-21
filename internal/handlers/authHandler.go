@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/markbates/goth"
@@ -66,7 +67,7 @@ func (h *AuthHandler) AuthCallback(w http.ResponseWriter, r *http.Request) error
 	session, _ := gothic.Store.Get(r, h.SessionName)
 
 	session.Values["user"] = goth.User{
-		UserID: string(userInDb.ID),
+		UserID: strconv.Itoa(int(userInDb.ID)),
 		Email:  userInDb.Email,
 	}
 

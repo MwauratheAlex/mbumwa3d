@@ -17,14 +17,14 @@ type StkPushRequest struct {
 }
 
 type PaymentProcessor struct {
-	DarajaAuthUrl              string
-	DarajaStkPushUrl           string
-	DarajaTransactionStatusUrl string
-	CallBackURL                string
-	Client                     *http.Client
-	PhoneNumber                int
-	BusinessShortCode          int64
-	PassKey                    string
+	darajaAuthUrl              string
+	darajaStkPushUrl           string
+	darajaTransactionStatusUrl string
+	callBackURL                string
+	client                     *http.Client
+	phoneNumber                int
+	businessShortCode          int64
+	passKey                    string
 }
 
 type TransactionResponse struct {

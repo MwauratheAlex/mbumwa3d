@@ -1,10 +1,9 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
+	"strconv"
 
-	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
@@ -33,16 +32,17 @@ func NewPrintSummaryHandler(params PrintSummaryHandlerParams) *PrintSummaryHandl
 
 func (h *PrintSummaryHandler) HandlePrintSummary(w http.ResponseWriter, r *http.Request) error {
 
-	printConfig, _ := h.GetSessionPrintConfig(r)
+	printConfig, _ := GetSessionPrintConfig(r, h.SessionName)
+	qty, _ := strconv.ParseInt(r.FormValue("quantity"), 10, 64)
 
 	if r.Method == "POST" {
 		printConfig.Technology = r.FormValue("technology")
 		printConfig.Material = r.FormValue("material")
 		printConfig.Color = r.FormValue("color")
-		printConfig.Quantity = r.FormValue("quantity")
+		printConfig.Quantity = int(qty)
 	}
 
-	err := h.ValidateFormData(&printConfig)
+	err := ValidatePrintConfig(&printConfig)
 
 	errorEventPayload := &GetToastPayloadParams{
 		EventName: "FileConfigUploadEvent",
@@ -64,7 +64,7 @@ func (h *PrintSummaryHandler) HandlePrintSummary(w http.ResponseWriter, r *http.
 		panic("Error saving printConfig to Session")
 	}
 
-	_, err = h.GetSessionUser(r)
+	_, err = GetSessionUser(r, h.SessionName)
 	isLoggedIn := err == nil
 
 	if err != nil {
@@ -95,60 +95,4 @@ func (h *PrintSummaryHandler) HandlePrintSummary(w http.ResponseWriter, r *http.
 		IsLoggedInUser: isLoggedIn,
 		PrintContif:    printConfig,
 	}))
-}
-
-func (h *PrintSummaryHandler) ValidateFormData(
-	printConfig *store.PrintConfig) error {
-
-	if printConfig.FileID == "" || printConfig.FileVolume == 0 {
-		return fmt.Errorf("STL file is required")
-	}
-	if printConfig.Technology == "" {
-		return fmt.Errorf("Technology file is required")
-	}
-	if printConfig.Material == "" {
-		return fmt.Errorf("Material file is required")
-	}
-	if printConfig.Color == "" {
-		return fmt.Errorf("Color file is required")
-	}
-	if printConfig.Quantity == "" {
-		return fmt.Errorf("Quantity file is required")
-	}
-
-	return nil
-}
-
-func (h *PrintSummaryHandler) GetSessionUser(r *http.Request) (goth.User, error) {
-	session, err := gothic.Store.Get(r, h.SessionName)
-	if err != nil {
-		return goth.User{}, err
-	}
-
-	user, ok := session.Values["user"].(goth.User)
-
-	if !ok {
-		return goth.User{}, fmt.Errorf("User is not authenticated! %v", user)
-	}
-
-	return user, nil
-}
-
-func (h *PrintSummaryHandler) GetSessionPrintConfig(
-	r *http.Request) (store.PrintConfig, error) {
-
-	session, err := gothic.Store.Get(r, h.SessionName)
-	if err != nil {
-		return store.PrintConfig{}, err
-	}
-
-	printConfig, ok := session.Values["print_config"].(store.PrintConfig)
-
-	if !ok {
-		return store.PrintConfig{}, fmt.Errorf(
-			"Print Config not set! %v", printConfig,
-		)
-	}
-
-	return printConfig, nil
 }

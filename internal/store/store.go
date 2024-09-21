@@ -8,30 +8,20 @@ import (
 type State int
 
 const (
-	Reviewing State = iota
+	AwaitingPayment State = iota
 	Processing
+	Printing
 	Shipping
 	Completed
-	Available
-	Selected
-	AwaitingPayment
-	ProcessingPayment
-	PaymentComplete
-	PaymentFailed
 )
 
 func (os State) String() string {
 	return [...]string{
-		"Reviewing",
+		"AwaitingPayment",
 		"Processing",
+		"Printing",
 		"Shipping",
 		"Completed",
-		"Available",
-		"Selected",
-		"AwaitingPayment",
-		"ProcessingPayment",
-		"PaymentComplete",
-		"PaymentFailed",
 	}[os]
 }
 
@@ -63,11 +53,12 @@ type PrintConfig struct {
 	Technology string
 	Material   string
 	Color      string
-	Quantity   string
+	Quantity   int
 	FileID     string // SaveToDisk name OR FileID in cloudflare
 	User       User
 	UserID     uint
 	FileVolume float64
+	Price      float64
 }
 
 type SummaryModalParams struct {
@@ -75,44 +66,28 @@ type SummaryModalParams struct {
 	PrintContif    PrintConfig
 }
 
-// cookie store until transfer to config
-type File struct {
-	ID         uint `gorm:"primaryKey;autoIncrement"`
-	UserID     uint
-	User       User      `gorm:"foreignKey:UserID"`
-	InsertedAt time.Time `gorm:"autoCreateTime"`
-	UpdatedAt  time.Time `gorm:"autoUpdateTime"`
-	LocalPath  string
-
-	FileID     string
-	ConfigID   uint
-	Volume     string
-	FileName   string
-	Technology string
-	Color      string
-}
-
 type FileStore interface {
 	SaveToDisk(file multipart.File, filename string) (string, error)
 }
 
 type Order struct {
-	ID          uint `gorm:"primaryKey;autoIncrement"`
-	UserID      uint
-	PrinterID   *uint
-	PrintStatus string
-	Printer     User `gorm:"foreignKey:PrinterID"`
-	FileID      uint
-	User        User      `gorm:"foreignKey:UserID"`
-	File        File      `gorm:"foreignKey:FileID"`
-	InsertedAt  time.Time `gorm:"autoCreateTime"`
-	UpdatedAt   time.Time `gorm:"autoUpdateTime"`
+	ID uint `gorm:"primaryKey;autoIncrement"`
 
-	BuildTime       uint
-	Quantity        string
-	Price           float64
-	PaymentComplete bool
-	Status          string
+	UserID        uint
+	User          User `gorm:"foreignKey:UserID"`
+	PrinterID     *uint
+	Printer       User `gorm:"foreignKey:PrinterID"`
+	PrintConfigID uint
+	PrintConfig   PrintConfig `gorm:"foreignKey:PrintConfigID"`
+
+	BuildTime         uint
+	Price             float64
+	PaymentComplete   bool
+	Status            string
+	CheckoutRequestId string
+
+	InsertedAt time.Time `gorm:"autoCreateTime"`
+	UpdatedAt  time.Time `gorm:"autoUpdateTime"`
 }
 
 type OrderStore interface {

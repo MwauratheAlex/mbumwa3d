@@ -1854,6 +1854,10 @@ html {
   margin-left: 2rem;
 }
 
+.mr-8 {
+  margin-right: 2rem;
+}
+
 .mt-0 {
   margin-top: 0px;
 }
@@ -2085,10 +2089,6 @@ html {
   border-radius: 0.25rem;
 }
 
-.rounded-2xl {
-  border-radius: 1rem;
-}
-
 .rounded-lg {
   border-radius: 0.5rem;
 }
@@ -2223,10 +2223,6 @@ html {
   background-color: rgb(22 101 52 / var(--tw-bg-opacity));
 }
 
-.bg-green-900\/5 {
-  background-color: rgb(20 83 45 / 0.05);
-}
-
 .bg-orange-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 115 22 / var(--tw-bg-opacity));
@@ -2276,10 +2272,6 @@ html {
 
 .fill-stone-800 {
   fill: #292524;
-}
-
-.p-16 {
-  padding: 4rem;
 }
 
 .p-2 {
@@ -2481,11 +2473,6 @@ html {
   letter-spacing: 0.1em;
 }
 
-.text-black {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
-}
-
 .text-blue-400 {
   --tw-text-opacity: 1;
   color: rgb(96 165 250 / var(--tw-text-opacity));
@@ -2569,6 +2556,11 @@ html {
 .text-green-700 {
   --tw-text-opacity: 1;
   color: rgb(21 128 61 / var(--tw-text-opacity));
+}
+
+.text-green-800 {
+  --tw-text-opacity: 1;
+  color: rgb(22 101 52 / var(--tw-text-opacity));
 }
 
 .text-orange-100 {
@@ -2658,11 +2650,6 @@ html {
 
 .shadow-black\/50 {
   --tw-shadow-color: rgb(0 0 0 / 0.5);
-  --tw-shadow: var(--tw-shadow-colored);
-}
-
-.shadow-black\/80 {
-  --tw-shadow-color: rgb(0 0 0 / 0.8);
   --tw-shadow: var(--tw-shadow-colored);
 }
 

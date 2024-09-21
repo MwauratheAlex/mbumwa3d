@@ -13,24 +13,25 @@ import (
 	"time"
 )
 
-func NewPaymentProcessor(phoneNumber int) (*PaymentProcessor, error) {
+func NewPaymentProcessor() *PaymentProcessor {
 	businessShortCode64, err := strconv.ParseInt(os.Getenv("DARAJA_SHORTCODE"), 10, 64)
 	if err != nil {
-		return nil, err
+		fmt.Println("Error creating payment processor")
+		panic(err)
 	}
 	return &PaymentProcessor{
-		DarajaAuthUrl:              os.Getenv("DARAJA_AUTH_URL"),
-		DarajaStkPushUrl:           os.Getenv("DARAJA_STK_PUSH_URL"),
-		DarajaTransactionStatusUrl: os.Getenv("DARAJA_TRANSACTION_STATUS_URL"),
-		Client:                     &http.Client{},
-		PhoneNumber:                phoneNumber,
-		PassKey:                    os.Getenv("DARAJA_PASSKEY"),
-		BusinessShortCode:          businessShortCode64,
-	}, nil
+		darajaAuthUrl:              os.Getenv("DARAJA_AUTH_URL"),
+		darajaStkPushUrl:           os.Getenv("DARAJA_STK_PUSH_URL"),
+		darajaTransactionStatusUrl: os.Getenv("DARAJA_TRANSACTION_STATUS_URL"),
+		client:                     &http.Client{},
+		passKey:                    os.Getenv("DARAJA_PASSKEY"),
+		businessShortCode:          businessShortCode64,
+	}
 }
 
-func (p *PaymentProcessor) GetAuthToken() (string, error) {
-	req, err := http.NewRequest("GET", p.DarajaAuthUrl, nil)
+func (p *PaymentProcessor) getAuthToken() (string, error) {
+
+	req, err := http.NewRequest("GET", p.darajaAuthUrl, nil)
 	if err != nil {
 		return "", err
 	}
@@ -44,7 +45,7 @@ func (p *PaymentProcessor) GetAuthToken() (string, error) {
 	req.Header.Add("Authorization", darajaAuthHeader)
 	req.Header.Add("Host", "sandbox.safaricom.co.ke")
 
-	res, err := p.Client.Do(req)
+	res, err := p.client.Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -65,30 +66,31 @@ func (p *PaymentProcessor) GetAuthToken() (string, error) {
 	return tokenResponse.AccessToken, nil
 }
 
-func (p *PaymentProcessor) GeneratePassword(shortcode int64, passkey string) string {
+func (p *PaymentProcessor) generatePassword(shortcode int64, passkey string) string {
 	timestamp := time.Now().Format("20060102150405")
 	data := fmt.Sprintf("%d%s%s", shortcode, passkey, timestamp)
 	password := base64.StdEncoding.EncodeToString([]byte(data))
 	return password
 }
 
-func (p *PaymentProcessor) InitiateStkPush(amount int) (*TransactionResponse, error) {
-	password := p.GeneratePassword(p.BusinessShortCode, p.PassKey)
+func (p *PaymentProcessor) InitiateStkPush(amount, phoneNumber int) (
+	*TransactionResponse, error) {
+	password := p.generatePassword(p.businessShortCode, p.passKey)
 	timestamp := time.Now().Format("20060102150405")
-	token, err := p.GetAuthToken()
+	token, err := p.getAuthToken()
 	if err != nil {
 		print(err)
 	}
 
 	request := &StkPushRequest{
-		BusinessShortCode: p.BusinessShortCode,
+		BusinessShortCode: p.businessShortCode,
 		Password:          password,
 		Timestamp:         timestamp,
 		TransactionType:   "CustomerPayBillOnline",
 		Amount:            amount,
-		PartyA:            p.PhoneNumber,
-		PartyB:            p.BusinessShortCode,
-		PhoneNumber:       p.PhoneNumber,
+		PartyA:            phoneNumber,
+		PartyB:            p.businessShortCode,
+		PhoneNumber:       phoneNumber,
 		CallBackURL:       "https://3d.mbumwa.com/darajacallback",
 		AccountReference:  "Mbumwa3D",
 		TransactionDesc:   "Payment of 3D Printing",
@@ -96,7 +98,7 @@ func (p *PaymentProcessor) InitiateStkPush(amount int) (*TransactionResponse, er
 
 	payload, err := json.Marshal(request)
 
-	req, err := http.NewRequest("POST", p.DarajaStkPushUrl, bytes.NewReader(payload))
+	req, err := http.NewRequest("POST", p.darajaStkPushUrl, bytes.NewReader(payload))
 
 	if err != nil {
 		fmt.Println(err)
@@ -105,7 +107,7 @@ func (p *PaymentProcessor) InitiateStkPush(amount int) (*TransactionResponse, er
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+token)
 
-	res, err := p.Client.Do(req)
+	res, err := p.client.Do(req)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -137,7 +139,7 @@ func (p *PaymentProcessor) GetTransactionStatus(checkoutRequestId string) (*Tran
 		CommandID:                "TransactionStatusQuery",
 		TransactionID:            checkoutRequestId,
 		OriginatorConversationID: checkoutRequestId,
-		PartyA:                   p.BusinessShortCode,
+		PartyA:                   p.businessShortCode,
 		IdentifierType:           "4", // 4 - Organization shortcode (BusinessShortCode),
 		ResultURL:                "https://3d.mbumwa.com/payment-status-callback",
 		QueueTimeOutURL:          "https://3d.mbumwa.com/payment-status-callback",
@@ -149,18 +151,18 @@ func (p *PaymentProcessor) GetTransactionStatus(checkoutRequestId string) (*Tran
 	if err != nil {
 		return nil, err
 	}
-	req, err := http.NewRequest("POST", p.DarajaTransactionStatusUrl, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", p.darajaTransactionStatusUrl, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return nil, err
 	}
-	token, err := p.GetAuthToken()
+	token, err := p.getAuthToken()
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+token)
 
-	res, err := p.Client.Do(req)
+	res, err := p.client.Do(req)
 	if err != nil {
 		return nil, err
 	}

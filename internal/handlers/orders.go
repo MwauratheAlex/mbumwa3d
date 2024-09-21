@@ -85,7 +85,7 @@ func TakeOrder(w http.ResponseWriter, r *http.Request) error {
 		fmt.Println("Error Fetching Order", err)
 		return err
 	}
-	order.PrintStatus = fmt.Sprint(store.Selected)
+	//order.PrintStatus = fmt.Sprint(store.Selected)
 	order.PrinterID = &user.ID
 	orderStore.Save(order)
 
@@ -109,7 +109,7 @@ func CancelOrder(w http.ResponseWriter, r *http.Request) error {
 		fmt.Println("Error Fetching Order", err)
 		return err
 	}
-	order.PrintStatus = fmt.Sprint(store.Available)
+	//order.PrintStatus = fmt.Sprint(store.Available)
 
 	order.PrinterID = nil
 	orderStore.Save(order)
@@ -130,7 +130,7 @@ func CompleteOrder(w http.ResponseWriter, r *http.Request) error {
 		fmt.Println("Error Fetching Order", err)
 		return err
 	}
-	order.PrintStatus = fmt.Sprint(store.Completed)
+	//order.PrintStatus = fmt.Sprint(store.Completed)
 	order.Status = fmt.Sprint(store.Completed)
 
 	orderStore.Save(order)

@@ -1,1 +1,0 @@
-<div class=\"text-gray-300 container text-center flex flex-col gap-2\"><h1 class=\"text-lg font-semibold text-gray-300\">Nothing found!</h1><p class=\"font-medium text-gray-400\">You do not have any completed orders yet.</p></div>
