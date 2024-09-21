@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -29,6 +30,7 @@ var AuthData *Auth
 func NewAuth() {
 	googleClientId := os.Getenv("GOOGLE_CLIENT_ID")
 	googleClientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
+	url := fmt.Sprintf("%s/auth/google/callback", os.Getenv("BASE_URL"))
 
 	store := sessions.NewCookieStore([]byte(key))
 	store.MaxAge(MaxAge)
@@ -41,6 +43,6 @@ func NewAuth() {
 	gothic.Store = store
 
 	goth.UseProviders(
-		google.New(googleClientId, googleClientSecret, "http://localhost:7331/auth/google/callback"),
+		google.New(googleClientId, googleClientSecret, url),
 	)
 }
