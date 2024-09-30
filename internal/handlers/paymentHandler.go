@@ -88,7 +88,7 @@ func (h *PaymentHandler) Post(w http.ResponseWriter, r *http.Request) error {
 
 	price = 1
 
-	transactionResponse, err := h.PaymentProcessor.InitiateStkPush(
+	_, err = h.PaymentProcessor.InitiateStkPush(
 		int(price), int(intPhone),
 	)
 
@@ -96,16 +96,14 @@ func (h *PaymentHandler) Post(w http.ResponseWriter, r *http.Request) error {
 		panic(err)
 	}
 
-	order.CheckoutRequestId = transactionResponse.CheckoutRequestID
-	fmt.Println(transactionResponse)
+	// order.CheckoutRequestId = transactionResponse.CheckoutRequestID
+	// fmt.Println(transactionResponse)
 
-	h.OrderStore.Save(order)
+	// h.OrderStore.Save(order)
 
-	_, err = h.PaymentProcessor.GetTransactionStatus(
-		transactionResponse.CheckoutRequestID,
-	)
-
-	fmt.Println("STATUS:", err)
+	// _, err = h.PaymentProcessor.GetTransactionStatus(
+	// 	transactionResponse.CheckoutRequestID,
+	// )
 	return err
 }
 
