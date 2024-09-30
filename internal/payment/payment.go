@@ -146,6 +146,10 @@ func (p *PaymentProcessor) GetTransactionStatus(checkoutRequestId string) (*Tran
 		Remarks:                  "OK",
 		Occasion:                 "Mbumwa3d Transaction",
 	}
+	fmt.Println("Transaction Status Request Object")
+	jsonData, _ := json.MarshalIndent(requestData, "", "  ")
+	fmt.Println(string(jsonData))
+	fmt.Println()
 
 	jsonData, err := json.Marshal(requestData)
 	if err != nil {

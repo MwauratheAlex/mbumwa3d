@@ -170,6 +170,26 @@ func (h *PaymentHandler) DarajaCallback(w http.ResponseWriter, r *http.Request) 
 	return err
 }
 
+type PaymentNotificationRes struct {
+	OriginatorConversationID string `json:"OriginatorConversationID"`
+	ResponseCode             int    `json:"ResponseCode"`
+	ResponseDescription      string `json:"ResponseDescription"`
+}
+
+func (h *PaymentHandler) PaymentNotificationCallback(
+	w http.ResponseWriter, r *http.Request) {
+	var res PaymentNotificationRes
+	err := json.NewDecoder(r.Body).Decode(&res)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("In payment notify callback")
+	fmt.Println("ResponseCode: ", res.OriginatorConversationID)
+	fmt.Println("ResponseCode: ", res.ResponseCode)
+	fmt.Println("ResponseCode: ", res.ResponseDescription)
+}
+
 func (h *PaymentHandler) DarajaPaymentStatusCallback(w http.ResponseWriter, r *http.Request) error {
 	var callbackResponse payment.PaymentStatusCallbackResponse
 

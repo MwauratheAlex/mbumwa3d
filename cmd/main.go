@@ -91,6 +91,7 @@ func main() {
 		r.Post("/payment-status-callback", handlers.Make(
 			paymentHandler.DarajaPaymentStatusCallback,
 		))
+		r.Post("/payment-confirmation", paymentHandler.PaymentNotificationCallback)
 
 		///////////
 
