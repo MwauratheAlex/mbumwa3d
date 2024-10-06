@@ -233,9 +233,15 @@ function afterPostConfig(event) {
   summaryModal.showModal();
 }
 
+function afterPostMakePayment() {
+  document.getElementById("summary_modal").showModal();
+}
+
 window.beforePostConfig = beforePostConfig;
 window.beforeUploadFile = beforeUploadFile;
 window.afterPostConfig = afterPostConfig;
+window.afterPostMakePayment = afterPostMakePayment;
+
 
 (function() {
   document.body.addEventListener("file-config-upload-event", (e) => {
@@ -256,6 +262,19 @@ window.afterPostConfig = afterPostConfig;
         } else {
           //TODO: get file from server - link in event description
         }
+        break
+      default:
+        showToastNotification(description, message);
+        break;
+    }
+  });
+
+  document.body.addEventListener("order-event", (e) => {
+    const message = e.detail.message;
+    const description = e.detail.description;
+    switch (message) {
+      case "success":
+        showToastNotification(description, message);
         break
       default:
         showToastNotification(description, message);

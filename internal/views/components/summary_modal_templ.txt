@@ -15,7 +15,8 @@ Press ESC key or click outside to close</p></div><div class=\"flex py-2 flex-col
 <button class=\"daisy-btn bg-green-800 hover:bg-green-900 text-gray-50\">Make Payment</button>
 <div class=\"flex flex-col gap-2 text-left\"><h3 class=\"text-lg text-gray-600\">Print Summary</h3><div class=\"rounded-md border-gray-100 shadow-black/50 shadow-2xl\">
 </div></div>
-<div class=\"overflow-x-auto\"><table class=\"daisy-table daisy-table-zebra\"><!-- head --><thead><tr><th></th><th>File</th><th>Tech</th><th>Material</th><th>Color</th><th>Qty</th></tr></thead> <tbody class=\"text-sm text-gray-800\"><!-- row --><tr><th>1</th><td>File3.stl</td><td>
+<div class=\"overflow-x-auto\"><table class=\"daisy-table daisy-table-zebra\"><!-- head --><thead><tr><th></th><th>File</th><th>Tech</th><th>Material</th><th>Color</th><th>Qty</th></tr></thead> <tbody class=\"text-sm text-gray-800\"><!-- row --><tr><th>1</th><td>
+</td><td>
 </td><td>
 </td><td>
 </td><td>

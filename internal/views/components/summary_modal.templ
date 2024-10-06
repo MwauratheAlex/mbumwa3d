@@ -3,6 +3,7 @@ package components
 import (
 	"fmt"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
+	"strings"
 )
 
 templ PrintSummaryModal() {
@@ -156,7 +157,7 @@ templ OrderSummaryTable(printConfig store.PrintConfig) {
 				<!-- row -->
 				<tr>
 					<th>1</th>
-					<td>File3.stl</td>
+					<td>{ strings.Split(printConfig.FileID, "-")[1] }</td>
 					<td>{ printConfig.Technology }</td>
 					<td>{ printConfig.Material }</td>
 					<td>{ printConfig.Color }</td>

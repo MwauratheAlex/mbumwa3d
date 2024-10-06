@@ -52,3 +52,18 @@ func (s *UserStore) GetOrCreate(user *store.User) (*store.User, error) {
 
 	return user, nil
 }
+
+func (s *UserStore) GetOrder(
+	orderID, userID uint) (*store.Order, error) {
+
+	order := store.Order{}
+	err := s.db.
+		Preload("PrintConfig").
+		Where("id = ? AND user_id = ?", orderID, userID).
+		First(&order).Error
+
+	if err != nil {
+		return nil, err
+	}
+	return &order, err
+}

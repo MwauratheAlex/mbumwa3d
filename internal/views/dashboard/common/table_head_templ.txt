@@ -1,13 +1,19 @@
-<thead class=\"text-xs  uppercase bg-gray-900 bg-opacity-30 text-gray-400 w-full\"><tr><th scope=\"col\" class=\"px-6 py-3\">Filename</th><th scope=\"col\" class=\"px-6 py-3\">OrderStatus</th><th scope=\"col\" class=\"px-6 py-3\">Quantity</th><th scope=\"col\" class=\"px-6 py-3\">PrintColor</th><th scope=\"col\" class=\"px-6 py-3\">Price</th>
+<thead class=\"text-gray-800\"><tr><th>Filename</th><th>OrderStatus</th><th>Quantity</th><th>PrintColor</th><th>Price</th>
 <th id=\"
-\" scope=\"col\" class=\"px-6 py-3\">Action</th>
+\" class=\"py-3\">Action</th>
 </tr></thead>
 <tr id=\"
-\" class=\"odd:bg-black odd:bg-opacity-20  even:bg-blue-800 even:bg-opacity-50  dark:border-gray-700\"><th scope=\"row\" class=\"px-6 py-4 font-medium  whitespace-nowrap text-gray-50\"></th><td class=\"px-6 py-4\"></td><td class=\"px-6 py-4\"></td><td class=\"px-6 py-4\"></td><td class=\"px-6 py-4\">Ksh: 
+\"><th>
+</th><td>
+</td><td>
+</td><td>
+</td><td>Ksh: 
 </td>
 <td hx-post=\"
 \" hx-target=\"
-\" class=\"px-6 py-4\"><button class=\"font-medium text-blue-600 dark:text-orange-500 hover:underline\">Take Order</button></td>
+\"><button class=\"font-medium text-blue-600 dark:text-orange-500 hover:underline\">Make Payment</button></td><td hx-post=\"
+\" hx-target=\"
+\"><button class=\"font-medium text-blue-600 dark:text-orange-500 hover:underline\">Cancel Order</button></td>
 </tr>
 <div class=\"text-gray-300 container text-center flex flex-col gap-2 h-full py-[10%] \"><h1 class=\"text-lg font-semibold text-gray-300\">Nothing found!</h1><p class=\"font-medium text-gray-400\">
 </p></div>

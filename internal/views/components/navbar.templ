@@ -22,24 +22,48 @@ templ Navbar() {
 				<div
 					id="navbar-menu"
 					onclick="closeMenu()"
-					class="hidden items-center justify-end gap-4 w-full md:flex top-9 right-0  md:bg-opacity-0 bg-black transition-all duration-1000 z-[999]"
+					class="hidden daisy-navbar items-center justify-end gap-4 w-full md:flex top-9 right-0  md:bg-opacity-0 bg-black transition-all duration-1000 z-[999]"
 				>
 					<div class="flex flex-col gap-4 md:flex-row tracking-wide text-gray-800 text-sm">
+						<div class="daisy-dropdown daisy-dropdown-hover">
+							<div
+								tabindex="0"
+								role="button"
+								class="daisy-btn daisy-btn-sm daisy-btn-ghost m-1 tracking-widest font-normal"
+							>
+								My orders
+							</div>
+							<ul tabindex="0" class="daisy-dropdown-content daisy-menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+								<li>
+									<a
+										href="/orders/processing"
+										hx-get="/orders/processing"
+										hx-target="#content-container"
+										hx-push-url="true"
+										class="tracking-widest"
+									>
+										Processing
+									</a>
+								</li>
+								<li>
+									<a
+										href="/orders/complete"
+										hx-get="/orders/complete"
+										hx-target="#content-container"
+										hx-push-url="true"
+										class="tracking-widest"
+									>
+										Complete
+									</a>
+								</li>
+							</ul>
+						</div>
 						<a
 							href="/shop"
 							hx-get="/shop"
 							hx-target="#content-container"
 							hx-push-url="true"
-							class="tracking-widest font-normal daisy-btn daisy-btn-ghost daisy-btn-sm text-gray-800 mr-8"
-						>
-							My orders
-						</a>
-						<a
-							href="/shop"
-							hx-get="/shop"
-							hx-target="#content-container"
-							hx-push-url="true"
-							class="tracking-widest border-gray-300 font-normal daisy-btn daisy-btn-outline daisy-btn-sm hover:glass  text-green-800 hover:bg-green-950"
+							class="tracking-widest glass font-normal daisy-btn daisy-btn-outline daisy-btn-sm text-gray-800 hover:text-orange-100 hover:bg-gray-950"
 						>
 							Shop models
 						</a>

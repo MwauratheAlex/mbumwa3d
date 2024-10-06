@@ -1,31 +1,81 @@
 package processing
 
-import "github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
-import "github.com/mwaurathealex/mbumwa3d/internal/store"
-import "github.com/mwaurathealex/mbumwa3d/internal/views/components"
-import "github.com/mwaurathealex/mbumwa3d/internal/views/dashboard/common"
+import (
+	"fmt"
+	"github.com/mwaurathealex/mbumwa3d/internal/store"
+	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
+	"github.com/mwaurathealex/mbumwa3d/internal/views/dashboard/common"
+	"github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
+	"strings"
+)
 
 templ Index(items []store.Order) {
-@layouts.Base() {
-@Content(items)
-}
+	@layouts.Base() {
+		@Content(items)
+	}
 }
 
 templ Content(orders []store.Order) {
-if len(orders) == 0 {
-@components.NothingFound()
-} else {
-<div class="absolute top-20 w-full ">
-	<div class="text-red-500 text-lg container  overflow-scroll md:overflow-x-hidden ">
-		<table class="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
-			@common.TableHead(0)
-			<tbody>
-				for _,order := range orders {
-				@common.TableRow(order, false)
-				}
-			</tbody>
-		</table>
-	</div>
-</div>
+	if len(orders) == 0 {
+		@components.NothingFound()
+	} else {
+		<div class="w-9/12">
+			<div class="max-h-[calc(100vh-10rem)] min-h-[calc(100vh-10rem)] overflow-y-auto">
+				<table class="daisy-table daisy-table-xs daisy-table-zebra daisy-table-pin-rows">
+					@common.TableHead(2)
+					<tbody>
+						for _,order := range orders {
+							@TableRow(order)
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	}
 }
+
+templ TableRow(order store.Order) {
+	<tr id={ fmt.Sprintf("available-row-%d", order.ID) }>
+		<td class="font-semibold text-gray-800">
+			{ fmt.Sprint(strings.Split(order.PrintConfig.FileID, "-")[1]) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.Status) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.PrintConfig.Quantity) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.PrintConfig.Color) }
+		</td>
+		<td>
+			Ksh: { fmt.Sprintf("%.2f",order.Price) }
+		</td>
+		if order.Status == "AwaitingPayment" {
+			<td>
+				<button
+					class="daisy-btn daisy-btn-xs daisy-btn-success font-normal"
+					hx-post={ fmt.Sprintf("/orders/%d/make-payment", order.ID) }
+					hx-on::after-request="afterPostMakePayment(event)"
+					hx-target="#summary-modal-content"
+				>
+					Make Payment
+				</button>
+			</td>
+			<td>
+				<button
+					hx-delete={ fmt.Sprintf("/orders/%d/delete", order.ID) }
+					hx-target={ fmt.Sprintf("#available-row-%d",
+      order.ID) }
+					class="daisy-btn daisy-btn-xs daisy-btn-warning font-normal"
+					hx-confirm="This order will be deleted. Are you sure you want to continue?"
+				>
+					Cancel Order
+				</button>
+			</td>
+		} else {
+			<td class="text-gray-400">None</td>
+			<td class="text-gray-400">None</td>
+		}
+	</tr>
 }

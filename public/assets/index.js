@@ -20508,9 +20508,13 @@ void main() {
     }
     summaryModal.showModal();
   }
+  function afterPostMakePayment() {
+    document.getElementById("summary_modal").showModal();
+  }
   window.beforePostConfig = beforePostConfig;
   window.beforeUploadFile = beforeUploadFile;
   window.afterPostConfig = afterPostConfig;
+  window.afterPostMakePayment = afterPostMakePayment;
   (function() {
     document.body.addEventListener("file-config-upload-event", (e) => {
       const message = e.detail.message;
@@ -20526,6 +20530,18 @@ void main() {
             showToastNotification(description, message);
           } else {
           }
+          break;
+        default:
+          showToastNotification(description, message);
+          break;
+      }
+    });
+    document.body.addEventListener("order-event", (e) => {
+      const message = e.detail.message;
+      const description = e.detail.description;
+      switch (message) {
+        case "success":
+          showToastNotification(description, message);
           break;
         default:
           showToastNotification(description, message);

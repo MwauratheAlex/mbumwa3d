@@ -40,11 +40,17 @@ func (s *OrderStore) Save(order *store.Order) error {
 	return s.db.Save(&order).Error
 }
 
+func (s *OrderStore) Delete(userID, orderID uint) error {
+	return s.db.
+		Where("user_id = ?", userID).
+		Delete(&store.Order{ID: orderID}).Error
+}
+
 func (s *OrderStore) GetNotCompleted(userID uint) []store.Order {
 	var orders []store.Order
 	query := "user_id = ? AND status != ?"
 
-	s.db.Preload("File").Where(query,
+	s.db.Preload("PrintConfig").Where(query,
 		userID,
 		fmt.Sprint(store.Completed),
 	).Find(&orders)

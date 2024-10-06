@@ -1,67 +1,71 @@
 package common
 
 import (
-"fmt"
-"github.com/mwaurathealex/mbumwa3d/internal/store"
+	"fmt"
+	"github.com/mwaurathealex/mbumwa3d/internal/store"
+	"strings"
 )
 
 templ TableHead(actions uint8) {
-<thead class="text-xs  uppercase bg-gray-900 bg-opacity-30 text-gray-400 w-full">
-  <tr>
-    <th scope="col" class="px-6 py-3">
-      Filename
-    </th>
-    <th scope="col" class="px-6 py-3">
-      OrderStatus
-    </th>
-    <th scope="col" class="px-6 py-3">
-      Quantity
-    </th>
-    <th scope="col" class="px-6 py-3">
-      PrintColor
-    </th>
-    <th scope="col" class="px-6 py-3">
-      Price
-    </th>
-    for i := range actions {
-    <th id={ fmt.Sprint(i) } scope="col" class="px-6 py-3">Action</th>
-    }
-  </tr>
-</thead>
+	<thead class="text-gray-800">
+		<tr>
+			<th>
+				Filename
+			</th>
+			<th>
+				OrderStatus
+			</th>
+			<th>
+				Quantity
+			</th>
+			<th>
+				PrintColor
+			</th>
+			<th>
+				Price
+			</th>
+			for i := range actions {
+				<th id={ fmt.Sprint(i) } class="py-3">Action</th>
+			}
+		</tr>
+	</thead>
 }
 
 templ TableRow(order store.Order, actions bool) {
-<tr id={ fmt.Sprintf("available-row-%d", order.ID) }
-  class="odd:bg-black odd:bg-opacity-20  even:bg-blue-800 even:bg-opacity-50  dark:border-gray-700">
-  <th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap text-gray-50">
-    //{ fmt.Sprint(order.File.FileName) }
-  </th>
-  <td class="px-6 py-4">
-    //{ fmt.Sprint(order.PrintStatus) }
-  </td>
-  <td class="px-6 py-4">
-    //{ fmt.Sprint(order.Quantity) }
-  </td>
-  <td class="px-6 py-4">
-    //{ fmt.Sprint(order.File.Color) }
-  </td>
-  <td class="px-6 py-4">
-    Ksh: { fmt.Sprintf("%.2f",order.Price) }
-  </td>
-  if actions {
-  <td hx-post={ fmt.Sprintf("orders/%d/take", order.ID) } hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
-    class="px-6 py-4">
-    <button class="font-medium text-blue-600 dark:text-orange-500 hover:underline">
-      Take Order
-    </button>
-  </td>
-  }
-</tr>
+	<tr id={ fmt.Sprintf("available-row-%d", order.ID) }>
+		<th>
+			{ fmt.Sprint(strings.Split(order.PrintConfig.FileID, "-")[1]) }
+		</th>
+		<td>
+			{ fmt.Sprint(order.Status) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.PrintConfig.Quantity) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.PrintConfig.Color) }
+		</td>
+		<td>
+			Ksh: { fmt.Sprintf("%.2f",order.Price) }
+		</td>
+		if actions {
+			<td hx-post={ fmt.Sprintf("orders/%d/take", order.ID) } hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }>
+				<button class="font-medium text-blue-600 dark:text-orange-500 hover:underline">
+					Make Payment
+				</button>
+			</td>
+			<td hx-post={ fmt.Sprintf("orders/%d/take", order.ID) } hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }>
+				<button class="font-medium text-blue-600 dark:text-orange-500 hover:underline">
+					Cancel Order
+				</button>
+			</td>
+		}
+	</tr>
 }
 
 templ NothingFound(message string) {
-<div class="text-gray-300 container text-center flex flex-col gap-2 h-full py-[10%] ">
-  <h1 class="text-lg font-semibold text-gray-300">Nothing found!</h1>
-  <p class="font-medium text-gray-400">{ message }</p>
-</div>
+	<div class="text-gray-300 container text-center flex flex-col gap-2 h-full py-[10%] ">
+		<h1 class="text-lg font-semibold text-gray-300">Nothing found!</h1>
+		<p class="font-medium text-gray-400">{ message }</p>
+	</div>
 }

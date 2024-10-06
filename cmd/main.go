@@ -42,7 +42,6 @@ func main() {
 	fileStore := dbstore.NewFileStore()
 	orderStore := dbstore.NewOrderStore()
 
-	// authMiddleware := middleware.NewAuthMiddleware("Authorization", userStore)
 	sessionName := "user-session"
 	homeHandler := handlers.NewHomeHandler(sessionName)
 
@@ -66,6 +65,12 @@ func main() {
 		PaymentProcessor: paymentProcessor,
 		SessionName:      sessionName,
 		OrderStore:       orderStore,
+	})
+
+	orderHandler := handlers.NewOrderHandler(handlers.OrderHandlerParams{
+		SessionName: sessionName,
+		UserStore:   userStore,
+		OrderStore:  orderStore,
 	})
 
 	r.Group(func(r chi.Router) {
@@ -93,24 +98,39 @@ func main() {
 		))
 		r.Post("/payment-confirmation", paymentHandler.PaymentNotificationCallback)
 
+		r.Route("/orders", func(r chi.Router) {
+			r.Get("/processing", handlers.Make(orderHandler.GetProcessing))
+			r.Get("/complete", handlers.Make(orderHandler.GetComplete))
+
+			// for user
+			r.Post("/{orderID}/make-payment", handlers.Make(
+				orderHandler.MakePayment))
+			r.Delete("/{orderID}/delete", handlers.Make(orderHandler.DeleteOrder))
+
+			// for printer
+			r.Post("/{orderID}/take", func(w http.ResponseWriter, r *http.Request) {})
+			r.Post("/{orderID}/download", func(w http.ResponseWriter, r *http.Request) {})
+			r.Post("/{orderID}/printer-cancel", func(w http.ResponseWriter, r *http.Request) {})
+			r.Post("/{orderID}/complete", func(w http.ResponseWriter, r *http.Request) {})
+		})
+
 		///////////
 
-		r.Get("/complete", handlers.Make(handlers.HandleFinished))
 		r.Get("/processing", handlers.Make(handlers.HandleProcessing))
 		r.Get("/usermenu", handlers.Make(homeHandler.GetUserMenu))
 		r.Get("/dashboard", handlers.Make(handlers.HandleDashboard))
 
-		r.Route("/orders", func(r chi.Router) {
-			// r.Use(authMiddleware.AuthRedirect)
-			r.Get("/available", handlers.Make(handlers.GetAvailableOrders))
-			r.Get("/active", handlers.Make(handlers.GetActiveOrders))
-			r.Get("/completed", handlers.Make(handlers.GetCompletedOrders))
+		// r.Route("/orders", func(r chi.Router) {
+		// 	// r.Use(authMiddleware.AuthRedirect)
+		// 	r.Get("/available", handlers.Make(handlers.GetAvailableOrders))
+		// 	r.Get("/active", handlers.Make(handlers.GetActiveOrders))
+		// 	r.Get("/completed", handlers.Make(handlers.GetCompletedOrders))
 
-			r.Post("/{orderID}/take", handlers.Make(handlers.TakeOrder))
-			r.Post("/{orderID}/download", handlers.Make(handlers.DownloadOrder))
-			r.Post("/{orderID}/cancel", handlers.Make(handlers.CancelOrder))
-			r.Post("/{orderID}/complete", handlers.Make(handlers.CompleteOrder))
-		})
+		// 	r.Post("/{orderID}/take", handlers.Make(handlers.TakeOrder))
+		// 	r.Post("/{orderID}/download", handlers.Make(handlers.DownloadOrder))
+		// 	r.Post("/{orderID}/cancel", handlers.Make(handlers.CancelOrder))
+		// 	r.Post("/{orderID}/complete", handlers.Make(handlers.CompleteOrder))
+		// })
 
 	})
 

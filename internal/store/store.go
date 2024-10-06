@@ -43,11 +43,6 @@ type UserStore interface {
 	GetOrCreate(user *User) (*User, error)
 }
 
-// stored in cookie store
-// with only the file id updated first
-// and build progressively until we
-// finally save to db
-// files in cloundflare where order is complete will be deleted after a while
 type PrintConfig struct {
 	ID         uint
 	Technology string
@@ -73,7 +68,7 @@ type FileStore interface {
 type Order struct {
 	ID uint `gorm:"primaryKey;autoIncrement"`
 
-	UserID        uint
+	UserID        uint `gorm:"index"`
 	User          User `gorm:"foreignKey:UserID"`
 	PrinterID     *uint
 	Printer       User `gorm:"foreignKey:PrinterID"`
