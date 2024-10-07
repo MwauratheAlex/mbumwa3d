@@ -1,1 +1,14 @@
-<div class=\"container  text-gray-200\"><div class=\"min-h-[80vh] py-1  flex flex-col gap-2\"><div class=\"flex justify-between\"><ul class=\"flex gap-2\"><li hx-get=\"/orders/available\" hx-target=\"#dashboard-content\" hx-swap=\"innerHTML\" class=\"dash-nav-btn transition-opacity  rounded-md bg-opacity-100 bg-orange-800 px-4 py-1 cursor-pointer\">Available Orders</li><li hx-get=\"/orders/active\" hx-target=\"#dashboard-content\" hx-swap=\"innerHTML\" class=\"dash-nav-btn transition-opacity rounded-md bg-opacity-30 bg-orange-800 px-4 py-1 cursor-pointer\">Active Orders</li><li hx-get=\"/orders/completed\" hx-target=\"#dashboard-content\" hx-swap=\"innerHTML\" class=\"dash-nav-btn transition-opacity rounded-md bg-opacity-30 bg-orange-800 px-4 py-1 cursor-pointer\">Completed Orders</li></ul><div id=\"dash-popup\" class=\"hidden ml-8 text-green-600 px-4 bg-opacity-10 bg-gray-500 rounded-md  z-50 top-20  items-center justify-center\"></div></div><div id=\"dashboard-content\" hx-get=\"/orders/available\" hx-trigger=\"load\"></div></div><script src=\"public/assets/dashboard.js\" defer></script></div>
+<div class=\"container w-9/12\"><div class=\"max-h-[calc(100vh-10rem)] min-h-[calc(100vh-10rem)] overflow-y-auto\"><div role=\"tablist\" class=\"daisy-tabs daisy-tabs-lifted w-fit\"><a hx-get=\"/dashboard/available-orders\" role=\"tab\" class=\"tabz daisy-tab daisy-tab-active\" onclick=\"switchTabs(event)\">Available Orders</a> <a hx-get=\"/dashboard/available-orders\" role=\"tab\" class=\"tabz daisy-tab\" onclick=\"switchTabs(event)\">Active Orders</a> <a hx-get=\"/dashboard/available-orders\" role=\"tab\" class=\"tabz daisy-tab\" onclick=\"switchTabs(event)\">Completed Orders</a></div>
+</div><script>\n\n    let activeTab = document.querySelector(\".daisy-tab-active\")\n    function switchTabs(e) {\n      activeTab.classList.remove(\"daisy-tab-active\");\n      e.target.classList.add(\"daisy-tab-active\");\n      activeTab = e.target;\n    }\n\n  </script></div>
+<table class=\"daisy-table daisy-table-xs daisy-table-zebra daisy-table-pin-rows\">
+<tbody>
+</tbody></table>
+<tr id=\"
+\"><td class=\"font-semibold text-gray-800\">
+</td><td>
+</td><td>
+</td><td>
+</td><td>Ksh: 
+</td><td><button class=\"daisy-btn daisy-btn-xs daisy-btn-success font-normal\" hx-post=\"
+\" hx-target=\"
+\" hx-swap=\"outerHTML\">Take Order</button></td></tr>

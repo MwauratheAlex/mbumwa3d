@@ -9,7 +9,7 @@ type State int
 
 const (
 	AwaitingPayment State = iota
-	Processing
+	Reviewing
 	Printing
 	Shipping
 	Completed
@@ -18,7 +18,7 @@ const (
 func (os State) String() string {
 	return [...]string{
 		"AwaitingPayment",
-		"Processing",
+		"Reviewing",
 		"Printing",
 		"Shipping",
 		"Completed",

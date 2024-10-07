@@ -69,6 +69,7 @@ templ TableRow(order store.Order) {
       order.ID) }
 					class="daisy-btn daisy-btn-xs daisy-btn-warning font-normal"
 					hx-confirm="This order will be deleted. Are you sure you want to continue?"
+					hx-swap="outerHTML"
 				>
 					Cancel Order
 				</button>

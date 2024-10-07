@@ -73,6 +73,10 @@ func main() {
 		OrderStore:  orderStore,
 	})
 
+	dashboardHandler := handlers.NewDashboardHandler(handlers.DashboardHandlerParams{
+		OrderStore: orderStore,
+	})
+
 	r.Group(func(r chi.Router) {
 		//r.Use(
 		//middleware.TextHTMLMiddleware,
@@ -102,36 +106,26 @@ func main() {
 			r.Get("/processing", handlers.Make(orderHandler.GetProcessing))
 			r.Get("/complete", handlers.Make(orderHandler.GetComplete))
 
-			// for user
 			r.Post("/{orderID}/make-payment", handlers.Make(
 				orderHandler.MakePayment))
 			r.Delete("/{orderID}/delete", handlers.Make(orderHandler.DeleteOrder))
-
-			// for printer
-			r.Post("/{orderID}/take", func(w http.ResponseWriter, r *http.Request) {})
-			r.Post("/{orderID}/download", func(w http.ResponseWriter, r *http.Request) {})
-			r.Post("/{orderID}/printer-cancel", func(w http.ResponseWriter, r *http.Request) {})
-			r.Post("/{orderID}/complete", func(w http.ResponseWriter, r *http.Request) {})
 		})
 
-		///////////
+		r.Route("/dashboard", func(r chi.Router) {
+			r.Get("/", handlers.Make(dashboardHandler.HandleDashboard))
+			r.Get("/available-orders", handlers.Make(dashboardHandler.GetAvailable))
+			r.Get("/active-orders", handlers.Make(dashboardHandler.GetActive))
+			r.Get("/completed-orders", handlers.Make(dashboardHandler.GetCompleted))
 
-		r.Get("/processing", handlers.Make(handlers.HandleProcessing))
+			r.Post("/{orderID}/take", handlers.Make(dashboardHandler.TakeOrder))
+			r.Post("/{orderID}/download",
+				handlers.Make(dashboardHandler.DownloadOrder))
+			r.Post("/{orderID}/printer-cancel",
+				handlers.Make(dashboardHandler.CancelTakenOrder))
+			r.Post("/{orderID}/complete", handlers.Make(
+				dashboardHandler.CompleteOrder))
+		})
 		r.Get("/usermenu", handlers.Make(homeHandler.GetUserMenu))
-		r.Get("/dashboard", handlers.Make(handlers.HandleDashboard))
-
-		// r.Route("/orders", func(r chi.Router) {
-		// 	// r.Use(authMiddleware.AuthRedirect)
-		// 	r.Get("/available", handlers.Make(handlers.GetAvailableOrders))
-		// 	r.Get("/active", handlers.Make(handlers.GetActiveOrders))
-		// 	r.Get("/completed", handlers.Make(handlers.GetCompletedOrders))
-
-		// 	r.Post("/{orderID}/take", handlers.Make(handlers.TakeOrder))
-		// 	r.Post("/{orderID}/download", handlers.Make(handlers.DownloadOrder))
-		// 	r.Post("/{orderID}/cancel", handlers.Make(handlers.CancelOrder))
-		// 	r.Post("/{orderID}/complete", handlers.Make(handlers.CompleteOrder))
-		// })
-
 	})
 
 	http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", port), r)

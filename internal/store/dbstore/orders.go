@@ -46,6 +46,18 @@ func (s *OrderStore) Delete(userID, orderID uint) error {
 		Delete(&store.Order{ID: orderID}).Error
 }
 
+func (s *OrderStore) GetAvailable() ([]store.Order, error) {
+	var orders []store.Order
+	err := s.db.Preload("PrintConfig").
+		Where("status = ?", fmt.Sprint(store.Reviewing)).Find(&orders).Error
+	if err != nil {
+		return nil, err
+	}
+	return orders, nil
+}
+
+///////////////////////////////////////
+
 func (s *OrderStore) GetNotCompleted(userID uint) []store.Order {
 	var orders []store.Order
 	query := "user_id = ? AND status != ?"
@@ -92,7 +104,7 @@ func (s *OrderStore) GetPrintActive(printerID uint) []store.Order {
 func (s *OrderStore) GetPrintCompleted(printerID uint) []store.Order {
 	var orders []store.Order
 
-	s.db.Debug().Preload("File").
+	s.db.Preload("File").
 		Where(
 			"print_status = ? AND printer_id = ?",
 			fmt.Sprint(store.Completed),
