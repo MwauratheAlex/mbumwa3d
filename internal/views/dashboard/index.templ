@@ -20,27 +20,57 @@ templ Content(orders []store.Order) {
 			<div role="tablist" class="daisy-tabs daisy-tabs-lifted w-fit">
 				<a
 					hx-get="/dashboard/available-orders"
+					hx-target="#dash_tbl_container"
+					hx-swap="innerHTML"
 					role="tab"
 					class="tabz daisy-tab daisy-tab-active"
 					onclick="switchTabs(event)"
 				>
 					Available Orders
 				</a>
-				<a hx-get="/dashboard/available-orders" role="tab" class="tabz daisy-tab" onclick="switchTabs(event)">
-					Active Orders
+				<a
+					hx-get="/dashboard/printing-orders"
+					hx-target="#dash_tbl_container"
+					hx-swap="innerHTML"
+					role="tab"
+					class="tabz daisy-tab text-gray-600"
+					onclick="switchTabs(event)"
+				>
+					Printing
 				</a>
-				<a hx-get="/dashboard/available-orders" role="tab" class="tabz daisy-tab" onclick="switchTabs(event)">
-					Completed Orders
+				<a
+					hx-get="/dashboard/shipping-orders"
+					hx-target="#dash_tbl_container"
+					hx-swap="innerHTML"
+					role="tab"
+					class="tabz daisy-tab text-gray-600"
+					onclick="switchTabs(event)"
+				>
+					Shipping
+				</a>
+				<a
+					hx-get="/dashboard/completed-orders"
+					hx-target="#dash_tbl_container"
+					hx-swap="innerHTML"
+					role="tab"
+					class="tabz daisy-tab text-gray-600"
+					onclick="switchTabs(event)"
+				>
+					Completed
 				</a>
 			</div>
-			@Table(orders)
+			<div id="dash_tbl_container">
+				@AvailableOrdersTable(orders)
+			</div>
 		</div>
 		<script>
 
     let activeTab = document.querySelector(".daisy-tab-active")
     function switchTabs(e) {
       activeTab.classList.remove("daisy-tab-active");
+      activeTab.classList.add("text-gray-600")
       e.target.classList.add("daisy-tab-active");
+      e.target.classList.remove("text-gray-600")
       activeTab = e.target;
     }
 
@@ -48,12 +78,45 @@ templ Content(orders []store.Order) {
 	</div>
 }
 
-templ Table(orders []store.Order) {
+templ AvailableOrdersTable(orders []store.Order) {
 	<table class="daisy-table daisy-table-xs daisy-table-zebra daisy-table-pin-rows">
-		@common.TableHead(1)
+		@common.TableHead(3)
 		<tbody>
 			for _,order := range orders {
 				@TableRow(order)
+			}
+		</tbody>
+	</table>
+}
+
+templ ActiveOrdersTable(orders []store.Order) {
+	<table class="daisy-table daisy-table-xs daisy-table-zebra daisy-table-pin-rows">
+		@common.TableHead(3)
+		<tbody class="w-full">
+			for _,order := range orders {
+				@ActiveOrdersTableRow(order)
+			}
+		</tbody>
+	</table>
+}
+
+templ ShippingOrdersTable(orders []store.Order) {
+	<table class="daisy-table daisy-table-xs daisy-table-zebra daisy-table-pin-rows">
+		@common.TableHead(1)
+		<tbody class="w-full">
+			for _,order := range orders {
+				@ShippingOrdersTableRow(order)
+			}
+		</tbody>
+	</table>
+}
+
+templ CompletedOrdersTable(orders []store.Order) {
+	<table class="daisy-table daisy-table-xs daisy-table-zebra daisy-table-pin-rows">
+		@common.TableHead(0)
+		<tbody class="w-full">
+			for _,order := range orders {
+				@CompletedOrdersTableRow(order)
 			}
 		</tbody>
 	</table>
@@ -78,14 +141,129 @@ templ TableRow(order store.Order) {
 		</td>
 		<td>
 			<button
-				class="daisy-btn daisy-btn-xs daisy-btn-success font-normal"
-				hx-post={ fmt.Sprintf("/dashboard/%d/take",
-      order.ID) }
+				class="daisy-btn daisy-btn-xs daisy-btn-outline font-normal rounded-sm"
+				hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
+				hx-swap="outerHTML"
+			>
+				Expand Details
+			</button>
+		</td>
+		<td>
+			<button
+				class="daisy-btn daisy-btn-xs daisy-btn-info font-normal rounded-sm"
+				hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
+				hx-swap="outerHTML"
+			>
+				View Files
+			</button>
+		</td>
+		<td>
+			<button
+				class="daisy-btn daisy-btn-xs daisy-btn-warning font-normal rounded-sm"
+				hx-post={ fmt.Sprintf("/dashboard/%d/take", order.ID) }
 				hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
 				hx-swap="outerHTML"
 			>
 				Take Order
 			</button>
+		</td>
+	</tr>
+}
+
+templ ActiveOrdersTableRow(order store.Order) {
+	<tr id={ fmt.Sprintf("available-row-%d", order.ID) } class="">
+		<td class="font-semibold text-gray-800">
+			{ fmt.Sprint(strings.Split(order.PrintConfig.FileID, "-")[1]) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.Status) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.PrintConfig.Quantity) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.PrintConfig.Color) }
+		</td>
+		<td>
+			Ksh: { fmt.Sprintf("%.2f",order.Price) }
+		</td>
+		<td>
+			<button
+				class="daisy-btn daisy-btn-xs daisy-btn-success font-normal rounded-sm"
+				hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
+				hx-swap="outerHTML"
+			>
+				Download Files
+			</button>
+		</td>
+		<td>
+			<button
+				class="daisy-btn daisy-btn-xs daisy-btn-info font-normal rounded-sm"
+				hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
+				hx-swap="outerHTML"
+			>
+				View Files
+			</button>
+		</td>
+		<td>
+			<button
+				class="daisy-btn daisy-btn-xs daisy-btn-warning font-normal rounded-sm"
+				hx-post={ fmt.Sprintf("/dashboard/%d/ship", order.ID) }
+				hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
+				hx-swap="outerHTML"
+			>
+				Mark Shipping
+			</button>
+		</td>
+	</tr>
+}
+
+templ ShippingOrdersTableRow(order store.Order) {
+	<tr id={ fmt.Sprintf("available-row-%d", order.ID) } class="">
+		<td class="font-semibold text-gray-800">
+			{ fmt.Sprint(strings.Split(order.PrintConfig.FileID, "-")[1]) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.Status) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.PrintConfig.Quantity) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.PrintConfig.Color) }
+		</td>
+		<td>
+			Ksh: { fmt.Sprintf("%.2f",order.Price) }
+		</td>
+		<td>
+			<button
+				class="daisy-btn daisy-btn-xs daisy-btn-success font-normal rounded-sm"
+				hx-target={ fmt.Sprintf("#available-row-%d", order.ID) }
+				hx-post={ fmt.Sprintf("/dashboard/%d/complete", order.ID) }
+				hx-swap="outerHTML"
+			>
+				Mark Complete
+			</button>
+		</td>
+	</tr>
+}
+
+templ CompletedOrdersTableRow(order store.Order) {
+	<tr id={ fmt.Sprintf("available-row-%d", order.ID) } class="">
+		<td class="font-semibold text-gray-800">
+			{ fmt.Sprint(strings.Split(order.PrintConfig.FileID, "-")[1]) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.Status) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.PrintConfig.Quantity) }
+		</td>
+		<td>
+			{ fmt.Sprint(order.PrintConfig.Color) }
+		</td>
+		<td>
+			Ksh: { fmt.Sprintf("%.2f",order.Price) }
 		</td>
 	</tr>
 }

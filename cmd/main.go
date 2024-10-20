@@ -73,9 +73,11 @@ func main() {
 		OrderStore:  orderStore,
 	})
 
-	dashboardHandler := handlers.NewDashboardHandler(handlers.DashboardHandlerParams{
-		OrderStore: orderStore,
-	})
+	dashboardHandler := handlers.NewDashboardHandler(
+		handlers.DashboardHandlerParams{
+			OrderStore:  orderStore,
+			SessionName: sessionName,
+		})
 
 	r.Group(func(r chi.Router) {
 		//r.Use(
@@ -114,7 +116,8 @@ func main() {
 		r.Route("/dashboard", func(r chi.Router) {
 			r.Get("/", handlers.Make(dashboardHandler.HandleDashboard))
 			r.Get("/available-orders", handlers.Make(dashboardHandler.GetAvailable))
-			r.Get("/active-orders", handlers.Make(dashboardHandler.GetActive))
+			r.Get("/printing-orders", handlers.Make(dashboardHandler.GetPrinting))
+			r.Get("/shipping-orders", handlers.Make(dashboardHandler.GetShipping))
 			r.Get("/completed-orders", handlers.Make(dashboardHandler.GetCompleted))
 
 			r.Post("/{orderID}/take", handlers.Make(dashboardHandler.TakeOrder))
@@ -122,6 +125,8 @@ func main() {
 				handlers.Make(dashboardHandler.DownloadOrder))
 			r.Post("/{orderID}/printer-cancel",
 				handlers.Make(dashboardHandler.CancelTakenOrder))
+			r.Post("/{orderID}/ship", handlers.Make(
+				dashboardHandler.ShipOrder))
 			r.Post("/{orderID}/complete", handlers.Make(
 				dashboardHandler.CompleteOrder))
 		})

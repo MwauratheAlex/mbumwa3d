@@ -1,8 +1,6 @@
 package dbstore
 
 import (
-	"fmt"
-
 	"github.com/mwaurathealex/mbumwa3d/internal/initializers"
 	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"gorm.io/gorm"
@@ -49,14 +47,27 @@ func (s *OrderStore) Delete(userID, orderID uint) error {
 func (s *OrderStore) GetAvailable() ([]store.Order, error) {
 	var orders []store.Order
 	err := s.db.Preload("PrintConfig").
-		Where("status = ?", fmt.Sprint(store.Reviewing)).Find(&orders).Error
+		Where("status = ?", store.Reviewing.String()).Find(&orders).Error
 	if err != nil {
 		return nil, err
 	}
 	return orders, nil
 }
 
-///////////////////////////////////////
+func (s *OrderStore) GetPrintOrders(
+	printerID uint, orderStatus string) ([]store.Order, error) {
+	var orders []store.Order
+
+	err := s.db.Preload("PrintConfig").Where(
+		"status = ? AND printer_id = ?",
+		orderStatus, printerID,
+	).Find(&orders).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return orders, nil
+}
 
 func (s *OrderStore) GetNotCompleted(userID uint) []store.Order {
 	var orders []store.Order
@@ -64,7 +75,7 @@ func (s *OrderStore) GetNotCompleted(userID uint) []store.Order {
 
 	s.db.Preload("PrintConfig").Where(query,
 		userID,
-		fmt.Sprint(store.Completed),
+		store.Completed.String(),
 	).Find(&orders)
 
 	return orders
@@ -74,42 +85,10 @@ func (s *OrderStore) GetCompleted(userID uint) []store.Order {
 	var orders []store.Order
 	query := "user_id = ? AND status = ?"
 
-	s.db.Preload("File").Where(query,
+	s.db.Preload("PrintConfig").Where(query,
 		userID,
-		fmt.Sprint(store.Completed),
+		store.Completed.String(),
 	).Find(&orders)
-
-	return orders
-}
-
-func (s *OrderStore) GetPrintAvailable() []store.Order {
-	var orders []store.Order
-
-	s.db.Preload("File").Where("print_status = ?", fmt.Sprint("")).Find(&orders)
-
-	return orders
-}
-
-func (s *OrderStore) GetPrintActive(printerID uint) []store.Order {
-	var orders []store.Order
-
-	s.db.Preload("File").Where(
-		"print_status = ? AND printer_id = ?",
-		// store.Selected, printerID,
-	).Find(&orders)
-
-	return orders
-}
-
-func (s *OrderStore) GetPrintCompleted(printerID uint) []store.Order {
-	var orders []store.Order
-
-	s.db.Preload("File").
-		Where(
-			"print_status = ? AND printer_id = ?",
-			fmt.Sprint(store.Completed),
-			printerID,
-		).Find(&orders)
 
 	return orders
 }
