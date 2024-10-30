@@ -27,6 +27,10 @@ func (h *HomeHandler) HandleHome(w http.ResponseWriter, r *http.Request) error {
 	return Render(w, r, home.Index())
 }
 
+func (h *HomeHandler) HandleHello(w http.ResponseWriter, r *http.Request) error {
+	return Render(w, r, home.Hello())
+}
+
 func (h *HomeHandler) GetUserMenu(w http.ResponseWriter, r *http.Request) error {
 	session, _ := gothic.Store.Get(r, h.SessionName)
 	_, ok := session.Values["user"].(goth.User)

@@ -3,6 +3,7 @@ package home
 import (
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
+	"os"
 )
 
 templ Index() {
@@ -43,10 +44,10 @@ templ HomeContent() {
 							@components.UploadForm()
 						</div>
 						<div class="flex justify-between  gap-8">
-							<p class="text-sm text-gray-600">
+							<p class="text-sm text-gray-900">
 								Do you own a 3D printer?
 							</p>
-							<button type="button" class="font-semibold text-sm text-orange-900 hover:underline transition-all">
+							<button type="button" class="daisy-link font-semibold daisy-link-hover text-sm">
 								Make money with us
 							</button>
 						</div>
@@ -66,4 +67,45 @@ templ NewFileUploadButton() {
 	>
 		Click to upload new file
 	</button>
+}
+
+templ Hello() {
+	<!DOCTYPE html>
+	<html lang="en" class="">
+		<head>
+			<title>mbumwa 3D | For all your 3D printing needs</title>
+			<link rel="icon" type="image/x-icon" href="/public/favicon.ico"/>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			if os.Getenv("env") == "production" {
+				<link rel="stylesheet" href="/public/assets/style.min.css"/>
+			} else {
+				<link rel="stylesheet" href="/public/assets/styles.css"/>
+			}
+			<script src="/public/assets/index.js" defer></script>
+			<script src="/public/assets/htmx.min.js" defer></script>
+			<script src="public/assets/response-targets.js" defer></script>
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=Recursive:wght@300..1000&display=swap" rel="stylesheet"/>
+		</head>
+		<body hx-ext="response-targets" class="antialiased relative">
+			<div class="daisy-drawer daisy-drawer-end">
+				<input id="my-drawer" type="checkbox" class="daisy-drawer-toggle"/>
+				<div class="daisy-drawer-content">
+					<!-- Page content here -->
+					@components.Navbar()
+					<label for="my-drawer" class="daisy-btn daisy-btn-primary daisy-drawer-button">Open drawer</label>
+				</div>
+				<div class="daisy-drawer-side">
+					<label for="my-drawer" aria-label="close sidebar" class="daisy-drawer-overlay"></label>
+					<ul class="daisy-menu bg-base-200 text-base-content min-h-full w-80 p-4">
+						<!-- Sidebar content here -->
+						<li><a>Sidebar Item 1</a></li>
+						<li><a>Sidebar Item 2</a></li>
+					</ul>
+				</div>
+			</div>
+		</body>
+	</html>
 }

@@ -86,6 +86,7 @@ func main() {
 		//)
 		r.Handle("/*", public())
 		r.Get("/", handlers.Make(homeHandler.HandleHome))
+		r.Get("/hello", handlers.Make(homeHandler.HandleHello))
 
 		r.Get("/auth/{provider}/callback", handlers.Make(authHandler.AuthCallback))
 		r.Get("/auth/{provider}", handlers.Make(authHandler.BeginAuth))
