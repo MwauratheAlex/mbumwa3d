@@ -11,7 +11,7 @@ templ UploadForm() {
 		id="print-config-form"
 	>
 		<div id="upload-form" class="max-w-sm mx-auto w-full flex gap-4 flex-col mt-0">
-			<p class="text-3xl font-semibold">
+			<p class="text-2xl font-semibold">
 				Configure your print
 			</p>
 			<div class="grid grid-cols-1  gap-2 pb-4">
@@ -71,13 +71,17 @@ templ UploadForm() {
 				</div>
 				// Build time
 			</div>
-			<button
-				type="submit"
-				class="font-semibold  text-cyan-100 rounded-lg p-2 
-							bg-orange-800 bg-opacity-80 "
-			>
-				Let's print
-			</button>
+			<div class="flex gap-2">
+				<button class="daisy-btn daisy-btn-info flex-1 daisy-btn-sm">
+					Save to Cart
+				</button>
+				<button
+					type="submit"
+					class="daisy-btn daisy-btn-sm bg-gray-900 text-gray-50 hover:bg-gray-950 hover:text-orange-200 flex-1"
+				>
+					Print Now
+				</button>
+			</div>
 		</div>
 	</form>
 }
