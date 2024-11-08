@@ -138,3 +138,41 @@ html {
 .htmx-request .to-hide {
   display: none;
 }
+
+
+/* menu button */
+#menu-button {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5px;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+#menu-button span {
+  width: 25px;
+  height: 2.5px;
+  background-color: black;
+  border-radius: 2px;
+  transition: transform .1s ease-in-out, opacity .2s ease-in-out,
+    background-color .3s ease-in-out;
+}
+
+:root[menu-open] #menu-button span:nth-child(1) {
+  transform: translate3d(0px, 6px, 0) rotate(45deg);
+}
+
+:root[menu-open] #menu-button span:nth-child(2) {
+  transform: scaleX(0);
+  opacity: 0;
+}
+
+:root[menu-open] #menu-button span:nth-child(3) {
+  transform: translate3d(0px, -6px, 0) rotate(-45deg);
+}
+
+:root[menu-open] #menu-button span {
+  background-color: red;
+}
