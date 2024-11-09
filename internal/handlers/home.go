@@ -5,6 +5,7 @@ import (
 
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
+	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/home"
 )
@@ -24,7 +25,7 @@ func (h *HomeHandler) HandleHome(w http.ResponseWriter, r *http.Request) error {
 		return Render(w, r, home.HomeContent())
 	}
 
-	return Render(w, r, home.Index())
+	return Render(w, r, home.Index(&store.HomePageParams{}))
 }
 
 func (h *HomeHandler) HandleHello(w http.ResponseWriter, r *http.Request) error {
@@ -35,12 +36,5 @@ func (h *HomeHandler) GetUserMenu(w http.ResponseWriter, r *http.Request) error 
 	session, _ := gothic.Store.Get(r, h.SessionName)
 	_, ok := session.Values["user"].(goth.User)
 
-	if ok {
-		//if user.HasPrinter {
-		//	return Render(w, r, components.HasPrinterUserMenu())
-		//}
-		return Render(w, r, components.LoggedInUserMenu())
-	}
-
-	return Render(w, r, components.LoggedOutUserMenu())
+	return Render(w, r, components.UserMenu(ok))
 }

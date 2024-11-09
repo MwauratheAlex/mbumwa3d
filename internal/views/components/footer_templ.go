@@ -26,7 +26,7 @@ func Footer() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<footer class=\"bg-white h-20 relative\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -42,7 +42,7 @@ func Footer() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"border-t border-gray-200\"></div><div class=\"h-full flex flex-col md:flex-row md:justify-between justify-center items-center\"><div class=\"text-center md:text-left pb-2 md:pb-0\"><p class=\"text-sm text-muted-foreground\">&copy; <span id=\"current-year\"></span> All rights reserved</p></div><div class=\"flex items-center justify-center\"><div class=\"flex space-x-8\"><a href=\"#\" class=\"text-sm text-muted-foreground hover:text-gray-600\">Terms</a> <a href=\"#\" class=\"text-sm text-muted-foreground hover:text-gray-600\">Privacy Policy</a> <a href=\"#\" class=\"text-sm text-muted-foreground hover:text-gray-600\">Cookie Policy</a></div></div></div>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -52,7 +52,7 @@ func Footer() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script>\n\t\tdocument.getElementById(\"current-year\").innerHTML = new Date().getFullYear();\n\t</script></footer>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

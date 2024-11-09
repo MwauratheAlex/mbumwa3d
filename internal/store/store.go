@@ -115,3 +115,8 @@ type CartStore interface {
 	AddItem()
 	RemoveItem()
 }
+
+type HomePageParams struct {
+	IsLoggedIn bool
+	IsPrinter  bool
+}

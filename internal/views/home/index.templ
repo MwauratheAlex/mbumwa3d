@@ -1,12 +1,13 @@
 package home
 
 import (
+	"github.com/mwaurathealex/mbumwa3d/internal/store"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/layouts"
 	"os"
 )
 
-templ Index() {
+templ Index(params *store.HomePageParams) {
 	@layouts.Base() {
 		@HomeContent()
 	}

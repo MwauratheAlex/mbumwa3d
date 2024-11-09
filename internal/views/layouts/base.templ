@@ -1,70 +1,73 @@
 package layouts
 
 import (
-"github.com/mwaurathealex/mbumwa3d/internal/views/components"
-"os"
+	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
+	"os"
 )
 
 templ Base() {
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <title>mbumwa 3D | For all your 3D printing needs</title>
-  <link rel="icon" type="image/x-icon" href="/public/favicon.ico" />
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  if os.Getenv("env") == "production" {
-  <link rel="stylesheet" href="/public/assets/style.min.css" />
-  } else {
-  <link rel="stylesheet" href="/public/assets/styles.css" />
-  }
-  <script src="/public/assets/index.js" defer></script>
-  <script src="/public/assets/htmx.min.js" defer></script>
-  <script src="public/assets/response-targets.js" defer></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@300..1000&display=swap" rel="stylesheet" />
-</head>
-
-<body hx-ext="response-targets" class="antialiased relative">
-  <div class="daisy-drawer daisy-drawer-end">
-    <input id="cart-drawer" type="checkbox" class="daisy-drawer-toggle" />
-    <div class="flex flex-col min-h-[calc(100vh-0.05rem)] grainy-light daisy-drawer-content">
-      <div>
-        @components.Navbar()
-      </div>
-      <div id="content-container" class="flex-1 flex flex-col justify-center items-center">
-        { children... }
-      </div>
-      <div>
-        @components.Footer()
-      </div>
-      @Toast()
-      @components.PrintSummaryModal()
-      @components.LoginModal()
-    </div>
-    @SideBarCart()
-  </div>
-</body>
-
-</html>
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<title>mbumwa 3D | For all your 3D printing needs</title>
+			<link rel="icon" type="image/x-icon" href="/public/favicon.ico"/>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			if os.Getenv("env") == "production" {
+				<link rel="stylesheet" href="/public/assets/style.min.css"/>
+			} else {
+				<link rel="stylesheet" href="/public/assets/styles.css"/>
+			}
+			<script src="/public/assets/index.js" defer></script>
+			<script src="/public/assets/htmx.min.js" defer></script>
+			<script src="public/assets/response-targets.js" defer></script>
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=Recursive:wght@300..1000&display=swap" rel="stylesheet"/>
+		</head>
+		<body hx-ext="response-targets" class="antialiased relative">
+			<div class="daisy-drawer daisy-drawer-end">
+				<input id="cart-drawer" type="checkbox" class="daisy-drawer-toggle"/>
+				<div class="flex flex-col min-h-[calc(100vh-0.05rem)] grainy-light daisy-drawer-content">
+					<div>
+						@components.Navbar()
+					</div>
+					<div id="content-container" class="flex-1 flex flex-col justify-center items-center">
+						{ children... }
+					</div>
+					<div>
+						@components.Footer()
+					</div>
+					@Toast()
+					@components.PrintSummaryModal()
+					@components.LoginModal()
+				</div>
+				@SideBarCart()
+			</div>
+		</body>
+	</html>
 }
 
 templ SideBarCart() {
-<div class="daisy-drawer-side z-[999]">
-  <label for="cart-drawer" aria-label="close cart" class="daisy-drawer-overlay"></label>
-  <ul class="daisy-menu bg-base-200 text-base-content min-h-full w-[33.3%] p-4">
-    <!-- Sidebar content here -->
-    <li><a>Sidebar Item 1</a></li>
-    <li><a>Sidebar Item 2</a></li>
-  </ul>
-</div>
+	<div class="daisy-drawer-side z-[999]">
+		<label for="cart-drawer" aria-label="close cart" class="daisy-drawer-overlay"></label>
+		<ul
+			class="daisy-menu bg-base-200 text-base-content min-h-full w-[66.9%] 
+    md:w-[33.3%] p-4"
+		>
+			<!-- Sidebar content here -->
+			<p class="text-2xl font-semibold">
+				Cart
+			</p>
+			<li><a>Sidebar Item 1</a></li>
+			<li><a>Sidebar Item 2</a></li>
+		</ul>
+	</div>
 }
 
 templ Toast() {
-<div class="daisy-toast daisy-toast-top daisy-toast-center top-4 z-[999]" id="toast-notification">
-  // "daisy-alert daisy-alert-success w-min flex items-center py-1 rounded-md text-center text-sm"
-  // "text-gray-black tracking-wider scale-0 transition-all daisy-alert-error"
-</div>
+	<div class="daisy-toast daisy-toast-top daisy-toast-center top-4 z-[999]" id="toast-notification">
+		// "daisy-alert daisy-alert-success w-min flex items-center py-1 rounded-md text-center text-sm"
+		// "text-gray-black tracking-wider scale-0 transition-all daisy-alert-error"
+	</div>
 }
