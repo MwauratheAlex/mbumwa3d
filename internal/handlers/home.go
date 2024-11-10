@@ -28,13 +28,17 @@ func (h *HomeHandler) HandleHome(w http.ResponseWriter, r *http.Request) error {
 	return Render(w, r, home.Index(&store.HomePageParams{}))
 }
 
-func (h *HomeHandler) HandleHello(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, home.Hello())
-}
-
 func (h *HomeHandler) GetUserMenu(w http.ResponseWriter, r *http.Request) error {
 	session, _ := gothic.Store.Get(r, h.SessionName)
 	_, ok := session.Values["user"].(goth.User)
 
-	return Render(w, r, components.UserMenu(ok))
+	if !ok {
+		return Render(w, r, components.LoggedOutMenuContent())
+	}
+	return Render(w, r, components.LoggedInMenuContent())
+}
+
+// testing page
+func (h *HomeHandler) HandleHello(w http.ResponseWriter, r *http.Request) error {
+	return Render(w, r, home.Hello())
 }
