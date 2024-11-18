@@ -1,6 +1,7 @@
 package layouts
 
 import (
+	"fmt"
 	"github.com/mwaurathealex/mbumwa3d/internal/views/components"
 	"os"
 )
@@ -52,15 +53,55 @@ templ SideBarCart() {
 	<div class="daisy-drawer-side z-[999]">
 		<label for="cart-drawer" aria-label="close cart" class="daisy-drawer-overlay"></label>
 		<ul
-			class="daisy-menu bg-base-200 text-base-content min-h-full w-[66.9%] 
-    md:w-[33.3%] p-4"
+			class="daisy-menu bg-base-200 min-h-full w-[66.9%] 
+    md:w-[50%] p-4 text-black"
 		>
 			<!-- Sidebar content here -->
 			<p class="text-2xl font-semibold">
-				Cart
+				Shopping Cart
 			</p>
-			<li><a>Sidebar Item 1</a></li>
-			<li><a>Sidebar Item 2</a></li>
+			<table class="daisy-table  text-gray-950 daisy-table-zebra">
+				<!-- head -->
+				<thead class="text-gray-950">
+					<tr>
+						<th>Item</th>
+						<th>Qty</th>
+						<th>Build Time</th>
+						<th>Price</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody class="text-sm">
+					<!-- row -->
+					for i := range 4 {
+						<tr class="border-b-0.5 border-gray-300 py-2">
+							<td class="">
+								<div class="flex gap-6">
+									<!-- image -->
+									<div
+										class="aspect-square w-28 
+                border border-red-300 rounded-md"
+									></div>
+									<div class="flex flex-col justify-between">
+										<p class="font-semibold">Part4.stl</p>
+										<p>White</p>
+										<p>ABS</p>
+										<button class="daisy-link text-black">
+											Edit Order
+										</button>
+									</div>
+								</div>
+							</td>
+							<td class="align-top">{ fmt.Sprintf("%d", i + 1) }</td>
+							<td class="align-top">48 hours</td>
+							<td class="align-top">Ksh. { fmt.Sprintf("%d.00", 200 * (i + 1)) }</td>
+							<td class="align-top">
+								<button class="daisy-link daisy-link-error">Delete</button>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
 		</ul>
 	</div>
 }

@@ -1,0 +1,52 @@
+<div class=\"container w-9/12\"><div class=\"max-h-[calc(100vh-10rem)] min-h-[calc(100vh-10rem)] overflow-y-auto\"><div role=\"tablist\" class=\"daisy-tabs daisy-tabs-lifted w-fit\"><a hx-get=\"/dashboard/available-orders\" hx-target=\"#dash_tbl_container\" hx-swap=\"innerHTML\" role=\"tab\" class=\"tabz daisy-tab daisy-tab-active\" onclick=\"switchTabs(event)\">Available Orders</a> <a hx-get=\"/dashboard/printing-orders\" hx-target=\"#dash_tbl_container\" hx-swap=\"innerHTML\" role=\"tab\" class=\"tabz daisy-tab text-gray-600\" onclick=\"switchTabs(event)\">Printing</a> <a hx-get=\"/dashboard/shipping-orders\" hx-target=\"#dash_tbl_container\" hx-swap=\"innerHTML\" role=\"tab\" class=\"tabz daisy-tab text-gray-600\" onclick=\"switchTabs(event)\">Shipping</a> <a hx-get=\"/dashboard/completed-orders\" hx-target=\"#dash_tbl_container\" hx-swap=\"innerHTML\" role=\"tab\" class=\"tabz daisy-tab text-gray-600\" onclick=\"switchTabs(event)\">Completed</a></div><div id=\"dash_tbl_container\">
+</div></div><script>\n\n    let activeTab = document.querySelector(\".daisy-tab-active\")\n    function switchTabs(e) {\n      activeTab.classList.remove(\"daisy-tab-active\");\n      activeTab.classList.add(\"text-gray-600\")\n      e.target.classList.add(\"daisy-tab-active\");\n      e.target.classList.remove(\"text-gray-600\")\n      activeTab = e.target;\n    }\n\n  </script></div>
+<table class=\"daisy-table daisy-table-xs daisy-table-zebra daisy-table-pin-rows\">
+<tbody>
+</tbody></table>
+<table class=\"daisy-table daisy-table-xs daisy-table-zebra daisy-table-pin-rows\">
+<tbody class=\"w-full\">
+</tbody></table>
+<table class=\"daisy-table daisy-table-xs daisy-table-zebra daisy-table-pin-rows\">
+<tbody class=\"w-full\">
+</tbody></table>
+<table class=\"daisy-table daisy-table-xs daisy-table-zebra daisy-table-pin-rows\">
+<tbody class=\"w-full\">
+</tbody></table>
+<tr id=\"
+\"><td class=\"font-semibold text-gray-800\">
+</td><td>
+</td><td>
+</td><td>
+</td><td>Ksh: 
+</td><td><button class=\"daisy-btn daisy-btn-xs daisy-btn-outline font-normal rounded-sm\" hx-target=\"
+\" hx-swap=\"outerHTML\">Expand Details</button></td><td><button class=\"daisy-btn daisy-btn-xs daisy-btn-info font-normal rounded-sm\" hx-target=\"
+\" hx-swap=\"outerHTML\">View Files</button></td><td><button class=\"daisy-btn daisy-btn-xs daisy-btn-warning font-normal rounded-sm\" hx-post=\"
+\" hx-target=\"
+\" hx-swap=\"outerHTML\">Take Order</button></td></tr>
+<tr id=\"
+\" class=\"\"><td class=\"font-semibold text-gray-800\">
+</td><td>
+</td><td>
+</td><td>
+</td><td>Ksh: 
+</td><td><button class=\"daisy-btn daisy-btn-xs daisy-btn-success font-normal rounded-sm\" hx-target=\"
+\" hx-swap=\"outerHTML\">Download Files</button></td><td><button class=\"daisy-btn daisy-btn-xs daisy-btn-info font-normal rounded-sm\" hx-target=\"
+\" hx-swap=\"outerHTML\">View Files</button></td><td><button class=\"daisy-btn daisy-btn-xs daisy-btn-warning font-normal rounded-sm\" hx-post=\"
+\" hx-target=\"
+\" hx-swap=\"outerHTML\">Mark Shipping</button></td></tr>
+<tr id=\"
+\" class=\"\"><td class=\"font-semibold text-gray-800\">
+</td><td>
+</td><td>
+</td><td>
+</td><td>Ksh: 
+</td><td><button class=\"daisy-btn daisy-btn-xs daisy-btn-success font-normal rounded-sm\" hx-target=\"
+\" hx-post=\"
+\" hx-swap=\"outerHTML\">Mark Complete</button></td></tr>
+<tr id=\"
+\" class=\"\"><td class=\"font-semibold text-gray-800\">
+</td><td>
+</td><td>
+</td><td>
+</td><td>Ksh: 
+</td></tr>
